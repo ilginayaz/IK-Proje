@@ -1,5 +1,4 @@
-﻿using IKProject.Data.Entities;
-using IKProject.Models;
+﻿using IKProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
@@ -8,11 +7,11 @@ namespace IKProject.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly HttpClient _httpClient;
 
-        public AccountController(IHttpClientFactory httpClientFactory)
+        public AccountController(HttpClient httpClient)
         {
-            _httpClientFactory = httpClientFactory;
+            _httpClient = httpClient;
         }
 
         [HttpGet]
@@ -26,24 +25,52 @@ namespace IKProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                var client = _httpClientFactory.CreateClient();
                 var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
-                var response = await client.PostAsync("https://api.yourdomain.com/api/Auth/login", content);
+                var response = await _httpClient.PostAsync("http://localhost:5240/api/Auth/login", content);
 
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonData = await response.Content.ReadAsStringAsync();
                     var tokenObj = JsonConvert.DeserializeObject<TokenResponse>(jsonData);
 
-                    // Token'ı saklayabilirsiniz (örneğin, session veya cookie)
                     HttpContext.Session.SetString("JWTToken", tokenObj.Token);
 
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Geçersiz Giriş.");
+                }
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync("http://localhost:5240/api/Auth/register", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                   
+                    return RedirectToAction("Login", "Account");
+                }
+                else
+                {
+                   
+                    ModelState.AddModelError(string.Empty, "Kayıt başarısız. Lütfen tekrar deneyin!");
                 }
             }
 
