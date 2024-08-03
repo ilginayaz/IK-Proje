@@ -1,11 +1,15 @@
-﻿@model LoginViewModel;
-@{
+﻿@model LoginViewModel
 
-    ViewData["Title"] = "Login";
-}
+<h2>Login</h2>
 
-<h2>@ViewData["Title"]</h2>
-
-<form method="post">
-
+<form asp-action="Login" method="post">
+    <div>
+        <label>Email:</label>
+        <input asp-for="Email" />
+    </div>
+    <div>
+        <label>Password:</label>
+        <input asp-for="Password" type="password" />
+    </div>
+    <button type="submit">Login</button>
 </form>

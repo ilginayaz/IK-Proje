@@ -1,69 +1,58 @@
 ﻿using IKProject.Data.Entities;
 using IKProject.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace IKProject.Controllers
 {
     public class AccountController : Controller
     {
-        private UserManager<AppUser> _userManager;
-        private SignInManager<AppUser> _signInManager;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AccountController(IHttpClientFactory httpClientFactory)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _httpClientFactory = httpClientFactory;
         }
 
+        [HttpGet]
         public IActionResult Login()
         {
-            LoginViewModel model = new LoginViewModel();
-            return View(model);
+            return View();
         }
 
         [HttpPost]
-        public IActionResult Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
-            }
+                var client = _httpClientFactory.CreateClient();
+                var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
-            AppUser? user = _userManager.FindByEmailAsync(model.Email).Result;
+                var response = await client.PostAsync("https://api.yourdomain.com/api/Auth/login", content);
 
-            if (user == null)
-            {
-                ViewBag.ErrorMessage = "Kullanıcı adı veya şifre yanlışır.";
-                return View(model);
-            }
-
-            Microsoft.AspNetCore.Identity.SignInResult signInResult = _signInManager.PasswordSignInAsync(user, model.Password, false, false).Result;
-
-            if (!signInResult.Succeeded)
-            {
-                bool emailConfirm = _userManager.IsEmailConfirmedAsync(user).Result;
-
-                if (!emailConfirm)
+                if (response.IsSuccessStatusCode)
                 {
-                    ViewBag.ErrorMessage = "Mail doğrulanmamıştır.";
-                    return View(model);
-                }
+                    var jsonData = await response.Content.ReadAsStringAsync();
+                    var tokenObj = JsonConvert.DeserializeObject<TokenResponse>(jsonData);
 
-                ViewBag.ErrorMessage = "Kullanıcı adı veya şifre yanlışır.";
-                return View(model);
+                    // Token'ı saklayabilirsiniz (örneğin, session veya cookie)
+                    HttpContext.Session.SetString("JWTToken", tokenObj.Token);
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                }
             }
 
-
-            return RedirectToAction("Privacy", "Home");
+            return View(model);
         }
+    }
 
-        public IActionResult AccessDenied()
-        {
-            var user = HttpContext.User;
-
-            return View();
-        }
+    public class TokenResponse
+    {
+        public string Token { get; set; }
     }
 }
