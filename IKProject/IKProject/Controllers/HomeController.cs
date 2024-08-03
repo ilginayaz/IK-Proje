@@ -32,6 +32,10 @@ namespace IKProject.Controllers
         {
             return View();
         }
+        public IActionResult Iletisim()
+        {
+            return View();
+        }
        
     }
 }
