@@ -1,15 +1,109 @@
-﻿@model LoginViewModel
+﻿@* @using IKProject.Models
+@model IKProject.Models.LoginViewModel
 
-<h2>Login</h2>
+@{
+    ViewData["Title"] = "Login";
+}
 
-<form asp-action="Login" method="post">
-    <div>
-        <label>Email:</label>
-        <input asp-for="Email" />
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="~/logincss/css/login.css">
+    <script src="~/logincss/js/login.js" defer></script>
+</head>
+<body>
+    <div class="form-wrapper">
+        <div class="form-container">
+            <div class="form-toggle">
+                <button id="login-toggle" class="active" onclick="toggleForm('login')">Giriş Yap</button>
+                <button id="signup-toggle" onclick="toggleForm('signup')">Kayıt Ol</button>
+            </div>
+
+            <div id="login-form" class="form-content">
+
+                <form asp-action="Login" method="post">
+                    <div class="form-group">
+                        <label asp-for="Email"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password"></label>
+                        <input asp-for="Password" type="password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn login">Giriş</button>
+
+                </form>
+            </div>
+
+            <div id="signup-form" class="form-content" style="display:none;">
+
+                @Html.Partial("Register")
+            </div>
+        </div>
     </div>
-    <div>
-        <label>Password:</label>
-        <input asp-for="Password" type="password" />
+</body>
+</html> *@
+
+
+
+
+
+@using IKProject.Models
+@model IKProject.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="~/logincss/css/login.css">
+    <script src="~/logincss/js/login.js" defer></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="title-text">
+            <div class="title login">Giriş Yap</div>
+            <div class="title signup">Kayıt Ol</div>
+        </div>
+        <div class="form-container">
+            <div class="slide-controls">
+                <input type="radio" name="slide" id="login" checked>
+                <input type="radio" name="slide" id="signup">
+                <label for="login" class="slide login">Giriş</label>
+                <label for="signup" class="slide signup">Kayıt</label>
+                <div class="slider-tab"></div>
+            </div>
+            <div class="form-inner">
+                <!-- Giriş Formu -->
+                <form asp-action="Login" method="post" class="login">
+                    <div class="field">
+                        <label asp-for="Email"></label>
+                        <input asp-for="Email" type="text" placeholder="E-posta Adresi" required>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="field">
+                        <label asp-for="Password"></label>
+                        <input asp-for="Password" type="password" placeholder="Şifre" required>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="field btn">
+                        <div class="btn-layer"></div>
+                        <input type="submit" value="Giriş Yap">
+                    </div>
+                   
+                </form>
+
+
+                <form asp-action="Register" method="post" enctype="multipart/form-data" class="signup">
+                    @Html.Partial("Register")
+                </form>
+            </div>
+        </div>
     </div>
-    <button type="submit">Login</button>
-</form>
+</body>
+</html>
