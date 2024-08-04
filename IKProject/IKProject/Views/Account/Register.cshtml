@@ -1,11 +1,11 @@
 ﻿@using IKProject.Data.Enums
+@using IKProject.Models
 @model IKProject.Models.RegisterViewModel
 
 @{
     ViewData["Title"] = "Kayıt Ol";
 }
 
-<h2>@ViewData["Title"]</h2>
 
 <form asp-action="Register" method="post" enctype="multipart/form-data">
     <div class="form-group">
@@ -137,4 +137,3 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-
