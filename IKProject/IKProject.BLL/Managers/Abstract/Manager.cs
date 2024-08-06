@@ -8,5 +8,6 @@ namespace IKProject.BLL.Managers.Abstract
 {
     public class Manager
     {
+        //grup2 
     }
 }
