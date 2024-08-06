@@ -1,4 +1,5 @@
 using IKProject.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -17,11 +18,36 @@ namespace IKProject
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
+            
+
             builder.Services.AddHttpClient();
             builder.Services.AddSession();
 
+            // Configure Authentication
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";
+                options.LogoutPath = "/Account/Logout";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+            });
+
+            // Add authorization services
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("EmployeePolicy", policy => policy.RequireRole("Employee"));
+                options.AddPolicy("CompanyManagerPolicy", policy => policy.RequireRole("CompanyManager"));
+            });
+
             var app = builder.Build();
 
+            
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
@@ -33,9 +59,16 @@ namespace IKProject
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseSession();
 
-            app.UseAuthorization();
+
+            app.MapControllerRoute(
+                name: "areas",
+            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
 
             app.MapControllerRoute(
                 name: "default",
