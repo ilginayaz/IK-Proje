@@ -19,6 +19,13 @@ namespace IKProjectAPI.Data
             builder.Entity<IdentityRole>().HasData(new IdentityRole { Id = "2", Name = "Yönetici", NormalizedName = "YONETICI".ToUpper() });
             builder.Entity<IdentityRole>().HasData(new IdentityRole { Id = "3", Name = "Çalışan", NormalizedName = "CALISAN".ToUpper() });
         }
+        public DbSet<Sirket> sirketler { get; set; }
+        public DbSet<Masraf> masraflar { get; set; }
+        public DbSet<MasrafTipi> masrafTipleri { get; set; }
+        public DbSet<IzinTipi> izinTipleri { get; set; }
+        public DbSet<IzinOdenek> izinOdenekler { get; set; }
+        public DbSet<IzinIstegi> izinIstekleri { get; set; }
+
 
         private static async Task EnsureRolesAsync(RoleManager<IdentityRole> roleManager)
         {

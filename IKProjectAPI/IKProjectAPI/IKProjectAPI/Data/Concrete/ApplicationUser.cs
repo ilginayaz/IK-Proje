@@ -1,11 +1,20 @@
-﻿using IKProjectAPI.Data.Enums;
+﻿
+using IKProjectAPI.Data.Abstract;
+using IKProjectAPI.Data.Enums;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace IKProjectAPI.Data.Concrete
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser, IBaseEntity
     {
+        public ApplicationUser()
+        {
+            Izinler = new HashSet<IzinIstegi>();
+            Calisanlar = new HashSet<ApplicationUser>();
+            Yoneticiler = new HashSet<Masraf>();
+        }
+
         [Display(Name = "Profil Fotoğrafınız")]
         [Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
         public string ProfilePhoto { get; set; }
@@ -38,7 +47,7 @@ namespace IKProjectAPI.Data.Concrete
         public DateOnly IseGirisTarihi { get; set; } = DateOnly.FromDateTime(DateTime.Now);
         [DataType(DataType.Date)]
         public DateOnly IstenCikisTarihi { get; set; }
-        public Status Aktiflik {  get; set; } = Status.AwatingApproval;
+        public Guid SirketId { get; set; }
         public Sirket Sirket { get; set; }
         public Meslek Meslek { get; set; }
         public Departman Departman { get; set; }
@@ -46,5 +55,18 @@ namespace IKProjectAPI.Data.Concrete
         public decimal Maas {  get; set; }
         public Cinsiyet Cinsiyet { get; set; }
         public string? Token { get; set; }
+
+
+        public DateTime CreatedTime { get; set; } = DateTime.Now;
+        public DateTime? UpdatedTime { get; set; }
+        public DateTime? DeletedTime { get; set; }
+        public Status Status { get; set; } = Status.AwatingApproval;
+
+        public virtual ApplicationUser? Yonetici { get; set; }
+
+        public virtual ICollection<ApplicationUser> Calisanlar { get; set; }
+        public virtual ICollection<IzinIstegi> Izinler { get; set; }
+        public virtual ICollection<Masraf> Yoneticiler { get; set; }
+
     }
 }
