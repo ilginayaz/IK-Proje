@@ -1,13 +1,10 @@
-﻿using IKProjectAPI.Data.Concrete;
-using IKProjectAPI.Data.Enums;
-using IKProjectAPI.Extensions;
+﻿using IKProjectAPI.Data.Enums;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
-using Sirket = IKProjectAPI.Data.Concrete.Sirket;
 
 namespace IKProjectAPI.Data.Models
 {
-    public class RegisterModel
+    public class CalisanRegisterModel
     {
         [Display(Name = "Email Adresiniz")]
         [Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
@@ -65,16 +62,6 @@ namespace IKProjectAPI.Data.Models
         public Cinsiyet Cinsiyet { get; set; }
         public IdentityResult Result { get; set; }
         public string Token { get; set; }
-
-
-        public string SirketAdi { get; set; }
-        public string SirketNumarasi { get; set; }
-        public string VergiNo { get; set; }
-        public string VergiOfisi { get; set; }
-        public string SirketEmail { get; set; }
-        public Sehirler Sehir { get; set; }
-        public string Address { get; set; }
-        public string PostaKodu { get; set; }
 
     }
 }

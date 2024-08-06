@@ -1,4 +1,5 @@
-﻿using IKProjectAPI.Data.Concrete;
+﻿using IKProjectAPI.Data;
+using IKProjectAPI.Data.Concrete;
 using IKProjectAPI.Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -19,13 +20,15 @@ namespace IKProjectAPI.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
+        private readonly AppDbContext _context;
 
-        public AuthController(IConfiguration configuration, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
+        public AuthController(IConfiguration configuration, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, AppDbContext context)
         {
             _configuration = configuration;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _context = context;
         }
 
         //Kullanıcı Kayıt endpoit
@@ -50,29 +53,45 @@ namespace IKProjectAPI.Controllers
                 DogumTarihi = registerModel.DogumTarihi,
                 DogumYeri = registerModel.DogumYeri,
                 TC = registerModel.TC,
-                Sirket = registerModel.Sirket,
                 Departman = registerModel.Departman,
                 Meslek = registerModel.Meslek,
                 Adres = registerModel.Adres,
                 PasswordHash = registerModel.Password,
                 Cinsiyet = registerModel.Cinsiyet,
                 UserName = registerModel.Email,
-                Token = string.Empty
-
+                Token = string.Empty,
+                Status = Data.Enums.Status.AwatingApproval,
             };
 
+            var sirket = new Sirket
+            {
+                SirketAdi = registerModel.SirketAdi,
+                SirketEmail = registerModel.SirketEmail,
+                SirketNumarasi = registerModel.SirketNumarasi,
+                VergiNo = registerModel.VergiNo,
+                VergiOfisi = registerModel.VergiOfisi,
+                Address = registerModel.Address,
+                PostaKodu = registerModel.PostaKodu,
+                Sehir = registerModel.Sehir,
+                Status = Data.Enums.Status.AwatingApproval
+            };
+            
+                _context.sirketler.Add(sirket);
+            user.SirketId = sirket.Id;
             var result = await _userManager.CreateAsync(user, registerModel.Password);
             if (result.Succeeded)
             {
                 //Kayıt başarılı, token dönebiliriz veya sadece başarılı yanıtı dönebiliriz
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                sirket.SirketYoneticileri.Add(user);
+                _context.SaveChanges();
                 // Rol oluştur ve kullanıcıyı bu role ekle
-                if (!await _roleManager.RoleExistsAsync("CALISAN"))
+                if (!await _roleManager.RoleExistsAsync("YONETICI"))
                 {
-                    await _roleManager.CreateAsync(new IdentityRole { Id = Guid.NewGuid().ToString(), Name = "Calisan", NormalizedName = "CALISAN" });
+                    await _roleManager.CreateAsync(new IdentityRole { Id = Guid.NewGuid().ToString(), Name = "Yonetici", NormalizedName = "YONETICI" });
 
                 }
-                    await _userManager.AddToRoleAsync(user, role:"Calisan");
+                    await _userManager.AddToRoleAsync(user, role: "Yonetici");
                 user.Token = token;
                 return Ok(new { Message = "Kullanıcı Başarıyla Oluşturuldu." });
             }
@@ -126,64 +145,24 @@ namespace IKProjectAPI.Controllers
             await _signInManager.SignOutAsync();
         }
 
-
-        // Kullanıcı bilgilerini getiren endpoint
-        [HttpGet("profile")]
-        public async Task<IActionResult> GetProfile()
+        [HttpPost("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
-            var userId = User.FindAll(ClaimTypes.NameIdentifier).Last().Value;
-            if (userId == null)
-                return Unauthorized();
-
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-                return NotFound();
-
-            return Ok(new
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
             {
-                user.ProfilePhoto,
-                user.Adi,
-                user.IkinciAdi,
-                user.Soyadi,
-                user.IkinciSoyadi,
-                user.Email,
-                user.PhoneNumber,
-                user.DogumTarihi,
-                user.DogumYeri,
-                user.TC,
-                user.Sirket,
-                user.Departman,
-                user.Meslek,
-                user.Adres,
-                user.Cinsiyet
-            });
+                var result = await _userManager.ConfirmEmailAsync(user, token);
+                if (result.Succeeded)
+                {
+                    user.Status = Data.Enums.Status.Active;
+                    user.EmailConfirmed = true;
+                    return Ok("Email başarıyla onaylandı");
+                }
+            }
+            return BadRequest("Kullanıcı Bulunamadı.");
         }
 
-        //Çalışanların bilgilerini getiren endpoint
-        [HttpGet("getUser")]
-        public async Task<IActionResult> GetUser(string userId)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            return Ok(new
-            {
-                user.ProfilePhoto,
-                user.Adi,
-                user.IkinciAdi,
-                user.Soyadi,
-                user.IkinciSoyadi,
-                user.Email,
-                user.PhoneNumber,
-                user.DogumTarihi,
-                user.DogumYeri,
-                user.TC,
-                user.Sirket,
-                user.Departman,
-                user.Meslek,
-                user.Adres,
-                user.Cinsiyet
-                
-            });
-        }
-
+        //şifremi unuttum 
+        // şifre değiştir eklenecek
     }
 }
