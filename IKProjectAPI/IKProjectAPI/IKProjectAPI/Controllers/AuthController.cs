@@ -161,7 +161,18 @@ namespace IKProjectAPI.Controllers
             }
             return BadRequest("Kullanıcı Bulunamadı.");
         }
+        [HttpGet("getroles")]
+        public async Task<IActionResult> GetRoles(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return NotFound("Kullanıcı Bulunamadı");
+            }
 
+            var roles = await _userManager.GetRolesAsync(user);
+            return Ok(roles);
+        }
         //şifremi unuttum 
         // şifre değiştir eklenecek
     }
