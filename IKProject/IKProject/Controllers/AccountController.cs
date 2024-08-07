@@ -120,6 +120,15 @@ namespace IKProject.Controllers
             TempData["Message"] = "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.";
             return RedirectToAction("ForgotPassword");
         }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("JWTToken");
+
+            return RedirectToAction("Login", "Account");
+        }
+
     }
 
     public class TokenResponse
