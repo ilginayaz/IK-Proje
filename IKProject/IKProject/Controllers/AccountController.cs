@@ -36,7 +36,7 @@ namespace IKProject.Controllers
 
                     HttpContext.Session.SetString("JWTToken", tokenObj.Token);
 
-                    var roleResponse = await _httpClient.GetAsync("http://localhost:5240/api/Auth/roles");
+                    var roleResponse = await _httpClient.GetAsync("http://localhost:5240/api/Auth/getroles?email="+model.Email);
                     if (roleResponse.IsSuccessStatusCode)
                     {
                         var rolesJson = await roleResponse.Content.ReadAsStringAsync();
@@ -46,11 +46,11 @@ namespace IKProject.Controllers
                         {
                             return RedirectToAction("Index", "Home", new { area = "Admin" });
                         }
-                        else if (roles.Contains("Employee"))
+                        else if (roles.Contains("Çalışan"))
                         {
                             return RedirectToAction("Index", "Home", new { area = "Employee" });
                         }
-                        else if (roles.Contains("CompanyManager"))
+                        else if (roles.Contains("Yönetici"))
                         {
                             return RedirectToAction("Index", "Home", new { area = "CompanyManager" });
                         }
