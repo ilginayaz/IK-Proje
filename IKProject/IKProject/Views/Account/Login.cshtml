@@ -78,7 +78,7 @@
                 <div class="slider-tab"></div>
             </div>
             <div class="form-inner">
-                <!-- Giriş Formu -->
+                
                 <form asp-action="Login" method="post" class="login">
                     <div class="field">
                         <label asp-for="Email"></label>
@@ -95,12 +95,15 @@
                         <div class="btn-layer"></div>
                         <input type="submit" value="Giriş Yap">
                     </div>
-                   
+                    <div>
+                        <a href="/Account/ForgotPassword">Şifrenizi mi unuttunuz?</a>
+                    </div>
                 </form>
+                
 
 
                 <form asp-action="Register" method="post" enctype="multipart/form-data" class="signup">
-                    @Html.Partial("Register")
+                    @Html.Partial("Register", new RegisterViewModel())
                 </form>
             </div>
         </div>

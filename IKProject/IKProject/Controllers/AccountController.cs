@@ -36,7 +36,36 @@ namespace IKProject.Controllers
 
                     HttpContext.Session.SetString("JWTToken", tokenObj.Token);
 
-                    return RedirectToAction("Index", "Home");
+                    var roleResponse = await _httpClient.GetAsync("http://localhost:5240/api/Auth/getroles?email="+model.Email);
+                    if (roleResponse.IsSuccessStatusCode)
+                    {
+                        var rolesJson = await roleResponse.Content.ReadAsStringAsync();
+                        var roles = JsonConvert.DeserializeObject<List<string>>(rolesJson);
+
+                        if (roles.Contains("Admin"))
+                        {
+                            return RedirectToAction("Index", "Home", new { area = "Admin" });
+                        }
+                        else if (roles.Contains("Çalışan"))
+                        {
+                            return RedirectToAction("Index", "Home", new { area = "Employee" });
+                        }
+                        else if (roles.Contains("Yönetici"))
+                        {
+                            return RedirectToAction("Index", "Home", new { area = "CompanyManager" });
+                        }
+                        else
+                        {
+                            ModelState.AddModelError(string.Empty, "Geçersiz rol.");
+                        }
+                    }
+                    else
+                    {
+                        // ModelState.AddModelError(string.Empty, "Rol bilgileri alınamadı.");
+                        var errorMessage = await response.Content.ReadAsStringAsync();
+                        ModelState.AddModelError(string.Empty, $"Hata: {response.StatusCode}, Mesaj: {errorMessage}");
+
+                    }
                 }
                 else
                 {
@@ -75,6 +104,21 @@ namespace IKProject.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            // mail entegrasyonu eksik. 
+
+            TempData["Message"] = "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.";
+            return RedirectToAction("ForgotPassword");
         }
     }
 
