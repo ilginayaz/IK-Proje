@@ -5,7 +5,6 @@ namespace IKProject.Areas.Employee.Controllers
 {
 
     [Area("Employee")]
-    [Authorize(Roles = "Çalışan")]
     public class HomeController : Controller
     {
         public IActionResult Index()

@@ -1,6 +1,7 @@
 ﻿using IKProjectAPI.Data;
 using IKProjectAPI.Data.Concrete;
 using IKProjectAPI.Data.Models;
+using IKProjectAPI.NewFolder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,14 +22,16 @@ namespace IKProjectAPI.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly AppDbContext _context;
+        private readonly EmailSender _emailSender;
 
-        public AuthController(IConfiguration configuration, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, AppDbContext context)
+        public AuthController(IConfiguration configuration, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, AppDbContext context, EmailSender emailSender)
         {
             _configuration = configuration;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _context = context;
+            _emailSender = emailSender;
         }
 
         //Kullanıcı Kayıt endpoit
@@ -75,8 +78,8 @@ namespace IKProjectAPI.Controllers
                 Sehir = registerModel.Sehir,
                 Status = Data.Enums.Status.AwatingApproval
             };
-            
-                _context.sirketler.Add(sirket);
+
+            _context.sirketler.Add(sirket);
             user.SirketId = sirket.Id;
             var result = await _userManager.CreateAsync(user, registerModel.Password);
             if (result.Succeeded)
@@ -85,13 +88,17 @@ namespace IKProjectAPI.Controllers
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 sirket.SirketYoneticileri.Add(user);
                 _context.SaveChanges();
+                var confirmationLink = Url.Action("ConfirmEmail", "Auth", new { userId = user.Id, token = token }, Request.Scheme);
+
+
+                await _emailSender.SendEmailAsync(user.Email, "FHYI Group E-posta Doğrulama", $"Lütfen e-postanızı doğrulamak için <a href='{confirmationLink}'>buraya tıklayın</a>.");
                 // Rol oluştur ve kullanıcıyı bu role ekle
                 if (!await _roleManager.RoleExistsAsync("YONETICI"))
                 {
                     await _roleManager.CreateAsync(new IdentityRole { Id = Guid.NewGuid().ToString(), Name = "Yonetici", NormalizedName = "YONETICI" });
 
                 }
-                    await _userManager.AddToRoleAsync(user, role: "Yonetici");
+                await _userManager.AddToRoleAsync(user, role: "Yonetici");
                 user.Token = token;
                 return Ok(new { Message = "Kullanıcı Başarıyla Oluşturuldu." });
             }
@@ -105,38 +112,38 @@ namespace IKProjectAPI.Controllers
         public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
         {
 
-                var result = await _signInManager.PasswordSignInAsync(
-                    loginModel.Email,
-                    loginModel.Password,
-                    isPersistent:false,
-                    lockoutOnFailure: false
-                    );
-                if (result.Succeeded)
-                {
-                    var user = await _userManager.FindByEmailAsync(loginModel.Email);
+            var result = await _signInManager.PasswordSignInAsync(
+                loginModel.Email,
+                loginModel.Password,
+                isPersistent: false,
+                lockoutOnFailure: false
+                );
+            if (result.Succeeded)
+            {
+                var user = await _userManager.FindByEmailAsync(loginModel.Email);
 
-                    var claims = new[]
-                    {
+                var claims = new[]
+                {
                         new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim(ClaimTypes.NameIdentifier, user.Id)
                     };
 
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-                    var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha256);
-                    var token = new JwtSecurityToken(
-                        issuer: _configuration["Jwt:Issuer"],
-                        audience: _configuration["Jwt:Audience"],
-                        claims: claims,
-                        expires: DateTime.Now.AddMinutes(30),
-                        signingCredentials: creds
-                        );
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                var token = new JwtSecurityToken(
+                    issuer: _configuration["Jwt:Issuer"],
+                    audience: _configuration["Jwt:Audience"],
+                    claims: claims,
+                    expires: DateTime.Now.AddMinutes(30),
+                    signingCredentials: creds
+                    );
 
                 return Ok(new
                 {
                     Token = new JwtSecurityTokenHandler().WriteToken(token)
                 });
-                }
+            }
             return Unauthorized();
         }
         [HttpPost("logout")]
@@ -156,11 +163,70 @@ namespace IKProjectAPI.Controllers
                 {
                     user.Status = Data.Enums.Status.Active;
                     user.EmailConfirmed = true;
+                    _emailSender.SendEmailAsync(email, "FHYI Group HOŞGELDİNİZ", "<h1>Hoş Geldiniz!</h1><p>FHYI Group'a katıldığınız için teşekkür ederiz.</p>");
                     return Ok("Email başarıyla onaylandı");
                 }
             }
             return BadRequest("Kullanıcı Bulunamadı.");
         }
+        [HttpPost("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return BadRequest("Kullanıcı bulunamadı.");
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var resetLink = Url.Action("ResetPassword", "Account", new { token, email = user.Email }, Request.Scheme);
+
+            await _emailSender.SendEmailAsync(user.Email, "FHYI Group - Şifre Sıfırlama Talebi",
+                $"<p>Lütfen şifrenizi sıfırlamak için aşağıdaki bağlantıya tıklayın:</p><a href='{resetLink}'>Şifre Sıfırla</a>");
+
+            return Ok("Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.");
+        }
+
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return BadRequest("Kullanıcı bulunamadı.");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+            if (result.Succeeded)
+            {
+
+                _emailSender.SendEmailAsync(model.Email, "FHYI Group - Şifre Değiştirme Başarılı", "<h1>Şifreniz Başarıyla Değiştirildi!</h1><p>Hesabınızın şifresi değiştirildi.</p>");
+                return Ok("Şifreniz başarıyla sıfırlandı.");
+            }
+
+            return BadRequest("Şifre sıfırlama başarısız oldu.");
+        }
+
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel model)
+        {
+            var user = await _userManager.GetUserAsync(User); // Giriş yapan kullanıcıyı al
+
+            if (user == null)
+            {
+                return BadRequest("Kullanıcı bulunamadı.");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
+            {
+                _emailSender.SendEmailAsync(user.Email, "FHYI Group - Şifre Değiştirme Başarılı", "<h1>Şifreniz Başarıyla Değiştirildi!</h1><p>Hesabınızın şifresi değiştirildi.</p>");
+                return Ok("Şifreniz başarıyla değiştirildi.");
+            }
+
+            return BadRequest("Şifre değişikliği başarısız oldu.");
+        }
+
         [HttpGet("getroles")]
         public async Task<IActionResult> GetRoles(string email)
         {
@@ -173,7 +239,5 @@ namespace IKProjectAPI.Controllers
             var roles = await _userManager.GetRolesAsync(user);
             return Ok(roles);
         }
-        //şifremi unuttum 
-        // şifre değiştir eklenecek
     }
 }
