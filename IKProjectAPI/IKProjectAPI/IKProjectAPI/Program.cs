@@ -16,7 +16,7 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("AppDbConStr"));
 });
 
-builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddTransient<EmailSender>();
 
 
 // Identity ayarlari
