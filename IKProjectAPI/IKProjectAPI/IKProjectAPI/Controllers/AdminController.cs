@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using IKProjectAPI.NewFolder;
 
 namespace IKProjectAPI.Controllers
 {
@@ -16,13 +17,15 @@ namespace IKProjectAPI.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly AppDbContext _context;
+        private readonly EmailSender _emailSender;
 
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, AppDbContext context)
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, AppDbContext context, EmailSender emailSender)
         {
             _roleManager = roleManager;
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _emailSender = emailSender;
         }
 
         [HttpPatch("YoneticiyiOnayla")]
@@ -40,6 +43,7 @@ namespace IKProjectAPI.Controllers
 
             user.Status = Data.Enums.Status.Active;
             sirket.Status = Data.Enums.Status.Active;
+                _emailSender.SendEmailAsync(user.Email, "FHYI GROUP - Hesabınız Onaylandı", "Hesabınız onaylanmıştır");
             return Ok("Kullanıcı ve Şirket başarıyla onaylandı");
             }
             return BadRequest("Kullanıcıya ait Sirket Bulunamadı");
@@ -56,6 +60,7 @@ namespace IKProjectAPI.Controllers
             }
             user.Status = Data.Enums.Status.Passive;
             sirket.Status = Data.Enums.Status.Passive;
+            _emailSender.SendEmailAsync(user.Email, "FHYI GROUP - Hesabınız Reddedildi", "Hesabınız reddedildi üzgünüz :(");
             return Ok("Kullanıcı başarıyla reddedildi");
         }
     }

@@ -1,5 +1,6 @@
 ﻿using IKProjectAPI.Data;
 using IKProjectAPI.Data.Concrete;
+using IKProjectAPI.NewFolder;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -18,13 +19,15 @@ namespace IKProjectAPI.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly AppDbContext _context;
+        private readonly EmailSender _emailSender;
 
-        public CalisanController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, AppDbContext context)
+        public CalisanController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, AppDbContext context, EmailSender emailSender)
         {
             _roleManager = roleManager;
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _emailSender = emailSender;
         }
         //kullanıcıyı güncelle
         [HttpPatch("UpdateUser")]
@@ -129,12 +132,13 @@ namespace IKProjectAPI.Controllers
             izinIstegi.OnayDurumu = Data.Enums.OnayDurumu.Beklemede;
             _context.izinIstekleri.Add(izinIstegi);
             _context.SaveChanges();
+            _emailSender.SendEmailAsync(user.Email, "FHYI Group - İzin İsteği", $"Sevgili çalışanımız {user.Adi} {user.Soyadi} {izinIstegi.IzinGunSayisi} günlük izniniz oluşturulmuştur. İyi günler!");
             return Ok("İzin isteği başarıyla oluşturuldu");
         }
         [HttpPatch("izinGuncelle")]
         public async Task<IActionResult> IzinUpdate(string userId, IzinIstegi izinIstegi)
         {
-            var user = _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId);
             var izin = _context.izinIstekleri.Find(izinIstegi.Id);
             if (user != null)
             {
@@ -146,6 +150,7 @@ namespace IKProjectAPI.Controllers
                     izin.IzinTipiId = izinIstegi.IzinTipiId;
                     _context.Update(izin);
                     _context.SaveChanges();
+                    _emailSender.SendEmailAsync(user.Email, "FHYI Group - İzin İsteği", $"Sevgili çalışanımız {user.Adi} {user.Soyadi} {izinIstegi.IzinGunSayisi} günlük izniniz güncellenmiştir. İyi günler!");
                     return Ok("İzin isteği başarıyla güncellenmiştir.");
                 }
                 return BadRequest("Böyle bir izin bulunamadı");
@@ -155,7 +160,7 @@ namespace IKProjectAPI.Controllers
         [HttpPatch("izinSil")]
         public async Task<IActionResult> IzinDelete(string userId, IzinIstegi izinIstegi)
         {
-            var user = _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId);
             var izin = _context.izinIstekleri.Find(izinIstegi.Id);
             if (user != null)
             {
@@ -166,6 +171,7 @@ namespace IKProjectAPI.Controllers
                     izin.Status = Data.Enums.Status.Passive;
                     _context.Update(izin);
                     _context.SaveChanges();
+                    _emailSender.SendEmailAsync(user.Email, "FHYI Group - İzin İsteği", $"Sevgili çalışanımız {user.Adi} {user.Soyadi} {izinIstegi.IzinGunSayisi} günlük izniniz silinmiştir. İyi günler!");
                     return Ok("İzin isteği başarıyla silinmiştir..");
                 }
                 return BadRequest("Böyle bir izin bulunamadı");
