@@ -61,7 +61,10 @@ namespace IKProject.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, "Rol bilgileri alınamadı.");
+                        // ModelState.AddModelError(string.Empty, "Rol bilgileri alınamadı.");
+                        var errorMessage = await response.Content.ReadAsStringAsync();
+                        ModelState.AddModelError(string.Empty, $"Hata: {response.StatusCode}, Mesaj: {errorMessage}");
+
                     }
                 }
                 else
