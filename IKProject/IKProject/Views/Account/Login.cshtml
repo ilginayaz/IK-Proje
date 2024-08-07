@@ -103,7 +103,7 @@
 
 
                 <form asp-action="Register" method="post" enctype="multipart/form-data" class="signup">
-                    @Html.Partial("Register")
+                    @Html.Partial("Register", new RegisterViewModel())
                 </form>
             </div>
         </div>

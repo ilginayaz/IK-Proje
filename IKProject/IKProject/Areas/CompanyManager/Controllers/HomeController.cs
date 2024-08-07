@@ -5,7 +5,7 @@ namespace IKProject.Areas.CompanyManager.Controllers
 {
 
     [Area("CompanyManager")]
-    [Authorize(Roles = "CompanyManager")]
+    [Authorize(Roles = "YONETICI")]
     public class HomeController : Controller
     {
         public IActionResult Index()
