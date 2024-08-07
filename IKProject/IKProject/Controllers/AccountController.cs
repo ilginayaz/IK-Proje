@@ -122,12 +122,24 @@ namespace IKProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            HttpContext.Session.Remove("JWTToken");
+            // Logout isteğini API'ye gönderir
+            var response = await _httpClient.PostAsync("http://localhost:5240/api/Auth/logout", null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Oturumdaki tüm verileri temizler
+                HttpContext.Session.Clear();
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Çıkış işlemi başarısız.");
+            }
 
             return RedirectToAction("Login", "Account");
         }
+    
 
     }
 
