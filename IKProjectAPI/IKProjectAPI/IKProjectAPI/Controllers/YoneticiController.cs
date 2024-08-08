@@ -1,11 +1,13 @@
 ﻿using IKProjectAPI.Data;
 using IKProjectAPI.Data.Concrete;
+using IKProjectAPI.Data.Models;
 using IKProjectAPI.NewFolder;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace IKProjectAPI.Controllers
 {
@@ -55,9 +57,11 @@ namespace IKProjectAPI.Controllers
 
         // Yöneticinin çalışanlarını getir
         [HttpGet("getEmployees")]
-        public async Task<IActionResult> GetEmployees(string yoneticiId)
+        public async Task<IActionResult> GetEmployees()
         {
             // Öncelikle, yöneticinin bilgilerini alalım
+            var claims = User.Claims.ToList();
+            var yoneticiId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var yonetici = await _userManager.FindByIdAsync(yoneticiId);
             if (yonetici == null)
             {
@@ -77,8 +81,10 @@ namespace IKProjectAPI.Controllers
 
         //Yönetici çalışanlarının İzinler listesi
         [HttpGet("izinListesi")]
-        public async Task<IActionResult> izinListesi(string yoneticiId)
+        public async Task<IActionResult> IzinListesi()
         {
+            var claims = User.Claims.ToList();
+            var yoneticiId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var yonetici = await _userManager.FindByIdAsync(yoneticiId);
             if (yonetici == null)
             {
@@ -96,14 +102,108 @@ namespace IKProjectAPI.Controllers
             return Ok(izinIstekleri);
         }
 
-        //Çalışan kayıt et eklenecek
+        //Çalışan kayıt et
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] CalisanRegisterModel registerModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        
+            // TC kimlik numarası veya e-posta adresiyle daha önce kayıt yapılmış mı?
+            var existingUser = await _userManager.FindByEmailAsync(registerModel.Email);
+            if (existingUser != null)
+            {
+                return BadRequest("Bu e-posta adresi zaten kullanılıyor.");
+            }
+
+            if (_context.Users.Any(u => u.TC == registerModel.TC))
+            {
+                return BadRequest("Bu TC kimlik numarası ile zaten bir kullanıcı kayıtlı.");
+            }
+
+            var user = new ApplicationUser
+            {
+                Email = registerModel.Email,
+                ProfilePhoto = registerModel.ProfilePhoto,
+                Adi = registerModel.Adi,
+                IkinciAdi = registerModel.IkinciAdi,
+                Soyadi = registerModel.Soyadi,
+                IkinciSoyadi = registerModel.IkinciSoyadi,
+                PhoneNumber = registerModel.TelefonNumarasi,
+                DogumTarihi = registerModel.DogumTarihi,
+                DogumYeri = registerModel.DogumYeri,
+                TC = registerModel.TC,
+                Departman = registerModel.Departman,
+                Meslek = registerModel.Meslek,
+                Adres = registerModel.Adres,
+                //PasswordHash = registerModel.Password,
+                Cinsiyet = registerModel.Cinsiyet,
+                UserName = registerModel.Email,
+                Token = string.Empty,
+                Status = Data.Enums.Status.AwatingApproval,
+            };
+            var claims = User.Claims.ToList();
+            var yoneticiId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                var yonetici = await _userManager.FindByIdAsync(yoneticiId);
+            if (yonetici != null)
+            {
+                yonetici.Sirket.SirketCalisanlari.Add(user);
+                user.SirketId = yonetici.Sirket.Id;
+
+            }
+
+            var result = await _userManager.CreateAsync(user, registerModel.Password);
+            if (result.Succeeded)
+            {
+                //Kayıt başarılı, token dönebiliriz veya sadece başarılı yanıtı dönebiliriz
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                _context.SaveChanges();
+                var confirmationLink = Url.Action("ConfirmEmail", "Auth", new { userId = user.Id, token = token }, Request.Scheme);
+
+                await _emailSender.SendEmailAsync(user.Email, "FHYI GROUP HOŞGELDİNİZ", $"Sayın {user.Adi} {user.Soyadi} Sistemimize hoşgeldiniz, {yonetici.Adi} {yonetici.Soyadi} tarafından sisteme kaydedildiniz. İyi günler!");
+
+                // Kullanıcının bilgilerini içeren e-posta içeriği
+                string emailBody = $"Sayın {user.Adi} {user.Soyadi},<br/><br/>" +
+                                   $"Aşağıdaki bilgilerinizle sisteme kaydedildiniz:<br/>" +
+                                   $"Ad: {user.Adi} {user.IkinciAdi} {user.Soyadi} {user.IkinciSoyadi}<br/>" +
+                                   $"Telefon Numarası: {user.PhoneNumber}<br/>" +
+                                   $"Doğum Tarihi: {user.DogumTarihi.ToShortDateString()}<br/>" +
+                                   $"Doğum Yeri: {user.DogumYeri}<br/>" +
+                                   $"TC: {user.TC}<br/>" +
+                                   $"Departman: {user.Departman}<br/>" +
+                                   $"Meslek: {user.Meslek}<br/><br/>" +
+                                   $"Daha sonra değiştirebileceğiniz bilgileriniz doğru ise, lütfen aşağıdaki linke tıklayarak onaylayınız:<br/>" +
+                                   $"<a href='{Url.Action("ConfirmCalisanDetails", "Auth", new { userId = user.Id, token = token }, Request.Scheme)}'>Bilgilerimi Onayla</a>";
+
+                await _emailSender.SendEmailAsync(user.Email, "FHYI Group - Bilgilerinizi Onaylayın", emailBody);
+
+
+                await _emailSender.SendEmailAsync(user.Email, "FHYI Group E-posta Doğrulama", $"Lütfen e-postanızı doğrulamak için <a href='{confirmationLink}'>buraya tıklayın</a>.");
+                // Rol oluştur ve kullanıcıyı bu role ekle
+                if (!await _roleManager.RoleExistsAsync("CALISAN"))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole { Id = Guid.NewGuid().ToString(), Name = "Çalışan", NormalizedName = "CALISAN" });
+
+                }
+                await _userManager.AddToRoleAsync(user, role: "CALISAN");
+                user.Token = token;
+                return Ok(new { Message = "Kullanıcı Başarıyla Oluşturuldu." });
+            }
+            // Hata mesajlarını döndür
+            return BadRequest(result.Errors);
+
+
+        }
+
         //Yöneticinin kendine çalışan eklemesi
         [HttpPost("assignManager")]
-        public async Task<IActionResult> AssignManager(string calisanId, string yoneticiId)
+        public async Task<IActionResult> AssignManager(string calisanId)
         {
             var calisan = await _userManager.FindByIdAsync(calisanId);
+            var claims = User.Claims.ToList();
+            var yoneticiId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var yonetici = await _userManager.FindByIdAsync(yoneticiId);
 
             if (calisan == null || yonetici == null)
