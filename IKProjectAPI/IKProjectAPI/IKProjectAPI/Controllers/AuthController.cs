@@ -59,7 +59,6 @@ namespace IKProjectAPI.Controllers
                 Departman = registerModel.Departman,
                 Meslek = registerModel.Meslek,
                 Adres = registerModel.Adres,
-                PasswordHash = registerModel.Password,
                 Cinsiyet = registerModel.Cinsiyet,
                 UserName = registerModel.Email,
                 Token = string.Empty,
@@ -104,8 +103,6 @@ namespace IKProjectAPI.Controllers
             }
             // Hata mesajlarını döndür
             return BadRequest(result.Errors);
-
-
         }
         //Login Endpoint
         [HttpPost("login")]
@@ -164,6 +161,14 @@ namespace IKProjectAPI.Controllers
                     user.Status = Data.Enums.Status.Active;
                     user.EmailConfirmed = true;
                     _emailSender.SendEmailAsync(email, "FHYI Group HOŞGELDİNİZ", "<h1>Hoş Geldiniz!</h1><p>FHYI Group'a katıldığınız için teşekkür ederiz.</p>");
+                    if (await _userManager.IsInRoleAsync(user, "Çalışan"))
+                    {
+                        var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                        var confirmationLink = Url.Action("ResetPassword", "Auth", new { userId = user.Id, token = resetToken }, Request.Scheme);
+
+                        await _emailSender.SendEmailAsync(user.Email, "FHYI Group Şifre Sıfırlama", $"Lütfen şifrenizi sıfırlamak için <a href='{confirmationLink}'>buraya tıklayın</a>.");
+                        return Ok("Email başarıyla onaylandı ve Çalışana Şifre sıfırlama isteği gönderildi");
+                    }
                     return Ok("Email başarıyla onaylandı");
                 }
             }
@@ -239,5 +244,30 @@ namespace IKProjectAPI.Controllers
             var roles = await _userManager.GetRolesAsync(user);
             return Ok(roles);
         }
+
+        [HttpGet("ConfirmCalisanDetails")]
+        public async Task<IActionResult> ConfirmCalisanDetails(string userId, string token)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return BadRequest("Kullanıcı bulunamadı.");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                user.Status = Data.Enums.Status.Active;
+                _context.SaveChanges(); // Kullanıcının durumu kaydedildi.
+
+                await _emailSender.SendEmailAsync(user.Email, "FHYI Group - Onay Başarılı",
+                    $"Sayın {user.Adi},<br/><br/>Bilgileriniz başarıyla onaylandı ve hesabınız aktif hale getirildi.");
+
+                return Ok("Bilgileriniz onaylandı ve hesabınız aktif hale getirildi.");
+            }
+
+            return BadRequest("Bilgileriniz onaylanamadı. Lütfen tekrar deneyin.");
+        }
+
     }
 }

@@ -14,7 +14,7 @@ namespace IKProjectAPI.Data.Models
         [Display(Name = "Şifreniz")]
         [Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string Password { get; set; } = Guid.NewGuid().ToString();
         [Display(Name = "Profil Fotoğrafınız")]
         [Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
         public string ProfilePhoto { get; set; }
