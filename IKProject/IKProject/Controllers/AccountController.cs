@@ -82,6 +82,30 @@ namespace IKProject.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //public async Task<IActionResult> Register(RegisterViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+
+        //        var response = await _httpClient.PostAsync("http://localhost:5240/api/Auth/register", content);
+
+        //        if (response.IsSuccessStatusCode)
+        //        {
+
+        //            return RedirectToAction("Login", "Account");
+        //        }
+        //        else
+        //        {
+
+        //            ModelState.AddModelError(string.Empty, "Kayıt başarısız. Lütfen tekrar deneyin!");
+        //        }
+        //    }
+
+        //    return View(model);
+        //}
+
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
@@ -89,22 +113,24 @@ namespace IKProject.Controllers
             {
                 var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
-                var response = await _httpClient.PostAsync("http://localhost:5240/api/Auth/register", content);
+                var response = await _httpClient.PostAsync("https://localhost:7149/api/Auth/register", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                   
+                    TempData["SuccessMessage"] = "Kayıt başarılı. Lütfen giriş yapın.";
                     return RedirectToAction("Login", "Account");
                 }
                 else
                 {
-                   
-                    ModelState.AddModelError(string.Empty, "Kayıt başarısız. Lütfen tekrar deneyin!");
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    ModelState.AddModelError(string.Empty, $"Kayıt başarısız. Hata: {response.StatusCode}, Mesaj: {errorMessage}");
                 }
             }
 
             return View(model);
         }
+
+
 
         [HttpGet]
         public IActionResult ForgotPassword()

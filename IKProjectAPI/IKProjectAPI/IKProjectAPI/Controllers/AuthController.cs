@@ -37,7 +37,7 @@ namespace IKProjectAPI.Controllers
         //Kullanıcı Kayıt endpoit
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel registerModel)
+        public async Task<IActionResult> Register(RegisterModel registerModel)
         {
             if (!ModelState.IsValid)
             {
