@@ -21,7 +21,12 @@ namespace IKProject
             
 
             builder.Services.AddHttpClient();
-            builder.Services.AddSession();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); // Oturum süresi
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             // Configure Authentication
             builder.Services.AddAuthentication(options =>
@@ -57,12 +62,12 @@ namespace IKProject
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseSession();
 
 
             app.MapControllerRoute(
@@ -73,6 +78,7 @@ namespace IKProject
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Account}/{action=Login}/{id?}");
+
 
             app.Run();
         }

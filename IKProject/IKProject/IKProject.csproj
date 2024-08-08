@@ -6,6 +6,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="wwwroot\anasayfacss\**" />
+    <Content Remove="wwwroot\anasayfacss\**" />
+    <EmbeddedResource Remove="wwwroot\anasayfacss\**" />
+    <None Remove="wwwroot\anasayfacss\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
@@ -31,7 +38,6 @@
     <Folder Include="Areas\CompanyManager\Models\" />
     <Folder Include="Areas\Employee\Data\" />
     <Folder Include="Areas\Employee\Models\" />
-    <Folder Include="wwwroot\anasayfacss\" />
   </ItemGroup>
 
 

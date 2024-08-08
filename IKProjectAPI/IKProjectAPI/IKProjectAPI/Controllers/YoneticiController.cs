@@ -1,5 +1,6 @@
 ﻿using IKProjectAPI.Data;
 using IKProjectAPI.Data.Concrete;
+using IKProjectAPI.NewFolder;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -17,13 +18,15 @@ namespace IKProjectAPI.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly AppDbContext _context;
+        private readonly EmailSender _emailSender;
 
-        public YoneticiController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, AppDbContext context)
+        public YoneticiController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, AppDbContext context, EmailSender emailSender)
         {
             _roleManager = roleManager;
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _emailSender = emailSender;
         }
         //Çalışanların bilgilerini getiren endpoint
         [HttpGet("getUser")]
@@ -115,6 +118,7 @@ namespace IKProjectAPI.Controllers
             if (result.Succeeded)
             {
                 await _userManager.UpdateAsync(yonetici);
+                _emailSender.SendEmailAsync(calisan.Email,"FHYI Group - Yöneticiye Atandınız",$"{yonetici.Sirket.SirketAdi} yöneticisi Sayın {yonetici.Adi} {yonetici.Soyadi} tarafından Çalışan olarak atandınız. İyi günler!");
                 return Ok("Çalışan başarılı bir şekilde yöneticiye atandı.");
             }
 
@@ -125,12 +129,14 @@ namespace IKProjectAPI.Controllers
         public async Task<IActionResult> IzinOnayla(string id)
         {
             var izin = await _context.izinIstekleri.FindAsync(id);
+            
             if (izin != null)
             {
                 izin.OnayDurumu = Data.Enums.OnayDurumu.Onaylandı;
                 izin.Status = Data.Enums.Status.Active;
                 _context.Update(izin);
                 _context.SaveChanges();
+                _emailSender.SendEmailAsync(izin.ApplicationUser.Email, "FHYI Group - İzin Durumu Değişikliği", $"Sevgili çalışanımız {izin.ApplicationUser.Adi} {izin.ApplicationUser.Soyadi} {izin.IzinGunSayisi} günlük izniniz onaylanmıştır. İyi günler!");
                 return Ok("İzin isteği başarıyla onaylandı");
             }
             return BadRequest("Böyle bir izin bulunamadı");
@@ -147,6 +153,7 @@ namespace IKProjectAPI.Controllers
                 izin.Status = Data.Enums.Status.Passive;
                 _context.Update(izin);
                 await _context.SaveChangesAsync();
+                _emailSender.SendEmailAsync(izin.ApplicationUser.Email, "FHYI Group - İzin Durumu Değişikliği", $"Sevgili çalışanımız {izin.ApplicationUser.Adi} {izin.ApplicationUser.Soyadi} {izin.IzinGunSayisi} günlük izniniz reddedilmiştir. İyi günler!");
                 return Ok("İzin isteği başarıyla reddedildi");
             }
             return BadRequest("Böyle bir izin bulunamadı");

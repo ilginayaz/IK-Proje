@@ -1,0 +1,25 @@
+﻿@model IKProject.Models.UpdateProfileViewModel
+
+<form asp-action="EditProfile" method="post">
+    <div class="form-group">
+        <label>Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Profil Fotoğrafı</label>
+        <input asp-for="ProfilePhoto" class="form-control" />
+        <span asp-validation-for="ProfilePhoto" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Telefon Numarası</label>
+        <input asp-for="TelefonNumarasi" class="form-control" />
+        <span asp-validation-for="TelefonNumarasi" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Adres</label>
+        <input asp-for="Adres" class="form-control" />
+        <span asp-validation-for="Adres" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+</form>

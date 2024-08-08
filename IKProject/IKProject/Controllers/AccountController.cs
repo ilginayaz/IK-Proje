@@ -120,6 +120,27 @@ namespace IKProject.Controllers
             TempData["Message"] = "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.";
             return RedirectToAction("ForgotPassword");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            // Logout isteğini API'ye gönderir
+            var response = await _httpClient.PostAsync("http://localhost:5240/api/Auth/logout", null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Oturumdaki tüm verileri temizler
+                HttpContext.Session.Clear();
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Çıkış işlemi başarısız.");
+            }
+
+            return RedirectToAction("Login", "Account");
+        }
+    
+
     }
 
     public class TokenResponse

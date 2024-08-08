@@ -75,5 +75,14 @@ namespace IKProject.Models
         public string Adres { get; set; }
 
         public Cinsiyet Cinsiyet { get; set; }
+
+        public string SirketAdi { get; set; }
+        public string SirketNumarasi { get; set; }
+        public string VergiNo { get; set; }
+        public string VergiOfisi { get; set; }
+        public string SirketEmail { get; set; }
+        public Sehirler Sehir { get; set; }
+        public string Address { get; set; }
+        public string PostaKodu { get; set; }
     }
 }

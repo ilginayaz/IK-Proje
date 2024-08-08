@@ -1,7 +1,9 @@
 using IKProjectAPI.Data;
 using IKProjectAPI.Data.Concrete;
+using IKProjectAPI.NewFolder;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -13,6 +15,9 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("AppDbConStr"));
 });
+
+builder.Services.AddTransient<EmailSender>();
+
 
 // Identity ayarlari
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
