@@ -62,6 +62,7 @@ namespace IKProjectAPI.Data.Concrete
         public DateTime? DeletedTime { get; set; }
         public Status Status { get; set; } = Status.AwatingApproval;
 
+        public string? YoneticiId { get; set; }
         public virtual ApplicationUser? Yonetici { get; set; }
 
         public virtual ICollection<ApplicationUser> Calisanlar { get; set; }

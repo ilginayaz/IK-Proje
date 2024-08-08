@@ -4,6 +4,7 @@ using IKProjectAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IKProjectAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240808094312_hkNew")]
+    partial class hkNew
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -577,13 +580,13 @@ namespace IKProjectAPI.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "64fb41f6-3cf9-4bd6-9894-078755379bfd",
+                            ConcurrencyStamp = "b33bcc1d-5441-403d-8e90-6c16e18ca714",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFQsdhnF9xg17AwpbBKd1bqMLJZ8tHniqAPuQdrKUL+sxZR6dgbCaPL/4sEzMw155A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOMKg4160fhn3DX0RdPEOvhZz8zuKEmLTYg6MNiWiyLJbtWOljrTSmLEtFmvT0JeUQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "{8678980E-ED56-4CEC-B09B-D68613AC7382}",
                             TwoFactorEnabled = false,

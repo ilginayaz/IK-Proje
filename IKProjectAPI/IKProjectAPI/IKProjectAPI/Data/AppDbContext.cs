@@ -48,6 +48,18 @@ namespace IKProjectAPI.Data
                 }
             );
 
+            builder.Entity<ApplicationUser>()
+                .HasOne(u => u.Sirket) // ApplicationUser sınıfındaki Sirket özelliği
+                .WithMany(s => s.SirketCalisanlari) // Sirket sınıfındaki SirketCalisanlari özelliği
+                .HasForeignKey(u => u.SirketId) // ApplicationUser sınıfındaki SirketId özelliği
+                .OnDelete(DeleteBehavior.Restrict); // İlişki silme davranışı
+
+            builder.Entity<ApplicationUser>()
+                .HasOne(u => u.Yonetici) // ApplicationUser sınıfındaki Yonetici özelliği
+                .WithMany(u => u.Calisanlar) // Yonetici özelliğinin ApplicationUser sınıfındaki Calisanlar koleksiyonu
+                .HasForeignKey(u => u.YoneticiId) // ApplicationUser sınıfındaki YoneticiId özelliği
+                .OnDelete(DeleteBehavior.Restrict); // İlişki silme davranışını ayarlayın
+
         }
         public DbSet<Sirket> sirketler { get; set; }
         public DbSet<Masraf> masraflar { get; set; }
