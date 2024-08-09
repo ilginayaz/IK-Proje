@@ -5,8 +5,6 @@ namespace IKProject.Data.Concrete
 {
     public class IzinTipi
     {
-        public class IzinTipi
-        {
             public int Id { get; set; }
 
             [Required(ErrorMessage = "Başlangıç tarihi gereklidir.")]
@@ -20,7 +18,7 @@ namespace IKProject.Data.Concrete
             [Required(ErrorMessage = "İstek yorumu gereklidir.")]
             public string IstekYorumu { get; set; }
 
-            public OnayDurumu? OnayDurumu { get; set; }
+            //public OnayDurumu? OnayDurumu { get; set; }
 
             public DateTime CreatedTime { get; set; } = DateTime.Now;
             public DateTime? UpdatedTime { get; set; }
@@ -33,8 +31,8 @@ namespace IKProject.Data.Concrete
             public virtual ApplicationUser ApplicationUser { get; set; }
 
             [Required(ErrorMessage = "İzin tipi gereklidir.")]
-            public IzinTipi IzinTipi { get; set; }
+            //public IzinTipi IzinTipi { get; set; }
             public int IzinTipiId { get; set; }
-        }
+        
     }
 }
