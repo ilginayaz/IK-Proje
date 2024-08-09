@@ -13,7 +13,7 @@ namespace IKProjectAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin,Yonetici")]
+    [Authorize(Roles = "Admin,YONETICI")]
     public class YoneticiController : ControllerBase
     {
         private readonly SignInManager<ApplicationUser> _signInManager;

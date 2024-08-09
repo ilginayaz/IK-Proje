@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text;
 
 namespace IKProjectMVC.Areas.CompanyManager.Controllers
@@ -20,8 +22,11 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var izinListesi = IzinleriGetir();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var izinListesi = IzinleriGetir();
             ViewBag.izinler = izinListesi;
+            var user = GetUser(userId);
             return View();
         }
         public IActionResult ProfilDetay()
@@ -34,13 +39,24 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             var list = new List<string>();
             return View(list);
         }
+        private string GetTokenFromCookie()
+        {
+            // HttpContext'ten çerezi alıyoruz
+            if (Request.Cookies.TryGetValue("JWTToken", out string token))
+            {
+                return token;
+            }
 
+            return null;
+        }
         //çalışanların bilgilerini getiren istek
         public async Task<IActionResult> GetUser(string userId)
         {
+           
             var response = await _httpClient.GetAsync($"http://localhost:5240/api/Yonetici/getUser?userId={userId}");
             if (response.IsSuccessStatusCode)
             {
+                
                 var content = await response.Content.ReadAsStringAsync();
                 var user = JsonConvert.DeserializeObject<ApplicationUser>(content); //
                 return View(user);  

@@ -1,5 +1,6 @@
 using IKProject.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -21,7 +22,7 @@ namespace IKProject
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30); // Oturum süresi
-                options.Cookie.HttpOnly = true;
+                //options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
 
@@ -30,7 +31,13 @@ namespace IKProject
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer("Bearer", options =>
+            {
+                options.Authority = "https://your-auth-server";
+                options.Audience = "your-api";
+                options.RequireHttpsMetadata = false; // Geliþtirme aþamasýnda kullanabilirsiniz
             })
             .AddCookie(options =>
             {

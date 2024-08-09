@@ -13,7 +13,7 @@ namespace IKProjectAPI.NewFolder
                 MailMessage mailMessage = new MailMessage();
                 SmtpClient smtpClient = new SmtpClient();
 
-                var sender = "yasinbagcuvan@gmail.com";
+                var sender = "fhyigroup2@gmail.com";
 
                 mailMessage.From = new MailAddress(sender);//Kimden 
                 mailMessage.To.Add(email);//Kime
