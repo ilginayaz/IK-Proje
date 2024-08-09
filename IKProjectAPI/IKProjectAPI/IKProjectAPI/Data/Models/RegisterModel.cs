@@ -63,8 +63,8 @@ namespace IKProjectAPI.Data.Models
         [Display(Name = "Adresiniz")]
         public string Adres { get; set; }
         public Cinsiyet Cinsiyet { get; set; }
-        public IdentityResult Result { get; set; }
-        public string Token { get; set; }
+        public IdentityResult? Result { get; set; }
+        public string? Token { get; set; }
 
 
         public string SirketAdi { get; set; }

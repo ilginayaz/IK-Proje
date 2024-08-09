@@ -3,6 +3,7 @@ using IKProjectAPI.Data.Concrete;
 using IKProjectAPI.Data.Models;
 using IKProjectAPI.NewFolder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -35,7 +36,7 @@ namespace IKProjectAPI.Controllers
         }
 
         //Kullanıcı Kayıt endpoit
-
+       
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterModel registerModel)
         {
@@ -75,7 +76,8 @@ namespace IKProjectAPI.Controllers
                 Address = registerModel.Address,
                 PostaKodu = registerModel.PostaKodu,
                 Sehir = registerModel.Sehir,
-                Status = Data.Enums.Status.AwatingApproval
+                Status = Data.Enums.Status.AwatingApproval,
+                SirketYoneticileri = new List<ApplicationUser>()
             };
 
             _context.sirketler.Add(sirket);
@@ -83,11 +85,12 @@ namespace IKProjectAPI.Controllers
             var result = await _userManager.CreateAsync(user, registerModel.Password);
             if (result.Succeeded)
             {
+                _context.SaveChanges();
                 //Kayıt başarılı, token dönebiliriz veya sadece başarılı yanıtı dönebiliriz
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 sirket.SirketYoneticileri.Add(user);
                 _context.SaveChanges();
-                var confirmationLink = Url.Action("ConfirmEmail", "Auth", new { userId = user.Id, token = token }, Request.Scheme);
+                var confirmationLink = Url.Action("ConfirmEmail", "Auth", new { email = user.Email, token = token }, Request.Scheme);
 
 
                 await _emailSender.SendEmailAsync(user.Email, "FHYI Group E-posta Doğrulama", $"Lütfen e-postanızı doğrulamak için <a href='{confirmationLink}'>buraya tıklayın</a>.");
@@ -149,7 +152,7 @@ namespace IKProjectAPI.Controllers
             await _signInManager.SignOutAsync();
         }
 
-        [HttpPost("ConfirmEmail")]
+        [HttpGet("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
