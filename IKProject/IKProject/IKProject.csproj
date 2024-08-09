@@ -38,6 +38,7 @@
     <Folder Include="Areas\CompanyManager\Models\" />
     <Folder Include="Areas\Employee\Data\" />
     <Folder Include="Areas\Employee\Models\" />
+    <Folder Include="wwwroot\Img\" />
   </ItemGroup>
 
 
