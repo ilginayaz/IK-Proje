@@ -35,19 +35,18 @@
         <div class="container">
             <nav class="navbar navbar-dark navbar-expand-lg py-0">
                 <a asp-action="index" class="navbar-brand">
-                    <h1 class="text-white fw-bold d-block">FYHI <span class="text-secondary">İnsan Kaynakları</span> </h1>
+                    <h1 class="text-white fw-bold d-block">FHYI <span class="text-secondary">İnsan Kaynakları</span> </h1>
                 </a>
                 <button type="button" class="navbar-toggler me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse bg-transparent" id="navbarCollapse">
                     <div class="navbar-nav ms-auto mx-xl-auto p-0">
-                        <a asp-controller="Home" asp-action="index" class="nav-item nav-link active text-secondary">Anasayfa</a>
-                        <a asp-controller="Home" asp-action="hakkimizda" class="nav-item nav-link">Hakkımızda</a>
-                        <a asp-controller="Home" asp-action="hizmetler" class="nav-item nav-link">Hizmetlerimiz</a>
-                        <a asp-controller="Home" asp-action="iletisim" class="nav-item nav-link">İletişim</a>
-
-                        <a asp-controller="Account" asp-action="Login" class="nav-item nav-link">Giriş Yap</a>
+                        <a href="~/Home/Index" class="nav-item nav-link active text-secondary">Anasayfa</a>
+                        <a href="#hakkimizda" class="nav-item nav-link active text-secondary">Hakkımızda</a>
+                        <a href="#hizmetlerimiz" class="nav-item nav-link active text-secondary">Hizmetlerimiz</a>
+                        <a asp-controller="Home" asp-action="iletisim" class="nav-item nav-link active text-secondary">İletişim</a>
+                        <a asp-controller="Account" asp-action="Login" class="nav-item nav-link active text-secondary">Giriş Yap</a>
                     </div>
                 </div>
 
@@ -75,7 +74,7 @@
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
                     <a href="index.html">
-                        <h1 class="text-white fw-bold d-block">FYHI<span class="text-secondary">İnsan Kaynakları</span> </h1>
+                        <h1 class="text-white fw-bold d-block">FHYI<span class="text-secondary">İnsan Kaynakları</span> </h1>
                     </a>
                     <p class="mt-4 text-light"></p>
                     <div class="d-flex hightech-link">
@@ -108,7 +107,7 @@
             <hr class="text-light mt-5 mb-4">
             <div class="row">
                 <div class="col-md-6 text-center text-md-start">
-                    <span class="text-light"><a href="#" class="text-secondary"><i class="fas fa-copyright text-secondary me-2"></i>FYHI İnsan Kaynakları</a>, Tüm Hakları Saklıdır</span>
+                    <span class="text-light"><a href="#" class="text-secondary"><i class="fas fa-copyright text-secondary me-2"></i>FHYI İnsan Kaynakları</a>, Tüm Hakları Saklıdır</span>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
                     <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->

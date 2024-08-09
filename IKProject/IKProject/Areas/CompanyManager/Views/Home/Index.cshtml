@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>FYHI Admin</title>
+    <title>FHYI Admin</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="~/dashboardcss/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
@@ -21,15 +21,62 @@
     <link rel="stylesheet" href="~/dashboardcss/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="~/dashboardcss/images/favicon.png" />
+    <style>
+        .summary-card {
+            background-color: #f44336; 
+            color: #ffffff; 
+            border-radius: 10px; 
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+        }
+
+        .btn-edit {
+            background-color: #ffffff; /* Beyaz buton arka planı */
+            color: #f44336;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+            .btn-edit:hover {
+                background-color: steelblue; /* Buton üzerine gelindiğinde kırmızı arka plan */
+                color: #ffffff; /* Buton üzerine gelindiğinde beyaz yazı rengi */
+            }
+    </style>
 </head>
 <body>
    
             <!-- partial -->
             <div class="main-panel">
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Yönetici Bilgileri</h4>
+                            <div class="summary-card">
+                                <p><strong>Ad:</strong> Furkan</p>
+                                <p><strong>Soyad:</strong> Baybura</p>
+                                <p><strong>Email:</strong> furkan@fhyi.com</p>
+                                <p><strong>Telefon:</strong> 555-1234</p>
+                                <p><strong>Departman:</strong> Yazılım Geliştirme</p>
+                                <!-- Diğer bilgiler burada yer alacak -->
+                                <button class="btn-edit">Düzenle</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
                 <div class="content-wrapper">
+
                     <div class="row">
 
                         <div class="col-md-4 grid-margin stretch-card">
+
                             <div class="card">
                                 <div class="card-body">
                                     <div class="d-flex flex-row justify-content-between">
@@ -352,6 +399,10 @@
                             </div>
                         </div>
                     </div>
+            <!-- Sağ taraf -->
+           
+        </div>
+        
                 </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:partials/_footer.html -->
@@ -382,5 +433,7 @@
     <!-- Custom js for this page -->
     <script src="~/dashboardcss/js/dashboard.js"></script>
     <!-- End custom js for this page -->
+    
+
 </body>
 </html>
