@@ -9,7 +9,7 @@ namespace IKProject.Data.Concrete
         {
             Izinler = new HashSet<IzinTipi>();
             Calisanlar = new HashSet<ApplicationUser>();
-            Yoneticiler = new HashSet<Masraf>();
+            //Yoneticiler = new HashSet<Masraf>();
         }
 
         [Display(Name = "Profil Fotoğrafınız")]
@@ -78,6 +78,6 @@ namespace IKProject.Data.Concrete
 
         public virtual ICollection<ApplicationUser> Calisanlar { get; set; }
         public virtual ICollection<IzinTipi> Izinler { get; set; }
-        public virtual ICollection<Masraf> Yoneticiler { get; set; }
+        //public virtual ICollection<Masraf> Yoneticiler { get; set; }
     }
 }
