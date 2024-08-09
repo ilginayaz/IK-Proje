@@ -121,6 +121,9 @@ namespace IKProjectAPI.Migrations
                     b.Property<Guid>("SirketId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("SirketId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Soyadi")
                         .IsRequired()
                         .HasMaxLength(25)
@@ -161,6 +164,8 @@ namespace IKProjectAPI.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.HasIndex("SirketId");
+
+                    b.HasIndex("SirketId1");
 
                     b.HasIndex("YoneticiId");
 
@@ -572,13 +577,13 @@ namespace IKProjectAPI.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d29bdc0b-98a7-486b-9186-0d0b4dc8015c",
+                            ConcurrencyStamp = "64fb41f6-3cf9-4bd6-9894-078755379bfd",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEC7MYQf+NEHHZfvf1lMofvNzFdsfA9rXkym0gj5P6R5eLfdzzhTYYJIs7gH5RVQWA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFQsdhnF9xg17AwpbBKd1bqMLJZ8tHniqAPuQdrKUL+sxZR6dgbCaPL/4sEzMw155A==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "{8678980E-ED56-4CEC-B09B-D68613AC7382}",
                             TwoFactorEnabled = false,
@@ -690,14 +695,19 @@ namespace IKProjectAPI.Migrations
             modelBuilder.Entity("IKProjectAPI.Data.Concrete.ApplicationUser", b =>
                 {
                     b.HasOne("IKProjectAPI.Data.Concrete.Sirket", "Sirket")
-                        .WithMany("SirketYoneticileri")
+                        .WithMany("SirketCalisanlari")
                         .HasForeignKey("SirketId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("IKProjectAPI.Data.Concrete.Sirket", null)
+                        .WithMany("SirketYoneticileri")
+                        .HasForeignKey("SirketId1");
 
                     b.HasOne("IKProjectAPI.Data.Concrete.ApplicationUser", "Yonetici")
                         .WithMany("Calisanlar")
-                        .HasForeignKey("YoneticiId");
+                        .HasForeignKey("YoneticiId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Sirket");
 
@@ -852,6 +862,8 @@ namespace IKProjectAPI.Migrations
             modelBuilder.Entity("IKProjectAPI.Data.Concrete.Sirket", b =>
                 {
                     b.Navigation("IzinTipis");
+
+                    b.Navigation("SirketCalisanlari");
 
                     b.Navigation("SirketYoneticileri");
                 });

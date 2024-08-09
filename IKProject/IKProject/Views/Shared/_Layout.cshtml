@@ -4,14 +4,30 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - IKProject</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/IKProject.styles.css" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Saira:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="~/anasayfacss/lib/animate.min.css" rel="stylesheet">
+    <link href="~/anasayfacss/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/anasayfacss/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="~/anasayfacss/css/style.css" rel="stylesheet">
 </head>
 <body>
-    <script src="/anasayfacss~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/anasayfacss/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/anasayfacss/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/anasayfacss/js/site.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
 </body>
 <header>
     <!-- Navbar Start -->
@@ -26,12 +42,12 @@
                 </button>
                 <div class="collapse navbar-collapse bg-transparent" id="navbarCollapse">
                     <div class="navbar-nav ms-auto mx-xl-auto p-0">
-                        <a asp-action="index" class="nav-item nav-link active text-secondary">Anasayfa</a>
-                        <a asp-action="hakkimizda" class="nav-item nav-link">Hakkımızda</a>
-                        <a asp-action="hizmetler" class="nav-item nav-link">Hizmetlerimiz</a>
-                        <a asp-action="iletisim" class="nav-item nav-link">İletişim</a>
+                        <a asp-controller="Home" asp-action="index" class="nav-item nav-link active text-secondary">Anasayfa</a>
+                        <a asp-controller="Home" asp-action="hakkimizda" class="nav-item nav-link">Hakkımızda</a>
+                        <a asp-controller="Home" asp-action="hizmetler" class="nav-item nav-link">Hizmetlerimiz</a>
+                        <a asp-controller="Home" asp-action="iletisim" class="nav-item nav-link">İletişim</a>
 
-                        <a href="contact.html" class="nav-item nav-link">Giriş Yap</a>
+                        <a asp-controller="Account" asp-action="Login" class="nav-item nav-link">Giriş Yap</a>
                     </div>
                 </div>
 

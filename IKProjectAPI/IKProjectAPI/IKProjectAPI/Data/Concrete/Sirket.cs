@@ -24,6 +24,7 @@ namespace IKProjectAPI.Data.Concrete
         public Status Status { get; set; } = Status.AwatingApproval;
 
         public virtual ICollection<ApplicationUser> SirketYoneticileri { get; set; }
+        public virtual ICollection<ApplicationUser>? SirketCalisanlari { get; set; }
         public virtual ICollection<IzinTipi> IzinTipis { get; set; }
     }
 }
