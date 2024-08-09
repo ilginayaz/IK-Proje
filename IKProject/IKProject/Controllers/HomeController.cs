@@ -33,7 +33,16 @@ namespace IKProject.Controllers
         {
             return View();
         }
-    
+        public IActionResult Hosgeldin()
+        {
+
+            return View();
+        }
+        public IActionResult Onboarding()
+        {
+
+            return View();
+        }
        
     }
 }
