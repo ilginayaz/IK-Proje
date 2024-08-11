@@ -14,7 +14,7 @@ namespace IKProject.Models
         [Display(Name = "Şifreniz")]
         [Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
         [DataType(DataType.Password)]
-        public string Password { get; set; } = Guid.NewGuid().ToString();
+        public string? Password { get; set; } = Guid.NewGuid().ToString();
         [Display(Name = "Profil Fotoğrafınız")]
         [Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
         public string ProfilePhoto { get; set; }
@@ -60,7 +60,7 @@ namespace IKProject.Models
         [Display(Name = "Adresiniz")]
         public string Adres { get; set; }
         public Cinsiyet Cinsiyet { get; set; }
-        public IdentityResult Result { get; set; }
-        public string Token { get; set; }
+        public IdentityResult? Result { get; set; }
+        public string? Token { get; set; }
     }
 }

@@ -5,34 +5,25 @@ namespace IKProject.Data.Concrete
 {
     public class IzinTipi
     {
-            public int Id { get; set; }
+        public IzinTipi()
+        {
+            IzinIstegis = new HashSet<IzinIstegi>();
+        }
 
-            [Required(ErrorMessage = "Başlangıç tarihi gereklidir.")]
-            public DateTime BaslangicTarihi { get; set; }
+        public int Id { get; set; }
+        public string IzinTipiAdi { get; set; }
+        public decimal? DefaultDays { get; set; }
 
-            [Required(ErrorMessage = "Bitiş tarihi gereklidir.")]
-            public DateTime BitisTarihi { get; set; }
+        public DateTime CreatedTime { get; set; } = DateTime.Now;
+        public DateTime? UpdatedTime { get; set; }
+        public DateTime? DeletedTime { get; set; }
+        public Status Status { get; set; } = Status.AwatingApproval;
 
-            public decimal? IzinGunSayisi { get; set; }
+        public Guid? SirketId { get; set; }
+        public Sirket Sirket { get; set; }
 
-            [Required(ErrorMessage = "İstek yorumu gereklidir.")]
-            public string IstekYorumu { get; set; }
 
-            //public OnayDurumu? OnayDurumu { get; set; }
+        public virtual ICollection<IzinIstegi> IzinIstegis { get; set; }
 
-            public DateTime CreatedTime { get; set; } = DateTime.Now;
-            public DateTime? UpdatedTime { get; set; }
-            public DateTime? DeletedTime { get; set; }
-            public Status Status { get; set; } = Status.AwatingApproval;
-
-            [Required(ErrorMessage = "Kullanıcı ID'si gereklidir.")]
-            public string AppUserId { get; set; }
-
-            public virtual ApplicationUser ApplicationUser { get; set; }
-
-            [Required(ErrorMessage = "İzin tipi gereklidir.")]
-            //public IzinTipi IzinTipi { get; set; }
-            public int IzinTipiId { get; set; }
-        
     }
 }

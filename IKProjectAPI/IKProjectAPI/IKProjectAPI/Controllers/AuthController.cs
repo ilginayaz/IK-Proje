@@ -121,13 +121,23 @@ namespace IKProjectAPI.Controllers
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByEmailAsync(loginModel.Email);
+                // Kullanıcının rollerini al
+                var roles = await _userManager.GetRolesAsync(user);
 
-                var claims = new[]
-                {
+
+                // Claim'leri oluştur
+                    var claims = new List<Claim>
+                    {
                         new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim(ClaimTypes.NameIdentifier, user.Id)
                     };
+
+                // Rolleri claim'lere ekle
+                foreach (var role in roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                }
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
