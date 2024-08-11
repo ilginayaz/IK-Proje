@@ -46,14 +46,14 @@ namespace IKProject.Controllers
                     // JWT Token'ı bir cookie olarak saklayın
                     Response.Cookies.Append("JWTToken", tokenObj.Token, new CookieOptions
                     {
-                        
+
                         Expires = DateTime.UtcNow.AddHours(1),
                         IsEssential = true
                     });
-                    
+
                     _httpClient.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenObj.Token);
-                    
-                    var roleResponse = await _httpClient.GetAsync("http://localhost:5240/api/Auth/getroles?email="+model.Email);
+
+                    var roleResponse = await _httpClient.GetAsync("http://localhost:5240/api/Auth/getroles?email=" + model.Email);
                     if (roleResponse.IsSuccessStatusCode)
                     {
                         var rolesJson = await roleResponse.Content.ReadAsStringAsync();
@@ -116,6 +116,8 @@ namespace IKProject.Controllers
             return View();
         }
 
+       
+
         //[HttpPost]
         //public async Task<IActionResult> Register(RegisterViewModel model)
         //{
@@ -123,22 +125,23 @@ namespace IKProject.Controllers
         //    {
         //        var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
-        //        var response = await _httpClient.PostAsync("http://localhost:5240/api/Auth/register", content);
+        //        var response = await _httpClient.PostAsync("https://localhost:7149/api/Auth/register", content);
 
         //        if (response.IsSuccessStatusCode)
         //        {
-
+        //            TempData["SuccessMessage"] = "Kayıt başarılı. Lütfen giriş yapın.";
         //            return RedirectToAction("Login", "Account");
         //        }
         //        else
         //        {
-
-        //            ModelState.AddModelError(string.Empty, "Kayıt başarısız. Lütfen tekrar deneyin!");
+        //            var errorMessage = await response.Content.ReadAsStringAsync();
+        //            ModelState.AddModelError(string.Empty, $"Kayıt başarısız. Hata: {response.StatusCode}, Mesaj: {errorMessage}");
         //        }
         //    }
 
         //    return View(model);
         //}
+
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
@@ -151,8 +154,9 @@ namespace IKProject.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
+                    // Kayıt başarılı, Login sayfasına yönlendir
                     TempData["SuccessMessage"] = "Kayıt başarılı. Lütfen giriş yapın.";
-                    return RedirectToAction("Login", "Account");
+                    return RedirectToAction("Login"); // Burada model geçmeye gerek yok
                 }
                 else
                 {
@@ -161,8 +165,10 @@ namespace IKProject.Controllers
                 }
             }
 
-            return View(model);
+            // Kayıt başarısızsa veya model geçersizse aynı formu göster
+            return View("Login", new LoginViewModel());
         }
+
 
 
 
@@ -199,7 +205,7 @@ namespace IKProject.Controllers
 
             return RedirectToAction("Login", "Account");
         }
-    
+
 
     }
 
