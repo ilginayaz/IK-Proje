@@ -11,7 +11,11 @@ namespace IKProject.Data.Concrete
             Calisanlar = new HashSet<ApplicationUser>();
             //Yoneticiler = new HashSet<Masraf>();
         }
-
+        [Display(Name = "Email Adresiniz")]
+        [Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
+        public string Email { get; set; }
         [Display(Name = "Profil Fotoğrafınız")]
         [Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
         public string ProfilePhoto { get; set; }
@@ -36,7 +40,11 @@ namespace IKProject.Data.Concrete
         [MaxLength(25, ErrorMessage = "İkinci soyadınız en fazla 25 karakter olabilir.")]
         [Display(Name = "İkinci Soyadınız")]
         public string? IkinciSoyadi { get; set; }
-
+        [MaxLength(11), MinLength(11)]
+        [Display(Name = "Telefon Numaraniz")]
+        [Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
+        [DataType(DataType.PhoneNumber)]
+        public string TelefonNumarasi { get; set; }
         [Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
         [Display(Name = "Doğum Tarihiniz")]
         public DateTime DogumTarihi { get; set; }  // DateOnly yerine DateTime

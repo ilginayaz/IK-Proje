@@ -1,5 +1,6 @@
 ﻿using IKProject.Data.Concrete;
 using IKProject.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration.UserSecrets;
@@ -11,6 +12,7 @@ using System.Text;
 namespace IKProjectMVC.Areas.CompanyManager.Controllers
 {
     [Area("CompanyManager")]
+
     public class HomeController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -23,43 +25,35 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userResult = await GetUser(userId);
+            if (userResult is OkObjectResult okResult && okResult.Value is ApplicationUser user)
+            {
+                // İzin listesi almak için async metot çağrısı yapın
+                var izinListesi = await IzinListesi(); // IzinleriGetir aslında veriyi döndürmelidir
+                ViewBag.izinler = izinListesi;
+                return View(user);
+            }
 
-                var izinListesi = IzinleriGetir();
-            ViewBag.izinler = izinListesi;
-            var user = GetUser(userId);
-            return View();
+            return NotFound("Kullanıcı bulunamadı.");
         }
         public IActionResult ProfilDetay()
         {
             return View();
         }
 
-        public IActionResult IzinleriGetir()
-        {
-            var list = new List<string>();
-            return View(list);
-        }
-        private string GetTokenFromCookie()
-        {
-            // HttpContext'ten çerezi alıyoruz
-            if (Request.Cookies.TryGetValue("JWTToken", out string token))
-            {
-                return token;
-            }
 
-            return null;
-        }
         //çalışanların bilgilerini getiren istek
         public async Task<IActionResult> GetUser(string userId)
         {
-           
+
+
             var response = await _httpClient.GetAsync($"http://localhost:5240/api/Yonetici/getUser?userId={userId}");
             if (response.IsSuccessStatusCode)
             {
-                
+
                 var content = await response.Content.ReadAsStringAsync();
                 var user = JsonConvert.DeserializeObject<ApplicationUser>(content); //
-                return View(user);  
+                return Ok(user);
             }
             return NotFound("Personel bulunamadı.");
         }
@@ -89,13 +83,18 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var izinListesi = JsonConvert.DeserializeObject<List<IzinTipi>>(content);
+                var izinListesi = JsonConvert.DeserializeObject<List<IzinIstegi>>(content);
                 return View(izinListesi);
             }
             else
             {
                 return View("Tekrar deneyin!");
             }
+        }
+        [HttpGet]
+        public IActionResult RegisterEmployee()
+        {
+            return View();
         }
 
         // yeni personel kayıt
@@ -148,5 +147,6 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
                 return View("Tekrar deneyin!");
             }
         }
+       
     }
 }
