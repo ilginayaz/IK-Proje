@@ -43,8 +43,8 @@
                 <div class="collapse navbar-collapse bg-transparent" id="navbarCollapse">
                     <div class="navbar-nav ms-auto mx-xl-auto p-0">
                         <a href="~/Home/Index" class="nav-item nav-link active text-secondary">Anasayfa</a>
-                        <a href="#hakkimizda" class="nav-item nav-link active text-secondary">Hakkımızda</a>
-                        <a href="#hizmetlerimiz" class="nav-item nav-link active text-secondary">Hizmetlerimiz</a>
+                        <a href="/#hakkimizda" class="nav-item nav-link active text-secondary">Hakkımızda</a>
+                        <a href="/#hizmetlerimiz" class="nav-item nav-link active text-secondary">Hizmetlerimiz</a>
                         <a asp-controller="Home" asp-action="iletisim" class="nav-item nav-link active text-secondary">İletişim</a>
                         <a asp-controller="Account" asp-action="Login" class="nav-item nav-link active text-secondary">Giriş Yap</a>
                     </div>
@@ -78,10 +78,10 @@
                     </a>
                     <p class="mt-4 text-light"></p>
                     <div class="d-flex hightech-link">
-                        <a href="" class="btn-light nav-fill btn btn-square rounded-circle me-2"><i class="fab fa-facebook-f text-primary"></i></a>
-                        <a href="" class="btn-light nav-fill btn btn-square rounded-circle me-2"><i class="fab fa-twitter text-primary"></i></a>
-                        <a href="" class="btn-light nav-fill btn btn-square rounded-circle me-2"><i class="fab fa-instagram text-primary"></i></a>
-                        <a href="" class="btn-light nav-fill btn btn-square rounded-circle me-0"><i class="fab fa-linkedin-in text-primary"></i></a>
+                        <a href="https://www.facebook.com/" class="btn-light nav-fill btn btn-square rounded-circle me-2"><i class="fab fa-facebook-f text-primary"></i></a>
+                        <a href="https://x.com/i/flow/login?input_flow_data=%7B%22requested_variant%22%3A%22eyJsYW5nIjoidHIifQ%3D%3D%22%7D" class="btn-light nav-fill btn btn-square rounded-circle me-2"><i class="fab fa-twitter text-primary"></i></a>
+                        <a href="https://www.instagram.com/accounts/login/" class="btn-light nav-fill btn btn-square rounded-circle me-2"><i class="fab fa-instagram text-primary"></i></a>
+                        <a href="https://www.linkedin.com/feed/" class="btn-light nav-fill btn btn-square rounded-circle me-0"><i class="fab fa-linkedin-in text-primary"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -95,7 +95,7 @@
                         <a href="/#hizmetlerimiz" class="mb-2 text-white">
                             <i class="fas fa-angle-right text-secondary me-2"></i> Hizmetlerimiz
                         </a>
-                        <a href="" class="mb-2 text-white"><i class="fas fa-angle-right text-secondary me-2"></i>Giriş Yap</a>
+                        <a asp-controller="Account" asp-action="Login" class="mb-2 text-white"><i class="fas fa-angle-right text-secondary me-2"></i>Giriş Yap</a>
                     </div>
                 </div>
 
