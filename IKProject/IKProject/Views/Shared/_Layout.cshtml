@@ -88,9 +88,13 @@
 
                     <div class="mt-4 d-flex flex-column short-link">
                         <a asp-action="index" class="mb-2 text-white"><i class="fas fa-angle-right text-secondary me-2"></i>Anasayfa</a>
-                        <a asp-action="hakkimizda" class="mb-2 text-white"><i class="fas fa-angle-right text-secondary me-2"></i>Hakkımızda</a>
+                        <a href="/#hakkimizda" class="mb-2 text-white">
+                            <i class="fas fa-angle-right text-secondary me-2"></i> Hakkımızda
+                        </a>
                         <a asp-action="iletisim" class="mb-2 text-white"><i class="fas fa-angle-right text-secondary me-2"></i>İletişim</a>
-                        <a asp-action="hizmetler" class="mb-2 text-white"><i class="fas fa-angle-right text-secondary me-2"></i>Hizmetlerimiz</a>
+                        <a href="/#hizmetlerimiz" class="mb-2 text-white">
+                            <i class="fas fa-angle-right text-secondary me-2"></i> Hizmetlerimiz
+                        </a>
                         <a href="" class="mb-2 text-white"><i class="fas fa-angle-right text-secondary me-2"></i>Giriş Yap</a>
                     </div>
                 </div>
@@ -98,9 +102,14 @@
                 <div class="col-lg-3 col-md-6">
                     <a href="#" class="h3 text-secondary">Bizimle İletişime Geç</a>
                     <div class="text-white mt-4 d-flex flex-column contact-link">
-                        <a href="#" class="pb-3 text-light border-bottom border-primary"><i class="fas fa-map-marker-alt text-secondary me-2"></i>Üniversiteler Mah. Beytepe Cd .No:91, 06800 Çankaya/Ankara</a>
-                        <a href="#" class="py-3 text-light border-bottom border-primary"><i class="fas fa-phone-alt text-secondary me-2"></i> +123 456 7890</a>
-                        <a href="#" class="py-3 text-light border-bottom border-primary"><i class="fas fa-envelope text-secondary me-2"></i>fhyi@bilgeadam.com</a>
+                        <a href="https://www.google.com/maps?gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIPCAEQLhgNGK8BGMcBGIAEMggIAhAAGA0YHjIICAMQABgNGB4yCAgEEAAYDRgeMgoIBRAAGAgYDRgeMgoIBhAAGAgYDRgeMgoIBxAAGAgYDRgeMgoICBAAGIAEGKIE0gEINDE4OWowajeoAgCwAgA&um=1&ie=UTF-8&fb=1&gl=tr&sa=X&geocode=KY1hK44aR9MUMY30rPCziz8H&daddr=Ankara+Teknoloji+Geli%C5%9Ftirme+B%C3%B6lgesi,+G+Blok,+%C3%9Cniversiteler+Mahallesi+Beytepe+Lodumlu+K%C3%B6y+Yolu+Caddesi+No:91,+06800+%C3%87ankaya/Ankara" class="pb-3 text-light border-bottom border-primary"><i class="fas fa-map-marker-alt text-secondary me-2"></i>Üniversiteler Mah. Beytepe Cd .No:91, 06800 Çankaya/Ankara</a>
+                        <a href="#" onclick="confirmCall()" class="py-3 text-light border-bottom border-primary">
+                            <i class="fas fa-phone-alt text-secondary me-2"></i> +123 456 7890
+                        </a>
+                        <a href="https://mail.google.com/mail/u/0/?view=cm&fs=1&to=fhyi@bilgeadam.com" class="py-3 text-light border-bottom border-primary">
+                            <i class="fas fa-envelope text-secondary me-2"></i>fhyi@bilgeadam.com
+                        </a>
+
                     </div>
                 </div>
             </div>
@@ -115,6 +124,44 @@
                 </div>
             </div>
         </div>
-    </div>
+        <script>
+            function confirmCall() {
+                const userConfirmed = confirm("Bu numarayı aramak istediğinizden emin misiniz?");
+                if (userConfirmed) {
+                    window.location.href = "tel:+1234567890";
+                }
+            }
+        </script>
+        <script>
+            function scrollToSection() {
+                // Ana sayfaya yönlendirme
+                window.location.href = '/Home/Index';
+
+                // Sayfa yüklendikten sonra kaydırma işlemi
+                setTimeout(function () {
+                    // Kaydırmak istediğiniz bölümün ID'si
+                    const target = document.querySelector('#hakkimizda');
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 1000); // 1000 ms (1 saniye) gecikme, sayfanın yüklenmesi için
+            }
+        </script>
+
+        <script>
+            function scrollToSection() {
+                // Ana sayfaya yönlendirme
+                window.location.href = '/Home/Index';
+
+                // Sayfa yüklendikten sonra kaydırma işlemi
+                setTimeout(function () {
+                    // Kaydırmak istediğiniz bölümün ID'si
+                    const target = document.querySelector('#hizmetlerimiz');
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 1000); // 1000 ms (1 saniye) gecikme, sayfanın yüklenmesi için
+            }
+        </script>
 </footer>
 

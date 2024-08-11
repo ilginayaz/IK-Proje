@@ -7,9 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\CompanyManager\Data\**" />
     <Compile Remove="wwwroot\anasayfacss\**" />
+    <Content Remove="Areas\CompanyManager\Data\**" />
     <Content Remove="wwwroot\anasayfacss\**" />
+    <EmbeddedResource Remove="Areas\CompanyManager\Data\**" />
     <EmbeddedResource Remove="wwwroot\anasayfacss\**" />
+    <None Remove="Areas\CompanyManager\Data\**" />
     <None Remove="wwwroot\anasayfacss\**" />
   </ItemGroup>
 
@@ -35,8 +39,6 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\CompanyManager\Data\" />
-    <Folder Include="Areas\CompanyManager\Models\" />
     <Folder Include="Areas\Employee\Data\" />
     <Folder Include="Areas\Employee\Models\" />
     <Folder Include="wwwroot\Img\" />
