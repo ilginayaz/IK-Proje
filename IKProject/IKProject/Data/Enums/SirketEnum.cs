@@ -1,6 +1,6 @@
 ﻿namespace IKProject.Data.Enums
 {
-    public enum Sirket
+    public enum SirketEnum
     {
         ABCTeknoloji,
         XYZYazılım,

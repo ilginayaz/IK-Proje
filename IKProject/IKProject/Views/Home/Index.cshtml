@@ -43,15 +43,15 @@
         <div class="container">
             <div class="d-flex justify-content-between topbar">
                 <div class="top-info">
-                    <small class="me-3 text-white-50"><a href="#"><i class="fas fa-map-marker-alt me-2 text-secondary"></i></a> Üniversiteler Mah. Beytepe Cd .No:91, 06800 Çankaya/Ankara</small>
-                    <small class="me-3 text-white-50"><a href="#"><i class="fas fa-envelope me-2 text-secondary"></i></a>fhyi@bilgeadam.com</small>
+                    <small class="me-3 text-white-50"><a asp-controller="Home" asp-action="iletisim"><i class="fas fa-map-marker-alt me-2 text-secondary"></i></a> Üniversiteler Mah. Beytepe Cd .No:91, 06800 Çankaya/Ankara</small>
+                    <small class="me-3 text-white-50"><a href="https://mail.google.com/mail/u/0/#inbox?compose=new"><i class="fas fa-envelope me-2 text-secondary"></i></a>fhyi@bilgeadam.com</small>
                 </div>
                 <div id="note" class="text-secondary d-none d-xl-flex"><small>İşinizi büyütmeniz için size yardım edelim </small></div>
                 <div class="top-link">
-                    <a href="" class="bg-light nav-fill btn btn-sm-square rounded-circle"><i class="fab fa-facebook-f text-primary"></i></a>
-                    <a href="" class="bg-light nav-fill btn btn-sm-square rounded-circle"><i class="fab fa-twitter text-primary"></i></a>
-                    <a href="" class="bg-light nav-fill btn btn-sm-square rounded-circle"><i class="fab fa-instagram text-primary"></i></a>
-                    <a href="" class="bg-light nav-fill btn btn-sm-square rounded-circle me-0"><i class="fab fa-linkedin-in text-primary"></i></a>
+                    <a href="https://www.facebook.com/home.php" class="bg-light nav-fill btn btn-sm-square rounded-circle"><i class="fab fa-facebook-f text-primary"></i></a>
+                    <a href="https://x.com/i/flow/login?input_flow_data=%7B%22requested_variant%22%3A%22eyJsYW5nIjoidHIifQ%3D%3D%22%7D" class="bg-light nav-fill btn btn-sm-square rounded-circle"><i class="fab fa-twitter text-primary"></i></a>
+                    <a href="https://www.instagram.com/accounts/login/" class="bg-light nav-fill btn btn-sm-square rounded-circle"><i class="fab fa-instagram text-primary"></i></a>
+                    <a href="https://www.linkedin.com/feed/" class="bg-light nav-fill btn btn-sm-square rounded-circle me-0"><i class="fab fa-linkedin-in text-primary"></i></a>
                 </div>
             </div>
         </div>
@@ -69,7 +69,7 @@
                             <h6 class="text-secondary h4 animated fadeInUp">İK Çözümleri</h6>
                             <h1 class="text-white display-1 mb-4 animated fadeInRight">İnsan Kaynakları Yönetim Sistemleri</h1>
                             <p class="mb-4 text-white fs-5 animated fadeInDown">Sizde büyüyen ekibinizi yönetmekte zorlanıyorsanız FHYI Yazılıma geçin</p>
-                            <a href="" class="me-2"><button type="button" class="px-4 py-sm-3 px-sm-5 btn btn-primary rounded-pill carousel-content-btn1 animated fadeInLeft">Daha Fazla..</button></a>
+                            @* <a href="" class="me-2"><button type="button" class="px-4 py-sm-3 px-sm-5 btn btn-primary rounded-pill carousel-content-btn1 animated fadeInLeft">Daha Fazla..</button></a> *@
 
                         </div>
                     </div>
@@ -107,7 +107,7 @@
     </div>
     <!-- Fact End -->
     <!-- About Start -->
-    <div class="container-fluid py-5 my-5">
+    <div id="hakkimizda" class="container-fluid py-5 my-5">
         <div class="container pt-5">
             <div class="row g-5">
                 <div class="col-lg-5 col-md-6 col-sm-12 wow fadeIn" data-wow-delay=".3s">
@@ -130,7 +130,7 @@
     </div>
     <!-- About End -->
     <!-- Services Start -->
-    <div class="container-fluid services py-5 mb-5">
+    <div id="hizmetlerimiz" class="container-fluid services py-5 mb-5">
         <div class="container">
             <div class="text-center mx-auto pb-5 wow fadeIn" data-wow-delay=".3s" style="max-width: 600px;">
                 <h5 class="text-primary">Hizmetlerimiz</h5>
@@ -230,17 +230,17 @@
                     <div class="team-content">
                         <div class="team-img-icon">
                             <div class="team-img rounded-circle">
-                                <img src="~/anasayfacss/img/team-1.jpg" class="img-fluid w-100 rounded-circle" alt="">
+                                <img style="cursor:pointer" src="https://media.licdn.com/dms/image/C4D03AQGuZbpwfyYxvg/profile-displayphoto-shrink_800_800/0/1648421674386?e=1728518400&v=beta&t=grKLshOpGlQybEtD1mCde93znf0MJRShfIZKVy9D4vc" class="img-fluid w-100 rounded-circle" alt="" data-bs-toggle="modal" data-bs-target="#furkanModal">
                             </div>
                             <div class="team-name text-center py-3">
                                 <h4 class="">Furkan Baybura</h4>
                                 <p class="m-0">Full Stack Developer</p>
                             </div>
                             <div class="team-icon d-flex justify-content-center pb-4">
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-instagram"></i></a>
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-linkedin-in"></i></a>
+                                <a target="_blank" class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-facebook-f"></i></a>
+                                <a target="_blank" class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-twitter"></i></a>
+                                <a target="_blank" class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-instagram"></i></a>
+                                <a target="_blank" class="btn btn-square btn-secondary text-white rounded-circle m-1" href="https://www.linkedin.com/in/furkan-baybura-91555320a/"><i class="fab fa-linkedin-in"></i></a>
                             </div>
                         </div>
                     </div>
@@ -249,17 +249,17 @@
                     <div class="team-content">
                         <div class="team-img-icon">
                             <div class="team-img rounded-circle">
-                                <img src="~/anasayfacss/img/team-2.jpg" class="img-fluid w-100 rounded-circle" alt="">
+                                <img style="cursor:pointer" src="https://media.licdn.com/dms/image/v2/D4D03AQEEBvGrIiwVVw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1708460942233?e=1728518400&v=beta&t=3ebv44ZiE-XjIFgq-Inan0B96rLCgaBcTI6FniwFr3U" class="img-fluid w-100 rounded-circle" alt="" data-bs-toggle="modal" data-bs-target="#yasinModal">
                             </div>
                             <div class="team-name text-center py-3">
                                 <h4 class="">Yasin Bağçuvan</h4>
                                 <p class="m-0">Full Stack Developer</p>
                             </div>
                             <div class="team-icon d-flex justify-content-center pb-4">
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-instagram"></i></a>
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-linkedin-in"></i></a>
+                                <a target="_blank" class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-facebook-f"></i></a>
+                                <a target="_blank" class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-twitter"></i></a>
+                                <a target="_blank" class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-instagram"></i></a>
+                                <a target="_blank" class="btn btn-square btn-secondary text-white rounded-circle m-1" href="https://www.linkedin.com/in/yasin-bagcuvan/"><i class="fab fa-linkedin-in"></i></a>
                             </div>
                         </div>
                     </div>
@@ -268,17 +268,17 @@
                     <div class="team-content">
                         <div class="team-img-icon">
                             <div class="team-img rounded-circle">
-                                <img src="~/anasayfacss/img/team-3.jpg" class="img-fluid w-100 rounded-circle" alt="">
+                                <img style="cursor:pointer" src="https://media.licdn.com/dms/image/v2/D4D03AQFCPoUpwm62Sw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1720128499436?e=1728518400&v=beta&t=gyFBZlamOie27oS9iJOcmtw6Aw_5VOWsveO9wz4molI" class="img-fluid w-100 rounded-circle" alt="" data-bs-toggle="modal" data-bs-target="#hivdaModal">
                             </div>
                             <div class="team-name text-center py-3">
                                 <h4 class="">Hivda Karahan</h4>
                                 <p class="m-0">Full Stack Developer</p>
                             </div>
                             <div class="team-icon d-flex justify-content-center pb-4">
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-instagram"></i></a>
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-linkedin-in"></i></a>
+                                <a target="_blank" class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-facebook-f"></i></a>
+                                <a target="_blank" class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-twitter"></i></a>
+                                <a target="_blank" class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-instagram"></i></a>
+                                <a target="_blank" class="btn btn-square btn-secondary text-white rounded-circle m-1" href="https://www.linkedin.com/in/hivdakarahan/"><i class="fab fa-linkedin-in"></i></a>
                             </div>
                         </div>
                     </div>
@@ -287,17 +287,17 @@
                     <div class="team-content">
                         <div class="team-img-icon">
                             <div class="team-img rounded-circle">
-                                <img src="~/anasayfacss/img/team-4.jpg" class="img-fluid w-100 rounded-circle" alt="">
+                                <img style="cursor:pointer" src="https://media.licdn.com/dms/image/D4D03AQFrqy8WzvSxhA/profile-displayphoto-shrink_800_800/0/1715766853421?e=1728518400&v=beta&t=fX02yDWTJ7CEgK736au5OZTfHNZTo7RAHL5FaRNgCDw" class="img-fluid w-100 rounded-circle" alt="" data-bs-toggle="modal" data-bs-target="#ilginModal">
                             </div>
                             <div class="team-name text-center py-3">
                                 <h4 class="">Ilgın Deniz Ayaz</h4>
                                 <p class="m-0">Full Stack Developer</p>
                             </div>
                             <div class="team-icon d-flex justify-content-center pb-4">
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-instagram"></i></a>
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-linkedin-in"></i></a>
+                                <a target="_blank" class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-facebook-f"></i></a>
+                                <a target="_blank" class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-twitter"></i></a>
+                                <a target="_blank" class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-instagram"></i></a>
+                                <a target="_blank" class="btn btn-square btn-secondary text-white rounded-circle m-1" href="https://www.linkedin.com/in/ilgin-deniz-ayaz/"><i class="fab fa-linkedin-in"></i></a>
                             </div>
                         </div>
                     </div>
@@ -305,6 +305,80 @@
             </div>
         </div>
     </div>
+
+    <!-- Furkan Baybura Modal -->
+    <div class="modal fade" id="furkanModal" tabindex="-1" aria-labelledby="furkanModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="furkanModalLabel">Furkan Baybura Hakkında</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Furkan Baybura, bir Full Stack Developer olarak uzmanlaşmış ve çeşitli projelerde görev almıştır...</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Yasin Bağçuvan Modal -->
+    <div class="modal fade" id="yasinModal" tabindex="-1" aria-labelledby="yasinModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="yasinModalLabel">Yasin Bağçuvan Hakkında</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Yasin Bağçuvan, bir Full Stack Developer olarak uzmanlaşmış ve çeşitli projelerde görev almıştır...</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hivda Karahan Modal -->
+    <div class="modal fade" id="hivdaModal" tabindex="-1" aria-labelledby="hivdaModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="hivdaModalLabel">Hivda Karahan Hakkında</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Atılım Üniversitesi Matematik Bölümü'nden mezun oldum ve bölümümde alan seçmeli olarak yazılım dersleri aldım. Bu derslere olan ilgim nedeniyle, Almanya'da Erasmus stajımı Full Stack Developer olarak gerçekleştirdim. Üç ay süren bu staj boyunca, front-end ve back-end geliştirme konularında değerli deneyimler kazandım. Türkiye'ye döndükten sonra yazılım alanında kariyer yapma kararı aldım ve BilgeAdam Boost Yıldız Yazılımcı Yetiştirme Programı'na katıldım. Matematik eğitimi, analitik düşünme, problem çözme ve algoritmik yaklaşımlar kazandırarak yazılım geliştirme sürecinde büyük avantaj sağlıyor. Yazılım alanına yöneldim çünkü sorunları çözme, sürekli öğrenme fırsatlarını bir araya getirirken yaratıcı çözümler üretmek ve bu çözümlerin somut sonuçlarını görmek beni motive ediyor.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ilgın Deniz Ayaz Modal -->
+    <div class="modal fade" id="ilginModal" tabindex="-1" aria-labelledby="ilginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ilginModalLabel">Ilgın Deniz Ayaz Hakkında</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Mimarlık alanındaki kariyerimden edindiğim yaratıcı düşünce ve problem çözme deneyimimi yazılım geliştirmeye taşıyarak, .NET teknolojilerinde uzmanlaşmaya karar verdim. Kendimi bu alanda geliştirmeyi hedefleyerek Full Stack .NET Developer eğitimi aldım. Eğitim sürecinde farklı projelerde bulunma fırsatı yakaladım. Teorik eğitim ve proje süreçleri sırasında edindiğim bilgileri ve mimarlıktan gelen bakış açımı birleştirerek, yenilikçi çözümler üretmek, profesyonel çalışma ortamlarına değer katmak ve kariyerimi bu yönde şekillendirmek için kararlı bir şekilde ilerliyorum.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+
     <!-- Team End -->
     <!-- Testimonial Start -->
     <!-- Testimonial End -->

@@ -1,5 +1,6 @@
 ﻿using IKProjectAPI.Data;
 using IKProjectAPI.Data.Concrete;
+using IKProjectAPI.Data.Enums;
 using IKProjectAPI.Data.Models;
 using IKProjectAPI.NewFolder;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +14,7 @@ namespace IKProjectAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin,Yonetici")]
+    
     public class YoneticiController : ControllerBase
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -35,25 +36,45 @@ namespace IKProjectAPI.Controllers
         public async Task<IActionResult> GetUser(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound("Kullanıcı bulunamadı.");
+            }
+
             return Ok(new
             {
-                user.ProfilePhoto,
-                user.Adi,
-                user.IkinciAdi,
-                user.Soyadi,
-                user.IkinciSoyadi,
-                user.Email,
-                user.PhoneNumber,
-                user.DogumTarihi,
-                user.DogumYeri,
-                user.TC,
-                user.Sirket,
-                user.Departman,
-                user.Meslek,
-                user.Adres,
-                user.Cinsiyet
+                Email = user.Email,
+                ProfilePhoto = user.ProfilePhoto,
+                Adi = user.Adi,
+                IkinciAdi = user.IkinciAdi,
+                Soyadi = user.Soyadi,
+                IkinciSoyadi = user.IkinciSoyadi,
+                TelefonNumarasi = user.PhoneNumber,
+                DogumTarihi = user.DogumTarihi,
+                DogumYeri = user.DogumYeri,
+                TC = user.TC,
+                IseGirisTarihi = user.IseGirisTarihi,
+                IstenCikisTarihi = user.IstenCikisTarihi,
+                Sirket = user.Sirket,
+                Meslek = user.Meslek,
+                Departman = user.Departman,
+                Adres = user.Adres,
+                Maas = user.Maas,
+                Cinsiyet = user.Cinsiyet,
+                Token = user.Token,
+                CreatedTime = user.CreatedTime,
+                UpdatedTime = user.UpdatedTime,
+                DeletedTime = user.DeletedTime,
+                Status = user.Status,
+                YoneticiId = user.YoneticiId,
+                Yonetici = user.Yonetici,
+                Calisanlar = user.Calisanlar,
+                Izinler = user.Izinler
             });
         }
+
+
 
         // Yöneticinin çalışanlarını getir
         [HttpGet("getEmployees")]
@@ -73,7 +94,7 @@ namespace IKProjectAPI.Controllers
 
             // Çalışanların bilgilerini filtrele
             var calisanlar = await _context.Users
-                .Where(u => calisanlarIds.Contains(u.Id))
+                .Where(u => calisanlarIds.Contains(u.Id) && u.Status != Status.Passive)
                 .ToListAsync();
 
             return Ok(calisanlar);
@@ -96,15 +117,15 @@ namespace IKProjectAPI.Controllers
 
             // Çalışanların izin isteklerini filtrele
             var izinIstekleri = await _context.izinIstekleri
-                .Where(x => calisanlarIds.Contains(x.AppUserId))
+                .Where(x => calisanlarIds.Contains(x.AppUserId) && x.OnayDurumu != OnayDurumu.Reddedildi && x.Status != Status.Passive)
                 .ToListAsync();
-
+            
             return Ok(izinIstekleri);
         }
 
         //Çalışan kayıt et
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] CalisanRegisterModel registerModel)
+        public async Task<IActionResult> Register( CalisanRegisterModel registerModel)
         {
             if (!ModelState.IsValid)
             {

@@ -1,5 +1,6 @@
 using IKProject.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -17,14 +18,11 @@ namespace IKProject
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
-            
-
             builder.Services.AddHttpClient();
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30); // Oturum süresi
-                options.Cookie.HttpOnly = true;
+                //options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
 
@@ -33,7 +31,13 @@ namespace IKProject
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer("Bearer", options =>
+            {
+                options.Authority = "https://your-auth-server";
+                options.Audience = "your-api";
+                options.RequireHttpsMetadata = false; // Geliþtirme aþamasýnda kullanabilirsiniz
             })
             .AddCookie(options =>
             {
@@ -77,7 +81,7 @@ namespace IKProject
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Account}/{action=Login}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
             app.Run();

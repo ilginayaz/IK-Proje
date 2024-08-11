@@ -1,8 +1,8 @@
-﻿using IKProjectAPI.Data.Enums;
+﻿using IKProject.Data.Enums;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace IKProjectAPI.Data.Models
+namespace IKProject.Models
 {
     public class CalisanRegisterModel
     {
@@ -62,6 +62,5 @@ namespace IKProjectAPI.Data.Models
         public Cinsiyet Cinsiyet { get; set; }
         public IdentityResult? Result { get; set; }
         public string? Token { get; set; }
-
     }
 }

@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="utf-8">
+    <title>FHYI - Onboarding</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Bootstrap Stylesheet -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .onboarding-fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+        }
+
+        .onboarding-slider {
+            width: 100%;
+            height: 100%;
+        }
+
+            .onboarding-slider img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .onboarding-slider .carousel-caption {
+                bottom: 20%;
+            }
+
+                .onboarding-slider .carousel-caption h1 {
+                    font-size: 4rem;
+                    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+                }
+
+        .start-button {
+            margin-top: 30px;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Fullscreen Onboarding -->
+    <div id="onboardingModal" class="onboarding-fullscreen">
+        <div id="onboardingCarousel" class="carousel slide onboarding-slider" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="~/dashboardcss/images/Fhyi.png" alt="Welcome Image 1">
+                    <div class="carousel-caption">
+                        <h1>FHYI'ye Hoşgeldin!</h1>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://media.licdn.com/dms/image/C4D12AQEkslXe2heqGw/article-cover_image-shrink_600_2000/0/1570172141213?e=2147483647&v=beta&t=jVNHYHQoWF_v_xAavSrIugCOObU8UJ8Icbd5nZubsHc" alt="Welcome Image 2">
+                    <div class="carousel-caption">
+                        <h1>Başarıya Giden Yolda Birlikteyiz</h1>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCo6ivGDm0w46h0pvGSgABzI3ZfElo551AUg&s" alt="Welcome Image 3">
+                    <div class="carousel-caption">
+                        <h1>Hizmetlerimize Göz Atın</h1>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#onboardingCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#onboardingCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <button id="startButton" class="btn btn-success start-button">Başla</button>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Onboarding Script -->
+    <script>
+        $(document).ready(function () {
+            // Onboarding tamamlandı mı kontrolü
+            if (!localStorage.getItem('onboardingComplete')) {
+                $('#onboardingModal').show();
+            } else {
+                $('#onboardingModal').hide();
+            }
+
+            $('#startButton').click(function () {
+                localStorage.setItem('onboardingComplete', 'true');
+                $('#onboardingModal').fadeOut();
+            });
+        });
+    </script>
+</body>
+
+</html>

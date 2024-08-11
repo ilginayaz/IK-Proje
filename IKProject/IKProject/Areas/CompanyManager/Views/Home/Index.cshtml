@@ -1,10 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using IKProject.Data.Concrete
+@model ApplicationUser
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>FYHI Admin</title>
+    <title>FHYI Admin</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="~/dashboardcss/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
@@ -21,15 +23,62 @@
     <link rel="stylesheet" href="~/dashboardcss/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="~/dashboardcss/images/favicon.png" />
+    <style>
+        .summary-card {
+            background-color: #f44336; 
+            color: #ffffff; 
+            border-radius: 10px; 
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+        }
+
+        .btn-edit {
+            background-color: #ffffff; /* Beyaz buton arka planı */
+            color: #f44336;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+            .btn-edit:hover {
+                background-color: steelblue; /* Buton üzerine gelindiğinde kırmızı arka plan */
+                color: #ffffff; /* Buton üzerine gelindiğinde beyaz yazı rengi */
+            }
+    </style>
 </head>
 <body>
    
             <!-- partial -->
             <div class="main-panel">
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Yönetici Bilgileri</h4>
+                            <div class="summary-card">
+                                <p><strong>Ad:</strong> @Model.Adi</p>
+                                <p><strong>Soyad:</strong> @Model.Soyadi</p>
+                                <p><strong>Email:</strong> @Model.Email</p>
+                                <p><strong>Telefon:</strong>@Model.TelefonNumarasi</p>
+                                <p><strong>Departman:</strong> @Model.Departman</p>
+                                <!-- Diğer bilgiler burada yer alacak -->
+                                <button class="btn-edit">Düzenle</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
                 <div class="content-wrapper">
+
                     <div class="row">
 
                         <div class="col-md-4 grid-margin stretch-card">
+
                             <div class="card">
                                 <div class="card-body">
                                     <div class="d-flex flex-row justify-content-between">
@@ -39,14 +88,20 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="preview-list">
-                                                <div class="preview-item border-bottom">
+                                        @if ((ViewBag.izinler as IEnumerable<IzinIstegi>)?.Count() > 1)
+                                        {
+                                            
+                                        @foreach (IzinIstegi izin in ViewBag.izinler as IEnumerable<IzinIstegi>)
+                                        {
+                                            
+                                        <div class="preview-item border-bottom">
                                                     <div class="preview-thumbnail">
                                                         <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
                                                     </div>
                                                     <div class="preview-item-content d-sm-flex flex-grow">
                                                         <div class="flex-grow">
-                                                            <h6 class="preview-subject">Furkan Baybura 3 Gün izin istiyor</h6>
-                                                            <p class="text-muted mb-0">Tatil İzni</p>
+                                                            <h6 class="preview-subject">@izin.ApplicationUser.Adi @izin.ApplicationUser.Soyadi @izin.IzinGunSayisi Gün @izin.IzinTipi istiyor</h6>
+                                                            <p class="text-muted mb-0">@izin.IstekYorumu</p>
                                                         </div>
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
                                                             <button class="btn btn-success">Onayla</button>
@@ -54,7 +109,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="preview-item border-bottom">
+                                            }
+                                        }
+                                        else
+                                        {
+                                            
+                                        <div class="preview-item border-bottom">
                                                     <div class="preview-thumbnail">
                                                         <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
                                                     </div>
@@ -70,38 +130,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="preview-item border-bottom">
-                                                    <div class="preview-thumbnail">
-                                                        <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
-                                                    </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <div class="flex-grow">
-                                                            <h6 class="preview-subject">Hivda Karahan 7 gün izin istiyor</h6>
-                                                            <p class="text-muted mb-0">Yıllık izin</p>
-                                                        </div>
-                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <button class="btn btn-success">Onayla</button>
-                                                            <button class="btn btn-danger">Reddet</button>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="preview-item border-bottom">
-                                                    <div class="preview-thumbnail">
-                                                        <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
-                                                    </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <div class="flex-grow">
-                                                            <h6 class="preview-subject">Ilgın Ayaz 50 dk izin istiyor</h6>
-                                                            <p class="text-muted mb-0">Saatlik İzin</p>
-                                                        </div>
-                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <button class="btn btn-success">Onayla</button>
-                                                            <button class="btn btn-danger">Reddet</button>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        }
+                                               
 
                                             </div>
                                         </div>
@@ -120,21 +150,31 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="preview-list">
-                                                <div class="preview-item border-bottom">
+                                                @if ((ViewBag.izinler as IEnumerable<IzinIstegi>)?.Count() > 1)
+                                        {
+                                        @foreach (IzinIstegi izin in ViewBag.izinler as IEnumerable<IzinIstegi>)
+                                        {
+                                            
+                                        <div class="preview-item border-bottom">
                                                     <div class="preview-thumbnail">
                                                         <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
                                                     </div>
                                                     <div class="preview-item-content d-sm-flex flex-grow">
                                                         <div class="flex-grow">
-                                                            <h6 class="preview-subject">Furkan Baybura</h6>
-                                                            <p class="text-muted mb-0">Tatil İzni</p>
+                                                        <h6 class="preview-subject">@izin.ApplicationUser.Adi @izin.ApplicationUser.Soyadi</h6>
+                                                            <p class="text-muted mb-0">@izin.IzinTipi</p>
                                                         </div>
                                                         <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <p class="text-muted">22.07.2024-25.07.2024</p>
+                                                            <p class="text-muted">@izin.BaslangicTarihi-@izin.BitisTarihi</p>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="preview-item border-bottom">
+                                            }
+                                        }
+                                        else
+                                        {
+                                            
+                                         <div class="preview-item border-bottom">
                                                     <div class="preview-thumbnail">
                                                         <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
                                                     </div>
@@ -149,36 +189,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="preview-item border-bottom">
-                                                    <div class="preview-thumbnail">
-                                                        <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
-                                                    </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <div class="flex-grow">
-                                                            <h6 class="preview-subject">Hivda Karahan </h6>
-                                                            <p class="text-muted mb-0">Yıllık izin</p>
-                                                        </div>
-                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <p class="text-muted">15.08.2024-16.08.2024</p>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="preview-item border-bottom">
-                                                    <div class="preview-thumbnail">
-                                                        <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
-                                                    </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <div class="flex-grow">
-                                                            <h6 class="preview-subject">Ilgın Ayaz </h6>
-                                                            <p class="text-muted mb-0">Saatlik İzin</p>
-                                                        </div>
-                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <p class="text-muted">15.08.2024-15.08.2024</p>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        }
+                                            
 
                                             </div>
                                         </div>
@@ -352,6 +364,10 @@
                             </div>
                         </div>
                     </div>
+            <!-- Sağ taraf -->
+           
+        </div>
+        
                 </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:partials/_footer.html -->
@@ -382,5 +398,7 @@
     <!-- Custom js for this page -->
     <script src="~/dashboardcss/js/dashboard.js"></script>
     <!-- End custom js for this page -->
+    
+
 </body>
 </html>

@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>FYHI Admin</title>
+    <title>FHYI Admin</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="~/dashboardcss/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
@@ -24,7 +24,9 @@
 </head>
 <body>
    
-     
+             <br />
+             <br />
+             <br />
             <h2>Çalışanlar Listesi</h2>
             <table class="table table-bordered table-hover">
                 <thead>
@@ -84,13 +86,14 @@
                         </div>
                         <p><strong>Adı Soyadı:</strong> <span id="employeeName"></span></p>
                         <p><strong>Email:</strong> <span id="employeeEmail"></span></p>
-                        <p><strong>Rol:</strong> <span id="employeeRole"></span></p>
-                        <p><strong>Doğum Tarihi:</strong> <span id="employeeDOB"></span></p>
+                        <p><strong>Departman:</strong> <span id="employeeDepartman"></span></p>
+                        <p><strong>Görevi:</strong> <span id="employeeGorev"></span></p>
+                        <p><strong>Doğum Tarihi:</strong> <span id="employeeDogum"></span></p>
                         <p><strong>İşe Giriş Tarihi:</strong> <span id="employeeStart"></span></p>
                         <p><strong>Telefon:</strong> <span id="employeePhone"></span></p>
                         <p><strong>Adres:</strong> <span id="employeeAddress"></span></p>
-                        <p><strong>Departman:</strong> <span id="employeeDepartment"></span></p>
-                        <p><strong>Durum:</strong> <span id="employeeStatus"></span></p>
+                        <p><strong>Kalan Yıllık İzin:</strong> <span id="employeeIzin"></span></p>
+                       
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
@@ -128,18 +131,19 @@
 
     <script>
         $(document).ready(function () {
-            // Satıra tıklama olayını yakalama
+            
             $('table tbody tr').click(function () {
                 // Modal içindeki alanları doldurma
                 $('#employeeName').text($(this).data('name'));
                 $('#employeeEmail').text($(this).data('email'));
-                $('#employeeRole').text($(this).data('role'));
-                $('#employeeDOB').text($(this).data('dob'));
+                $('#employeeDepartman').text($(this).data('departman'));
+                $('#employeeGorev').text($(this).data('Gorev'));
+                $('#employeeDogum').text($(this).data('Dogum'));
                 $('#employeeStart').text($(this).data('start'));
                 $('#employeePhone').text($(this).data('phone'));
                 $('#employeeAddress').text($(this).data('address'));
-                $('#employeeDepartment').text($(this).data('department'));
-                $('#employeeStatus').text($(this).data('status'));
+                $('#employeeIzin').text($(this).data('Izin'));
+               
                 $('#employeeImg').attr('src', $(this).data('~/dashboardcss/images/faces/face5.jpg'));
 
                 // Modal'ı aç
