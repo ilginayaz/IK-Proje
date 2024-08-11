@@ -24,29 +24,71 @@
     <!-- End layout styles -->
     <link rel="shortcut icon" href="~/dashboardcss/images/favicon.png" />
     <style>
-        .summary-card {
-            background-color: #f44336; 
-            color: #ffffff; 
-            border-radius: 10px; 
-            padding: 15px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+        .cardd {
+            border-radius: 15px;
+            background: linear-gradient(to right, #FF0000, #FFA27F);
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            max-width: 800px; /* Kartın genişliğini artırdık */
+            height: 450px; /* Yüksekliği daha az yaptık */
+            margin: 0 auto;
+            color: #ffffff;
         }
 
+        .cardd-body {
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            color: #333333;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            height: 100%; /* İçeriğin kartı tam doldurması için */
+        }
+
+        .card-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #FF0000;
+            text-align: center;
+        }
+
+        .summary-card {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            height: 100%; /* Kolonlar yüksekliği tam olarak kaplasın */
+        }
+
+        .info-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+            .info-column p {
+                margin: 8px 0;
+                font-size: 16px;
+                font-weight: 500;
+            }
+
         .btn-edit {
-            background-color: #ffffff; /* Beyaz buton arka planı */
-            color: #f44336;
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #FF0000;
+            color: #ffffff;
             border: none;
             border-radius: 5px;
-            padding: 8px 15px;
+            font-size: 16px;
             cursor: pointer;
-            font-size: 18px;
-            margin-top: 10px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
         }
 
             .btn-edit:hover {
-                background-color: steelblue; /* Buton üzerine gelindiğinde kırmızı arka plan */
-                color: #ffffff; /* Buton üzerine gelindiğinde beyaz yazı rengi */
+                background-color: #FFA27F;
             }
+
     </style>
 </head>
 <body>
@@ -56,18 +98,32 @@
         <div class="container mt-4">
             <div class="row">
                 <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="cardd" style="max-width:1000px">
+                        <div class="cardd-body" style="max-width:1000px">
                             <h4 class="card-title">Yönetici Bilgileri</h4>
-                            <div class="summary-card">
-                                <p><strong>Ad:</strong> @Model.Adi</p>
-                                <p><strong>Soyad:</strong> @Model.Soyadi</p>
-                                <p><strong>Email:</strong> @Model.Email</p>
-                                <p><strong>Telefon:</strong>@Model.TelefonNumarasi</p>
-                                <p><strong>Departman:</strong> @Model.Departman</p>
-                                <!-- Diğer bilgiler burada yer alacak -->
-                                <button class="btn-edit">Düzenle</button>
+                            <div class="summary-card" style="max-width:1000px">
+                                <div class="info-column">
+                                    <p><strong>Ad:</strong> @Model.Adi</p>
+                                    <p><strong>İkinci Ad:</strong> @Model.IkinciAdi</p>
+                                    <p><strong>Soyad:</strong> @Model.Soyadi</p>
+                                    <p><strong>İkinci Soyadı:</strong> @Model.IkinciSoyadi</p>
+                                   
+                                   
+                                </div>
+                                <div class="info-column">
+                                    <p><strong>Telefon:</strong> @Model.TelefonNumarasi</p>
+                                    <p><strong>Doğum Tarihi:</strong> @Model.DogumTarihi</p>
+                                    <p><strong>Doğum Yeri:</strong> @Model.DogumYeri</p>
+                                    <p><strong>Email:</strong> @Model.Email</p>
+                                </div>
+                                <div class="info-column" >
+                                    <p><strong>TC Kimlik Numarası:</strong> @Model.TC</p>
+                                    <p><strong>Departman:</strong> @Model.Departman</p>
+                                    <p><strong>Adres:</strong> @Model.Adres</p>
+                                    <button class="btn-edit">Düzenle</button>
+                                </div>
                             </div>
+                           
                         </div>
                     </div>
                 </div>

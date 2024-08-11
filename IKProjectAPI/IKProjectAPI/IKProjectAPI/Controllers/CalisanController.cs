@@ -12,7 +12,7 @@ namespace IKProjectAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin,Yonetici,Calisan")]
+    //[Authorize(Roles = "Admin,Yonetici,Calisan")]
     public class CalisanController : ControllerBase
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
