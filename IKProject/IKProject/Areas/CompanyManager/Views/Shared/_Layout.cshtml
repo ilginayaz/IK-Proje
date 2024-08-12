@@ -35,11 +35,11 @@
                     <div class="profile-desc">
                         <div class="profile-pic">
                             <div class="count-indicator">
-                                <img class="img-xs rounded-circle " src="~/dashboardcss/images/faces/face15.jpg" alt="">
+                                <img src="@Model.ProfilePhoto" alt="Yönetici Fotoğrafı" class="profile-img">
                                 <span class="count bg-success"></span>
                             </div>
                             <div class="profile-name">
-                                <h5 class="mb-0 font-weight-normal">FHYI Yönetici Paneli</h5>
+                                <h5 class="mb-0 font-weight-normal">@Model.Adi @Model.Soyadi</h5>
                                 <span>Manager</span>
                             </div>
                         </div>
@@ -127,8 +127,8 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div class="navbar-profile">
-                                    <img class="img-xs rounded-circle" src="~/dashboardcss/images/faces/face15.jpg" alt="">
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">FHYI Admin</p>
+                                    <img src="@Model.ProfilePhoto" alt="Yönetici Fotoğrafı" class="profile-img" style="height:40px">
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">@Model.Adi @Model.Soyadi</p>
                                     <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                                 </div>
                             </a>
