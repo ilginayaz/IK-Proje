@@ -43,32 +43,7 @@
                                 <span>Manager</span>
                             </div>
                         </div>
-                        <a href="#" id="profile-dropdown" data-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
-                        <div class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list" aria-labelledby="profile-dropdown">
-                            <a href="#" class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                    <div class="preview-icon bg-dark rounded-circle">
-                                        <i class="mdi mdi-settings text-primary"></i>
-                                    </div>
-                                </div>
-                                <div class="preview-item-content">
-                                    <p class="preview-subject ellipsis mb-1 text-small">Hesap Ayarları</p>
-                                </div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                    <div class="preview-icon bg-dark rounded-circle">
-                                        <i class="mdi mdi-onepassword  text-info"></i>
-                                    </div>
-                                </div>
-                                <div class="preview-item-content">
-                                    <p class="preview-subject ellipsis mb-1 text-small">Şifreyi Değiştir</p>
-                                </div>
-                            </a>
-                            
-                          
-                        </div>
+                       
                     </div>
                 </li>
                 <li class="nav-item nav-category">
@@ -135,7 +110,7 @@
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
                                 <h6 class="p-3 mb-0">Profile</h6>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item preview-item">
+                                <a class="dropdown-item preview-item" href="@Url.Action("EditProfile", "Home", new { area = "CompanyManager" })">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon bg-dark rounded-circle">
                                             <i class="mdi mdi-settings text-success"></i>
@@ -146,6 +121,17 @@
                                     </div>
                                 </a>
                                 <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <div class="preview-icon bg-dark rounded-circle">
+                                            <i class="mdi mdi-onepassword  text-info"></i>
+                                        </div>
+                                    </div>
+                                    <div class="preview-item-content">
+                                        <p class="preview-subject ellipsis mb-1 text-small">Şifreyi Değiştir</p>
+                                    </div>
+                                </a>
+                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item preview-item">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon bg-dark rounded-circle">
@@ -153,7 +139,11 @@
                                         </div>
                                     </div>
                                     <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Çıkış Yap</p>
+                                        <form action="/Account/Logout" method="post" style="display:inline;">
+                                            <button type="submit" class="logout-button" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer;">
+                                                <p class="preview-subject mb-1" style="color: white;">Çıkış Yap</p>
+                                            </button>
+                                        </form>
                                     </div>
                                 </a>
                             </div>
@@ -172,9 +162,7 @@
                     </div>
                     <div class="header-right">
                         <span>@User.Identity.Name</span>
-                        <form action="/Account/Logout" method="post" style="display:inline;">
-                            <button type="submit" class="logout-button">Çıkış Yap</button>
-                        </form>
+                        
                     </div>
                 </header>
                 <main role="main" class="content">
@@ -200,6 +188,8 @@
         <!-- endinject -->
         <!-- Custom js for this page -->
         <script src="~/dashboardcss/js/dashboard.js"></script>
+
+        @RenderSection("Scripts", required: false)
 
 </body>
 </html>  

@@ -20,13 +20,13 @@ namespace IKProject.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPatch]
         public async Task<IActionResult> EditProfile(UpdateProfileViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-                var response = await _httpClient.PutAsync("http://localhost:5240/api/Calisan/UpdateUser", content);
+                var response = await _httpClient.PutAsync("https://localhost:7149/api/Calisan/UpdateUser", content);
 
                 if (response.IsSuccessStatusCode)
                 {

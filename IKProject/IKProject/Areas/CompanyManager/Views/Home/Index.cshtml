@@ -29,7 +29,7 @@
             background: linear-gradient(to right, #FF0000, #FFA27F);
             padding: 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            max-width: 800px; 
+            max-width: 800px;
             margin: 30px;
             color: #ffffff;
         }
@@ -40,7 +40,7 @@
             border-radius: 10px;
             color: #333333;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            height: 100%; 
+            height: 100%;
         }
 
         .card-title {
@@ -54,7 +54,7 @@
             display: flex;
             justify-content: space-between;
             gap: 20px;
-            height: 100%; 
+            height: 100%;
         }
 
         .info-column {
@@ -91,131 +91,44 @@
             }
 
         .profile-img {
-            width: 100%; 
-            max-width: 150px; 
+            width: 100%;
+            max-width: 150px;
             height: auto;
-            border-radius: 50%; 
+            border-radius: 50%;
             margin: 0 auto 20px auto;
             display: block;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-     
+
 
         /* Popup için */
-       
-.modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1; 
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgba(0, 0, 0, 0.5); 
-}
 
-
-.modal-content {
-    background: linear-gradient(to right, #FF0000, #FFA27F);
-    margin: 5% auto; 
-    padding: 20px;
-    border-radius: 15px; 
-    width: 90%; 
-    max-width: 600px; 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); 
-    color: #ffffff; 
-}
-
-
-.close-button {
-    color: #ffffff;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close-button:hover,
-.close-button:focus {
-    color: #fff;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-
-.form-group {
-    margin-bottom: 15px; 
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px; 
-    font-weight: bold;
-    color: #ffffff;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 8px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box; 
-    transition: border-color 0.3s ease;
-    background: #ffffff;
-}
-
-.form-group input:focus {
-    border-color: #FFA27F; 
-    outline: none; 
-}
-
-
-.btn-edit {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #FFA27F;
-    color: #FF0000;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
-}
-
-.btn-edit:hover {
-    background-color: #FF0000;
-    color: #FFA27F;
-}
-        
         .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1; 
+            display: none;
+            position: fixed;
+            z-index: 1;
             left: 0;
             top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgba(0, 0, 0, 0.5); 
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
         }
 
-        
+
         .modal-content {
             background: linear-gradient(to right, #FF0000, #FFA27F);
-            margin: 5% auto; 
+            margin: 5% auto;
             padding: 20px;
-            border-radius: 15px; 
+            border-radius: 15px;
             width: 90%;
-            max-width: 600px; 
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); 
-            color: #ffffff; 
+            max-width: 600px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            color: #ffffff;
         }
 
-       
+
         .close-button {
             color: #ffffff;
             float: right;
@@ -230,14 +143,14 @@
                 cursor: pointer;
             }
 
-       
+
         .form-group {
-            margin-bottom: 15px; 
+            margin-bottom: 15px;
         }
 
             .form-group label {
                 display: block;
-                margin-bottom: 5px; 
+                margin-bottom: 5px;
                 font-weight: bold;
                 color: #ffffff;
             }
@@ -247,17 +160,104 @@
                 padding: 8px;
                 border: 2px solid #ccc;
                 border-radius: 5px;
-                box-sizing: border-box; 
+                box-sizing: border-box;
                 transition: border-color 0.3s ease;
                 background: #ffffff;
             }
 
                 .form-group input:focus {
-                    border-color: #FFA27F; 
-                    outline: none; 
+                    border-color: #FFA27F;
+                    outline: none;
                 }
 
-        
+
+        .btn-edit {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #FFA27F;
+            color: #FF0000;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-edit:hover {
+                background-color: #FF0000;
+                color: #FFA27F;
+            }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+
+        .modal-content {
+            background: linear-gradient(to right, #FF0000, #FFA27F);
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            color: #ffffff;
+        }
+
+
+        .close-button {
+            color: #ffffff;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close-button:hover,
+            .close-button:focus {
+                color: #fff;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+                color: #ffffff;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 8px;
+                border: 2px solid #ccc;
+                border-radius: 5px;
+                box-sizing: border-box;
+                transition: border-color 0.3s ease;
+                background: #ffffff;
+            }
+
+                .form-group input:focus {
+                    border-color: #FFA27F;
+                    outline: none;
+                }
+
+
         .btnn-edit {
             display: block;
             width: 100%;
@@ -279,15 +279,14 @@
                 text-transform: uppercase;
             }
 
-
     </style>
 </head>
 <body>
-    
-   
 
 
-            <!-- partial -->
+
+
+    <!-- partial -->
     <div class="main-panel">
         <div class="container mt-4">
             <div class="row">
@@ -316,316 +315,316 @@
                             </div>
                         </div>
                     </div>
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
 
-        -----
-                <div class="content-wrapper">
+    -----
+    <div class="content-wrapper">
 
-                    <div class="row">
+        <div class="row">
 
-                        <div class="col-md-4 grid-margin stretch-card">
+            <div class="col-md-4 grid-margin stretch-card">
 
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex flex-row justify-content-between">
-                                        <h4 class="card-title mb-1">İzin İstekleri</h4>
-                                        <p class="text-muted mb-1">Onay</p>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="preview-list">
-                                        @if ((ViewBag.izinler as IEnumerable<IzinIstegi>)?.Count() > 1)
-                                        {
-                                            
-                                        @foreach (IzinIstegi izin in ViewBag.izinler as IEnumerable<IzinIstegi>)
-                                        {
-                                            
-                                        <div class="preview-item border-bottom">
-                                                    <div class="preview-thumbnail">
-                                                        <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
-                                                    </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <div class="flex-grow">
-                                                            <h6 class="preview-subject">@izin.ApplicationUser.Adi @izin.ApplicationUser.Soyadi @izin.IzinGunSayisi Gün @izin.IzinTipi istiyor</h6>
-                                                            <p class="text-muted mb-0">@izin.IstekYorumu</p>
-                                                        </div>
-                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <button class="btn btn-success">Onayla</button>
-                                                            <button class="btn btn-danger">Reddet</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            }
-                                        }
-                                        else
-                                        {
-                                            
-                                        <div class="preview-item border-bottom">
-                                                    <div class="preview-thumbnail">
-                                                        <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
-                                                    </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <div class="flex-grow">
-                                                            <h6 class="preview-subject">Yasin Bağçuvan 1 gün izin istiyor</h6>
-                                                            <p class="text-muted mb-0">Banka işleri </p>
-                                                        </div>
-                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <button class="btn btn-success">Onayla</button>
-                                                            <button class="btn btn-danger">Reddet</button>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                        }
-                                               
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-row justify-content-between">
+                            <h4 class="card-title mb-1">İzin İstekleri</h4>
+                            <p class="text-muted mb-1">Onay</p>
                         </div>
-                        <div class="col-md-4 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex flex-row justify-content-between">
-                                        <h4 class="card-title mb-1">Yaklaşan İzinler</h4>
-                                        <p class="text-muted mb-1">Tarihler</p>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="preview-list">
-                                                @if ((ViewBag.izinler as IEnumerable<IzinIstegi>)?.Count() > 1)
-                                        {
-                                        @foreach (IzinIstegi izin in ViewBag.izinler as IEnumerable<IzinIstegi>)
-                                        {
-                                            
-                                        <div class="preview-item border-bottom">
-                                                    <div class="preview-thumbnail">
-                                                        <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="preview-list">
+                @if ((ViewBag.izinler as IEnumerable<IzinIstegi>)?.Count() > 1)
+                {
+
+                    @foreach (IzinIstegi izin in ViewBag.izinler as IEnumerable<IzinIstegi>)
+                    {
+
+                                            <div class="preview-item border-bottom">
+                                                <div class="preview-thumbnail">
+                                                    <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
+                                                </div>
+                                                <div class="preview-item-content d-sm-flex flex-grow">
+                                                    <div class="flex-grow">
+                                                        <h6 class="preview-subject">@izin.ApplicationUser.Adi @izin.ApplicationUser.Soyadi @izin.IzinGunSayisi Gün @izin.IzinTipi istiyor</h6>
+                                                        <p class="text-muted mb-0">@izin.IstekYorumu</p>
                                                     </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <div class="flex-grow">
-                                                        <h6 class="preview-subject">@izin.ApplicationUser.Adi @izin.ApplicationUser.Soyadi</h6>
-                                                            <p class="text-muted mb-0">@izin.IzinTipi</p>
-                                                        </div>
-                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <p class="text-muted">@izin.BaslangicTarihi-@izin.BitisTarihi</p>
-                                                        </div>
+                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                        <button class="btn btn-success">Onayla</button>
+                                                        <button class="btn btn-danger">Reddet</button>
                                                     </div>
                                                 </div>
-                                            }
-                                        }
-                                        else
-                                        {
-                                            
-                                         <div class="preview-item border-bottom">
-                                                    <div class="preview-thumbnail">
-                                                        <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
-                                                    </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <div class="flex-grow">
-                                                            <h6 class="preview-subject">Yasin Bağçuvan</h6>
-                                                            <p class="text-muted mb-0">Banka işleri </p>
-                                                        </div>
-                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <p class="text-muted">15.08.2024-16.08.2024</p>
-
-                                                        </div>
-                                                    </div>
-                                          </div>
-                                        }
-                                            
-
                                             </div>
-                                        </div>
+                    }
+                }
+                else
+                {
 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex flex-row justify-content-between">
-                                        <h4 class="card-title mb-1">Yaklaşan Doğum Günleri</h4>
-                                        <p class="text-muted mb-1">Gün</p>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="preview-list">
-                                                <div class="preview-item border-bottom">
-                                                    <div class="preview-thumbnail">
-                                                        <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
-                                                    </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <div class="flex-grow">
-                                                            <h6 class="preview-subject">Furkan Baybura</h6>
-
-
-                                                        </div>
-                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <p class="text-muted">Bugün</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="preview-item border-bottom">
-                                                    <div class="preview-thumbnail">
-                                                        <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
-                                                    </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <div class="flex-grow">
-                                                            <h6 class="preview-subject">Yasin Bağçuvan</h6>
-
-                                                        </div>
-                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <p class="text-muted">Yarın</p>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="preview-item border-bottom">
-                                                    <div class="preview-thumbnail">
-                                                        <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
-                                                    </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <div class="flex-grow">
-                                                            <h6 class="preview-subject">Hivda Karahan</h6>
-
-                                                        </div>
-                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <p class="text-muted">25 Ağustos</p>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="preview-item border-bottom">
-                                                    <div class="preview-thumbnail">
-                                                        <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
-                                                    </div>
-                                                    <div class="preview-item-content d-sm-flex flex-grow">
-                                                        <div class="flex-grow">
-                                                            <h6 class="preview-subject">Ilgın Ayaz</h6>
-
-                                                        </div>
-                                                        <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                                            <p class="text-muted">26 Ağustos</p>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="row">
-                        <div class="col-md-6 col-xl-4 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex flex-row justify-content-between">
-                                        <h4 class="card-title">Mesajlar</h4>
-
-                                    </div>
-                                    <div class="preview-list">
                                         <div class="preview-item border-bottom">
                                             <div class="preview-thumbnail">
                                                 <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
                                             </div>
-                                            <div class="preview-item-content d-flex flex-grow">
+                                            <div class="preview-item-content d-sm-flex flex-grow">
                                                 <div class="flex-grow">
-                                                    <div class="d-flex d-md-block d-xl-flex justify-content-between">
-                                                        <h6 class="preview-subject">Ilgın Ayaz</h6>
-                                                        <p class="text-muted text-small">4 Hours Ago</p>
-                                                    </div>
-                                                    <p class="text-muted">Hallettim.Teşekkürler</p>
+                                                    <h6 class="preview-subject">Yasin Bağçuvan 1 gün izin istiyor</h6>
+                                                    <p class="text-muted mb-0">Banka işleri </p>
+                                                </div>
+                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                    <button class="btn btn-success">Onayla</button>
+                                                    <button class="btn btn-danger">Reddet</button>
+
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                }
+
+
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-12 col-xl-4 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Yapılacaklar Listesi</h4>
-                                    <div class="add-items d-flex">
-                                        <input type="text" class="form-control todo-list-input" placeholder="İşi Gir">
-                                        <button class="add btn btn-primary todo-list-add-btn">Ekle</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-row justify-content-between">
+                            <h4 class="card-title mb-1">Yaklaşan İzinler</h4>
+                            <p class="text-muted mb-1">Tarihler</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="preview-list">
+                @if ((ViewBag.izinler as IEnumerable<IzinIstegi>)?.Count() > 1)
+                {
+                    @foreach (IzinIstegi izin in ViewBag.izinler as IEnumerable<IzinIstegi>)
+                    {
+
+                                            <div class="preview-item border-bottom">
+                                                <div class="preview-thumbnail">
+                                                    <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
+                                                </div>
+                                                <div class="preview-item-content d-sm-flex flex-grow">
+                                                    <div class="flex-grow">
+                                                        <h6 class="preview-subject">@izin.ApplicationUser.Adi @izin.ApplicationUser.Soyadi</h6>
+                                                        <p class="text-muted mb-0">@izin.IzinTipi</p>
+                                                    </div>
+                                                    <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                        <p class="text-muted">@izin.BaslangicTarihi-@izin.BitisTarihi</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                    }
+                }
+                else
+                {
+
+                                        <div class="preview-item border-bottom">
+                                            <div class="preview-thumbnail">
+                                                <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
+                                            </div>
+                                            <div class="preview-item-content d-sm-flex flex-grow">
+                                                <div class="flex-grow">
+                                                    <h6 class="preview-subject">Yasin Bağçuvan</h6>
+                                                    <p class="text-muted mb-0">Banka işleri </p>
+                                                </div>
+                                                <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                    <p class="text-muted">15.08.2024-16.08.2024</p>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                }
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-row justify-content-between">
+                            <h4 class="card-title mb-1">Yaklaşan Doğum Günleri</h4>
+                            <p class="text-muted mb-1">Gün</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="preview-list">
+                                    <div class="preview-item border-bottom">
+                                        <div class="preview-thumbnail">
+                                            <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
+                                        </div>
+                                        <div class="preview-item-content d-sm-flex flex-grow">
+                                            <div class="flex-grow">
+                                                <h6 class="preview-subject">Furkan Baybura</h6>
+
+
+                                            </div>
+                                            <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                <p class="text-muted">Bugün</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="list-wrapper">
-                                        <ul class="d-flex flex-column-reverse text-white todo-list todo-list-custom">
-                                            <li>
-                                                <div class="form-check form-check-primary">
-                                                    <label class="form-check-label">
-                                                        <input class="checkbox" type="checkbox"> Apileri oluştur
-                                                    </label>
-                                                </div>
-                                                <i class="remove mdi mdi-close-box"></i>
-                                            </li>
-                                            <li>
-                                                <div class="form-check form-check-primary">
-                                                    <label class="form-check-label">
-                                                        <input class="checkbox" type="checkbox"> Yönetici Sayfası yap
-                                                    </label>
-                                                </div>
-                                                <i class="remove mdi mdi-close-box"></i>
-                                            </li>
-                                            <li class="completed">
-                                                <div class="form-check form-check-primary">
-                                                    <label class="form-check-label">
-                                                        <input class="checkbox" type="checkbox" checked> anasayfa tasarla
-                                                    </label>
-                                                </div>
-                                                <i class="remove mdi mdi-close-box"></i>
-                                            </li>
-                                            <li>
-                                                <div class="form-check form-check-primary">
-                                                    <label class="form-check-label">
-                                                        <input class="checkbox" type="checkbox"> login yap
-                                                    </label>
-                                                </div>
-                                                <i class="remove mdi mdi-close-box"></i>
-                                            </li>
-                                            <li>
-                                                <div class="form-check form-check-primary">
-                                                    <label class="form-check-label">
-                                                        <input class="checkbox" type="checkbox"> kayıt ekranı yap
-                                                    </label>
-                                                </div>
-                                                <i class="remove mdi mdi-close-box"></i>
-                                            </li>
-                                        </ul>
+                                    <div class="preview-item border-bottom">
+                                        <div class="preview-thumbnail">
+                                            <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
+                                        </div>
+                                        <div class="preview-item-content d-sm-flex flex-grow">
+                                            <div class="flex-grow">
+                                                <h6 class="preview-subject">Yasin Bağçuvan</h6>
+
+                                            </div>
+                                            <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                <p class="text-muted">Yarın</p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="preview-item border-bottom">
+                                        <div class="preview-thumbnail">
+                                            <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
+                                        </div>
+                                        <div class="preview-item-content d-sm-flex flex-grow">
+                                            <div class="flex-grow">
+                                                <h6 class="preview-subject">Hivda Karahan</h6>
+
+                                            </div>
+                                            <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                <p class="text-muted">25 Ağustos</p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="preview-item border-bottom">
+                                        <div class="preview-thumbnail">
+                                            <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
+                                        </div>
+                                        <div class="preview-item-content d-sm-flex flex-grow">
+                                            <div class="flex-grow">
+                                                <h6 class="preview-subject">Ilgın Ayaz</h6>
+
+                                            </div>
+                                            <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                                <p class="text-muted">26 Ağustos</p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6 col-xl-4 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-row justify-content-between">
+                            <h4 class="card-title">Mesajlar</h4>
+
+                        </div>
+                        <div class="preview-list">
+                            <div class="preview-item border-bottom">
+                                <div class="preview-thumbnail">
+                                    <img src="~/dashboardcss/images/faces/face11.jpg" alt="image" class="rounded-circle" />
+                                </div>
+                                <div class="preview-item-content d-flex flex-grow">
+                                    <div class="flex-grow">
+                                        <div class="d-flex d-md-block d-xl-flex justify-content-between">
+                                            <h6 class="preview-subject">Ilgın Ayaz</h6>
+                                            <p class="text-muted text-small">4 Hours Ago</p>
+                                        </div>
+                                        <p class="text-muted">Hallettim.Teşekkürler</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-            <!-- Sağ taraf -->
-           
-        </div>
-        
                 </div>
-                <!-- content-wrapper ends -->
-                <!-- partial:partials/_footer.html -->
-                <!-- partial -->
             </div>
-            <!-- main-panel ends -->
+
+            <div class="col-md-12 col-xl-4 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Yapılacaklar Listesi</h4>
+                        <div class="add-items d-flex">
+                            <input type="text" class="form-control todo-list-input" placeholder="İşi Gir">
+                            <button class="add btn btn-primary todo-list-add-btn">Ekle</button>
+                        </div>
+                        <div class="list-wrapper">
+                            <ul class="d-flex flex-column-reverse text-white todo-list todo-list-custom">
+                                <li>
+                                    <div class="form-check form-check-primary">
+                                        <label class="form-check-label">
+                                            <input class="checkbox" type="checkbox"> Apileri oluştur
+                                        </label>
+                                    </div>
+                                    <i class="remove mdi mdi-close-box"></i>
+                                </li>
+                                <li>
+                                    <div class="form-check form-check-primary">
+                                        <label class="form-check-label">
+                                            <input class="checkbox" type="checkbox"> Yönetici Sayfası yap
+                                        </label>
+                                    </div>
+                                    <i class="remove mdi mdi-close-box"></i>
+                                </li>
+                                <li class="completed">
+                                    <div class="form-check form-check-primary">
+                                        <label class="form-check-label">
+                                            <input class="checkbox" type="checkbox" checked> anasayfa tasarla
+                                        </label>
+                                    </div>
+                                    <i class="remove mdi mdi-close-box"></i>
+                                </li>
+                                <li>
+                                    <div class="form-check form-check-primary">
+                                        <label class="form-check-label">
+                                            <input class="checkbox" type="checkbox"> login yap
+                                        </label>
+                                    </div>
+                                    <i class="remove mdi mdi-close-box"></i>
+                                </li>
+                                <li>
+                                    <div class="form-check form-check-primary">
+                                        <label class="form-check-label">
+                                            <input class="checkbox" type="checkbox"> kayıt ekranı yap
+                                        </label>
+                                    </div>
+                                    <i class="remove mdi mdi-close-box"></i>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- page-body-wrapper ends -->
+        <!-- Sağ taraf -->
+
+    </div>
+
+    </div>
+    <!-- content-wrapper ends -->
+    <!-- partial:partials/_footer.html -->
+    <!-- partial -->
+    </div>
+    <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
     </div>
 
 
@@ -680,25 +679,89 @@
     <!-- Custom js for this page -->
     <script src="~/dashboardcss/js/dashboard.js"></script>
     <!-- End custom js for this page -->
-    
     @* Kaydet-Güncelle Popup *@
+    @* <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    var modal = document.getElementById("updateModal");
+    var btn = document.querySelector(".btn-edit");
+    var span = document.getElementsByClassName("close-button")[0];
+
+
+    btn.onclick = function () {
+    modal.style.display = "block";
+    }
+
+
+    span.onclick = function () {
+    modal.style.display = "none";
+    }
+
+
+    window.onclick = function (event) {
+    if (event.target == modal) {
+    modal.style.display = "none";
+    }
+    }
+    });
+    </script>
+
+    <script>
+    document.getElementById("updateForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    var photo = document.getElementById("photo").value;
+    var address = document.getElementById("address").value;
+    var phone = document.getElementById("phone").value;
+    var email = document.getElementById("email").value;
+
+
+    fetch('/api/updateProfile', {
+    method: 'POST',
+    headers: {
+    'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+    photo: photo,
+    address: address,
+    phone: phone,
+    email: email
+    })
+    })
+    .then(response => response.json())
+    .then(data => {
+    if (data.success) {
+    alert("Bilgiler başarıyla güncellendi!");
+    window.location.reload();
+    } else {
+    alert("Güncelleme başarısız oldu.");
+    }
+    })
+    .catch(error => {
+    console.error('Hata:', error);
+    });
+
+    modal.style.display = "none";
+    });
+
+    </script> *@
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var modal = document.getElementById("updateModal");
-            var btn = document.querySelector(".btn-edit"); 
-            var span = document.getElementsByClassName("close-button")[0]; 
+            var btn = document.querySelector(".btn-edit"); // Güncelle butonunun sınıfı
+            var span = document.getElementsByClassName("close-button")[0]; // Kapatma butonu
 
-           
+            // Modal'ı açma
             btn.onclick = function () {
                 modal.style.display = "block";
             }
 
-           
+            // Modal'ı kapama
             span.onclick = function () {
                 modal.style.display = "none";
             }
 
-           
+            // Modal dışında bir yere tıklanıldığında modal'ı kapatma
             window.onclick = function (event) {
                 if (event.target == modal) {
                     modal.style.display = "none";
@@ -709,16 +772,17 @@
 
     <script>
         document.getElementById("updateForm").addEventListener("submit", function (event) {
-            event.preventDefault(); 
+            event.preventDefault(); // Formun varsayılan gönderimini engelle
 
+            // Form verilerini al
             var photo = document.getElementById("photo").value;
             var address = document.getElementById("address").value;
             var phone = document.getElementById("phone").value;
             var email = document.getElementById("email").value;
 
-            
-            fetch('/api/updateProfile', {
-                method: 'POST',
+            // API isteği yap
+            fetch('/api/Calisan/UpdateUser', { // API URL'si doğru olmalı
+                method: 'PATCH', // İstek türü PATCH olmalı
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -733,7 +797,7 @@
                 .then(data => {
                     if (data.success) {
                         alert("Bilgiler başarıyla güncellendi!");
-                        window.location.reload(); 
+                        window.location.reload(); // Sayfayı yenileyerek değişiklikleri göster
                     } else {
                         alert("Güncelleme başarısız oldu.");
                     }
@@ -742,11 +806,9 @@
                     console.error('Hata:', error);
                 });
 
+            // Modal'ı kapama
             modal.style.display = "none";
         });
-
     </script>
-
-
 </body>
 </html>

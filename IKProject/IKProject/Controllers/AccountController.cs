@@ -154,9 +154,9 @@ namespace IKProject.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    // Kayıt başarılı, Login sayfasına yönlendir
+                    
                     TempData["SuccessMessage"] = "Kayıt başarılı. Lütfen giriş yapın.";
-                    return RedirectToAction("Login"); // Burada model geçmeye gerek yok
+                    return RedirectToAction("Login"); 
                 }
                 else
                 {
@@ -165,7 +165,7 @@ namespace IKProject.Controllers
                 }
             }
 
-            // Kayıt başarısızsa veya model geçersizse aynı formu göster
+           
             return View("Login", new LoginViewModel());
         }
 
@@ -187,23 +187,28 @@ namespace IKProject.Controllers
             return RedirectToAction("ForgotPassword");
         }
 
+       
+
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
             // Logout isteğini API'ye gönderir
-            var response = await _httpClient.PostAsync("http://localhost:5240/api/Auth/logout", null);
+            var response = await _httpClient.PostAsync("https://localhost:7149/api/Auth/logout", null);
 
             if (response.IsSuccessStatusCode)
             {
                 // Oturumdaki tüm verileri temizler
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 HttpContext.Session.Clear();
+
+                // Account/Login sayfasına yönlendir
+                return RedirectToAction("Login", "Account");
             }
             else
             {
                 ModelState.AddModelError(string.Empty, "Çıkış işlemi başarısız.");
+                return RedirectToAction("Index", "Home", new { area = "CompanyManager" });
             }
-
-            return RedirectToAction("Login", "Account");
         }
 
 
