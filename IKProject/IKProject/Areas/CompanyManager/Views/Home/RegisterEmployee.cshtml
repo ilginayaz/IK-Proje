@@ -5,100 +5,165 @@
     ViewData["Title"] = "Çalışan Ekle";
 }
 
-<h2>Çalışan Ekle</h2>
+<div class="form-container">
+    <h2>Personel Ekle</h2>
 
-<form asp-action="RegisterEmployee" method="post">
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
+    <form asp-action="RegisterEmployee" method="post">
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="ProfilePhoto"></label>
-        <input asp-for="ProfilePhoto" class="form-control" />
-        <span asp-validation-for="ProfilePhoto" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="ProfilePhoto"></label>
+            <input asp-for="ProfilePhoto" class="form-control" />
+            <span asp-validation-for="ProfilePhoto" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="Adi"></label>
-        <input asp-for="Adi" class="form-control" />
-        <span asp-validation-for="Adi" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="Adi"></label>
+            <input asp-for="Adi" class="form-control" />
+            <span asp-validation-for="Adi" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="IkinciAdi"></label>
-        <input asp-for="IkinciAdi" class="form-control" />
-        <span asp-validation-for="IkinciAdi" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="IkinciAdi"></label>
+            <input asp-for="IkinciAdi" class="form-control" />
+            <span asp-validation-for="IkinciAdi" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="Soyadi"></label>
-        <input asp-for="Soyadi" class="form-control" />
-        <span asp-validation-for="Soyadi" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="Soyadi"></label>
+            <input asp-for="Soyadi" class="form-control" />
+            <span asp-validation-for="Soyadi" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="IkinciSoyadi"></label>
-        <input asp-for="IkinciSoyadi" class="form-control" />
-        <span asp-validation-for="IkinciSoyadi" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="IkinciSoyadi"></label>
+            <input asp-for="IkinciSoyadi" class="form-control" />
+            <span asp-validation-for="IkinciSoyadi" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="TelefonNumarasi"></label>
-        <input asp-for="TelefonNumarasi" class="form-control" />
-        <span asp-validation-for="TelefonNumarasi" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="TelefonNumarasi"></label>
+            <input asp-for="TelefonNumarasi" class="form-control" />
+            <span asp-validation-for="TelefonNumarasi" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="DogumTarihi"></label>
-        <input asp-for="DogumTarihi" class="form-control" type="date" />
-        <span asp-validation-for="DogumTarihi" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="DogumTarihi"></label>
+            <input asp-for="DogumTarihi" class="form-control" type="date" />
+            <span asp-validation-for="DogumTarihi" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="DogumYeri" class="control-label"></label>
-        <select asp-for="DogumYeri" asp-items="@(new SelectList(Enum.GetValues(typeof(Sehirler))))" class="form-control"></select>
-        <span asp-validation-for="DogumYeri" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="DogumYeri" class="control-label"></label>
+            <select asp-for="DogumYeri" asp-items="@(new SelectList(Enum.GetValues(typeof(Sehirler))))" class="form-control"></select>
+            <span asp-validation-for="DogumYeri" class="text-danger"></span>
+        </div>
 
+        <div class="form-group">
+            <label asp-for="TC"></label>
+            <input asp-for="TC" class="form-control" />
+            <span asp-validation-for="TC" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="TC"></label>
-        <input asp-for="TC" class="form-control" />
-        <span asp-validation-for="TC" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="Departman"></label>
+            <select asp-for="Departman" asp-items="@(new SelectList(Enum.GetValues(typeof(Departman))))" class="form-control"></select>
+            <span asp-validation-for="Departman" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="Departman"></label>
-        <select asp-for="Departman" asp-items="@(new SelectList(Enum.GetValues(typeof(Departman))))" class="form-control"></select>
-        <span asp-validation-for="Departman" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="Meslek"></label>
+            <select asp-for="Meslek" asp-items="@(new SelectList(Enum.GetValues(typeof(Meslek))))" class="form-control"></select>
+            <span asp-validation-for="Meslek" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="Meslek"></label>
-        <select asp-for="Meslek" asp-items="@(new SelectList(Enum.GetValues(typeof(Meslek))))" class="form-control"></select>
-        <span asp-validation-for="Meslek" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="Adres"></label>
+            <input asp-for="Adres" class="form-control" />
+            <span asp-validation-for="Adres" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="Adres"></label>
-        <input asp-for="Adres" class="form-control" />
-        <span asp-validation-for="Adres" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="Cinsiyet"></label>
+            <select asp-for="Cinsiyet" asp-items="@(new SelectList(Enum.GetValues(typeof(Cinsiyet))))" class="form-control"></select>
+            <span asp-validation-for="Cinsiyet" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="Cinsiyet"></label>
-        <select asp-for="Cinsiyet" asp-items="@(new SelectList(Enum.GetValues(typeof(Cinsiyet))))" class="form-control"></select>
-        <span asp-validation-for="Cinsiyet" class="text-danger"></span>
-    </div>
+        <button type="submit" class="btn btn-primary">Personel Ekle</button>
+    </form>
+</div>
 
-    <button type="submit" class="btn btn-primary">Çalışanı Ekle</button>
-</form>
-
-@* @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+<style>
+    body {
+        background-color: #e0e7ea; 
+        font-family: 'Arial', sans-serif;
     }
-} *@
+
+    .form-container {
+        width: 400px;
+        margin: 50px 100px;
+        padding: 30px;
+        background-color: #2c3e50; 
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+        .form-container h2 {
+            color: #ffffff; 
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+    .form-group label {
+        color: #bfc9d2; 
+    }
+
+    .form-control {
+        background-color: #34495e; 
+        color: #ffffff;
+        border: 1px solid #1abc9c;
+        border-radius: 5px;
+    }
+
+        .form-control:focus {
+            background-color: #3b5998; 
+            border-color: #ff9900;
+            box-shadow: 0 0 8px rgba(255, 153, 0, 0.5);
+        }
+
+    select.form-control {
+        background-color: #ffffff; 
+        color: #000000; 
+        border: 1px solid #1abc9c; 
+    }
+
+        select.form-control option {
+            background-color: #ffffff; 
+            color: #000000; 
+        }
+
+    .btn-primary {
+        background-color: #ff9900;
+        border-color: #ff9900;
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        color: #ffffff;
+    }
+
+        .btn-primary:hover {
+            background-color: #cc7a00;
+            border-color: #cc7a00;
+        }
+
+    .text-danger {
+        color: #ff4d4d;
+    }
+</style>
+
 

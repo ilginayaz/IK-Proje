@@ -110,7 +110,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("GetEmployees");
+                return RedirectToAction("RegisterEmployee");
             }
             else
             {
