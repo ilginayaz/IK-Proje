@@ -1,13 +1,15 @@
-﻿<!DOCTYPE html>
+﻿@using IKProject.Data.Concrete
+@model ApplicationUser
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>FHYI Admin</title>
+    <title>FYHI Admin</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="~/dashboardcss/vendors/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="~/dashboardcss/vendors/css/vendor.bundle.base.css">
     <!-- endinject -->
     <!-- Plugin css for this page -->
     <link rel="stylesheet" href="~/dashboardcss/vendors/jvectormap/jquery-jvectormap.css">
@@ -23,88 +25,88 @@
     <link rel="shortcut icon" href="~/dashboardcss/images/favicon.png" />
 </head>
 <body>
-   
-             <br />
-             <br />
-             <br />
-            <h2>Çalışanlar Listesi</h2>
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">Adı Soyadı</th>
-                        <th scope="col">E-Posta</th>
-                        <th scope="col">Departman</th>
-                        <th scope="col">Görev</th>
-                        <th scope="col">Doğum Tarihi</th>
-                        <th scope="col">İşe Giriş Tarihi</th>
-                        <th scope="col">Telefon</th>
-                        <th scope="col">Adres</th>
-                        <th scope="col">Kalan Yıllık İzin</th>
-                        
-                        
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr data-name="Furkan Baybura" data-email="furkan@ornek.com" data-role="Admin" data-dob="1985-01-01" data-start="2014-08-01" data-phone="555-1234" data-address="İstanbul, Türkiye" data-department="Yönetim" data-status="Aktif" data-img="~/dashboardcss/images/faces/face10.jpg">
-                        <td>Furkan Baybura</td>
-                        <td>furkan@ornek.com</td>
-                        <td>Data Departmanı</td>
-                        <td>Frontend Geliştirici</td>
-                        <td>1985-01-01</td>
-                        <td>2014-08-01</td>
-                        <td>555-1234</td>
-                        <td>İstanbul, Türkiye</td>                       
-                        <td>5 Gün</td>
-                    </tr>
-                    <tr data-name="Yasin Bağçuvan" data-email="Yasin@ornek.com" data-role="Kullanıcı" data-dob="1990-02-10" data-start="2019-03-15" data-phone="555-5678" data-address="Ankara, Türkiye" data-department="Pazarlama" data-status="İzinli" data-img="~/dashboardcss/images/faces/face5.jpg">
-                        <td>Yasin Bağçuvan</td>
-                        <td>Yasin@ornek.com</td>
-                        <td>Yazılım Departmanı</td>
-                        <td>Backend Geliştirici</td>
-                        <td>1990-02-10</td>
-                        <td>2019-03-15</td>
-                        <td>555-5678</td>
-                        <td>Ankara, Türkiye</td>                        
-                        <td> - 10 Gün</td>
-                    </tr>
-                    <!-- Diğer satırlar burada devam eder -->
-                </tbody>
-            </table>
-        </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="employeeModal" tabindex="-1" aria-labelledby="employeeModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="employeeModalLabel">Çalışan Bilgileri</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="text-center">
+    <br />
+    <br />
+    <br />
+    <h2>Çalışanlar Listesi</h2>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Adı Soyadı</th>
+                <th scope="col">E-Posta</th>
+                <th scope="col">Departman</th>
+                <th scope="col">Görev</th>
+                <th scope="col">Doğum Tarihi</th>
+                <th scope="col">İşe Giriş Tarihi</th>
+                <th scope="col">Telefon</th>
+                <th scope="col">Adres</th>
+                <th scope="col">Kalan Yıllık İzin</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-name="Furkan Baybura" data-email="furkan@ornek.com" data-role="Admin" data-dob="1985-01-01" data-start="2014-08-01" data-phone="555-1234" data-address="İstanbul, Türkiye" data-department="Yönetim" data-status="Aktif" data-img="~/dashboardcss/images/faces/face10.jpg">
+                <td>Furkan Baybura</td>
+                <td>furkan@ornek.com</td>
+                <td>Data Departmanı</td>
+                <td>Frontend Geliştirici</td>
+                <td>1985-01-01</td>
+                <td>2014-08-01</td>
+                <td>555-1234</td>
+                <td>İstanbul, Türkiye</td>
+                <td>5 Gün</td>
+            </tr>
+            <tr data-name="Yasin Bağçuvan" data-email="Yasin@ornek.com" data-role="Kullanıcı" data-dob="1990-02-10" data-start="2019-03-15" data-phone="555-5678" data-address="Ankara, Türkiye" data-department="Pazarlama" data-status="İzinli" data-img="~/dashboardcss/images/faces/face5.jpg">
+                <td>Yasin Bağçuvan</td>
+                <td>Yasin@ornek.com</td>
+                <td>Yazılım Departmanı</td>
+                <td>Backend Geliştirici</td>
+                <td>1990-02-10</td>
+                <td>2019-03-15</td>
+                <td>555-5678</td>
+                <td>Ankara, Türkiye</td>
+                <td> - 10 Gün</td>
+            </tr>
+            <!-- Diğer satırlar burada devam eder -->
+        </tbody>
+    </table>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="employeeModal" tabindex="-1" aria-labelledby="employeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="employeeModalLabel">Çalışan Bilgileri</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
                         <img id="employeeImg" src="~/dashboardcss/images/faces/face5.jpg" alt="Kullanıcı Fotoğrafı" class="img-fluid rounded-circle mb-3" style="width: 150px;">
-                        </div>
-                        <p><strong>Adı Soyadı:</strong> <span id="employeeName"></span></p>
-                        <p><strong>Email:</strong> <span id="employeeEmail"></span></p>
-                        <p><strong>Departman:</strong> <span id="employeeDepartman"></span></p>
-                        <p><strong>Görevi:</strong> <span id="employeeGorev"></span></p>
-                        <p><strong>Doğum Tarihi:</strong> <span id="employeeDogum"></span></p>
-                        <p><strong>İşe Giriş Tarihi:</strong> <span id="employeeStart"></span></p>
-                        <p><strong>Telefon:</strong> <span id="employeePhone"></span></p>
-                        <p><strong>Adres:</strong> <span id="employeeAddress"></span></p>
-                        <p><strong>Kalan Yıllık İzin:</strong> <span id="employeeIzin"></span></p>
-                       
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
-                    </div>
+                    <p><strong>Adı Soyadı:</strong> <span id="employeeName"></span></p>
+                    <p><strong>Email:</strong> <span id="employeeEmail"></span></p>
+                    <p><strong>Departman:</strong> <span id="employeeDepartman"></span></p>
+                    <p><strong>Görevi:</strong> <span id="employeeGorev"></span></p>
+                    <p><strong>Doğum Tarihi:</strong> <span id="employeeDogum"></span></p>
+                    <p><strong>İşe Giriş Tarihi:</strong> <span id="employeeStart"></span></p>
+                    <p><strong>Telefon:</strong> <span id="employeePhone"></span></p>
+                    <p><strong>Adres:</strong> <span id="employeeAddress"></span></p>
+                    <p><strong>Kalan Yıllık İzin:</strong> <span id="employeeIzin"></span></p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
                 </div>
             </div>
         </div>
     </div>
+    </div>
     <!-- container-scroller -->
     <!-- plugins:js -->
-    <script src="assets/vendors/js/vendor.bundle.base.js"></script>
+    <script src="~/dashboardcss/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->
     <script src="~/dashboardcss/vendors/chart.js/Chart.min.js"></script>
@@ -131,7 +133,7 @@
 
     <script>
         $(document).ready(function () {
-            
+
             $('table tbody tr').click(function () {
                 // Modal içindeki alanları doldurma
                 $('#employeeName').text($(this).data('name'));
@@ -143,8 +145,8 @@
                 $('#employeePhone').text($(this).data('phone'));
                 $('#employeeAddress').text($(this).data('address'));
                 $('#employeeIzin').text($(this).data('Izin'));
-               
-                $('#employeeImg').attr('src', $(this).data('~/dashboardcss/images/faces/face5.jpg'));
+
+                // $('#employeeImg').attr('src', $(this).data('~/dashboardcss/images/faces/face5.jpg'));
 
                 // Modal'ı aç
                 $('#employeeModal').modal('show');
