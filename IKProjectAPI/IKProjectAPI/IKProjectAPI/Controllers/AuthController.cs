@@ -130,7 +130,10 @@ namespace IKProjectAPI.Controllers
                     {
                         new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(ClaimTypes.NameIdentifier, user.Id)
+                        new Claim(ClaimTypes.NameIdentifier, user.Id),
+                        new Claim(ClaimTypes.Name, user.Adi),
+                        new Claim(ClaimTypes.Surname, user.Soyadi),
+                        new Claim(ClaimTypes.Uri, user.ProfilePhoto)
                     };
 
                 // Rolleri claim'lere ekle
@@ -174,7 +177,7 @@ namespace IKProjectAPI.Controllers
                     user.Status = Data.Enums.Status.Active;
                     user.EmailConfirmed = true;
                     _emailSender.SendEmailAsync(email, "FHYI Group HOŞGELDİNİZ", "<h1>Hoş Geldiniz!</h1><p>FHYI Group'a katıldığınız için teşekkür ederiz.</p>");
-                    if (await _userManager.IsInRoleAsync(user, "Çalışan"))
+                    if (await _userManager.IsInRoleAsync(user, "Calisan"))
                     {
                         var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
                         var confirmationLink = Url.Action("ResetPassword", "Auth", new { userId = user.Id, token = resetToken }, Request.Scheme);
@@ -195,9 +198,12 @@ namespace IKProjectAPI.Controllers
             {
                 return BadRequest("Kullanıcı bulunamadı.");
             }
-
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var resetLink = Url.Action("ResetPassword", "Account", new { token, email = user.Email }, Request.Scheme);
+            if (await _userManager.IsInRoleAsync(user, "Calisan")) 
+            {
+                var a = "log";
+            }
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var resetLink = Url.Action("ResetPassword", "Account", new { token=token, email = user.Email }, Request.Scheme);
 
             await _emailSender.SendEmailAsync(user.Email, "FHYI Group - Şifre Sıfırlama Talebi",
                 $"<p>Lütfen şifrenizi sıfırlamak için aşağıdaki bağlantıya tıklayın:</p><a href='{resetLink}'>Şifre Sıfırla</a>");

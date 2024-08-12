@@ -101,6 +101,8 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterEmployee(CalisanRegisterModel registerModel)
         {
+            
+            registerModel.YoneticiId = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
             var jsonContent = JsonConvert.SerializeObject(registerModel);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
