@@ -1,5 +1,6 @@
 ﻿@using IKProject.Data.Concrete
-@model ApplicationUser
+
+@model IEnumerable<ApplicationUser>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,53 +26,49 @@
     <link rel="shortcut icon" href="~/dashboardcss/images/favicon.png" />
 </head>
 <body>
+    <div>
 
-    <br />
-    <br />
-    <br />
-    <h2>Çalışanlar Listesi</h2>
-    <table class="table table-bordered table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Adı Soyadı</th>
-                <th scope="col">E-Posta</th>
-                <th scope="col">Departman</th>
-                <th scope="col">Görev</th>
-                <th scope="col">Doğum Tarihi</th>
-                <th scope="col">İşe Giriş Tarihi</th>
-                <th scope="col">Telefon</th>
-                <th scope="col">Adres</th>
-                <th scope="col">Kalan Yıllık İzin</th>
+        <h2>Çalışanlar Listesi</h2>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Adı Soyadı</th>
+                    <th scope="col">E-Posta</th>
+                    <th scope="col">Departman</th>
+                    <th scope="col">Görev</th>
+                    <th scope="col">Doğum Tarihi</th>
+                    <th scope="col">İşe Giriş Tarihi</th>
+                    <th scope="col">Telefon</th>
+                    <th scope="col">Adres</th>
+                    <th scope="col">Kalan Yıllık İzin</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employee in Model)
+                {
+                    <tr data-name="@employee.Adi @employee.Soyadi"
+                        data-email="@employee.Email"
+                        data-role="@employee.Departman"
+                        data-dob="@employee.DogumTarihi.ToString("yyyy-MM-dd")"
+                        data-start="@employee.CreatedTime.ToString("yyyy-MM-dd")"
+                        data-phone="@employee.TC"
+                        data-address="@employee.Adres"
+                        data-department="@employee.Departman"
+                        data-status="@employee.Status"
+                        data-img="@employee.ProfilePhoto">
 
-
-            </tr>
-        </thead>
-        <tbody>
-            <tr data-name="Furkan Baybura" data-email="furkan@ornek.com" data-role="Admin" data-dob="1985-01-01" data-start="2014-08-01" data-phone="555-1234" data-address="İstanbul, Türkiye" data-department="Yönetim" data-status="Aktif" data-img="~/dashboardcss/images/faces/face10.jpg">
-                <td>Furkan Baybura</td>
-                <td>furkan@ornek.com</td>
-                <td>Data Departmanı</td>
-                <td>Frontend Geliştirici</td>
-                <td>1985-01-01</td>
-                <td>2014-08-01</td>
-                <td>555-1234</td>
-                <td>İstanbul, Türkiye</td>
-                <td>5 Gün</td>
-            </tr>
-            <tr data-name="Yasin Bağçuvan" data-email="Yasin@ornek.com" data-role="Kullanıcı" data-dob="1990-02-10" data-start="2019-03-15" data-phone="555-5678" data-address="Ankara, Türkiye" data-department="Pazarlama" data-status="İzinli" data-img="~/dashboardcss/images/faces/face5.jpg">
-                <td>Yasin Bağçuvan</td>
-                <td>Yasin@ornek.com</td>
-                <td>Yazılım Departmanı</td>
-                <td>Backend Geliştirici</td>
-                <td>1990-02-10</td>
-                <td>2019-03-15</td>
-                <td>555-5678</td>
-                <td>Ankara, Türkiye</td>
-                <td> - 10 Gün</td>
-            </tr>
-            <!-- Diğer satırlar burada devam eder -->
-        </tbody>
-    </table>
+                        <td>@employee.Adi @employee.Soyadi</td>
+                        <td>@employee.Email</td>
+                        <td>@employee.Departman</td>
+                        <td>@employee.DogumTarihi.ToString("yyyy-MM-dd")</td>
+                        <td>@employee.CreatedTime.ToString("yyyy-MM-dd")</td>
+                        <td>@employee.TelefonNumarasi</td>
+                        <td>@employee.Adres</td>
+                        <td>12</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 
     <!-- Modal -->
