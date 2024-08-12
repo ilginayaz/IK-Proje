@@ -64,7 +64,6 @@ namespace IKProject.Models
         public IdentityResult? Result { get; set; }
         public string? Token { get; set; }
 
-
         public string SirketAdi { get; set; }
         public string SirketNumarasi { get; set; }
         public string VergiNo { get; set; }

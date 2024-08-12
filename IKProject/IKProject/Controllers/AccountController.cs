@@ -50,6 +50,7 @@ namespace IKProject.Controllers
                         Expires = DateTime.UtcNow.AddHours(1),
                         IsEssential = true
                     });
+                    HttpContext.Session.SetString("TokenAuth", tokenObj.Token);
 
                     _httpClient.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenObj.Token);
 
@@ -66,15 +67,10 @@ namespace IKProject.Controllers
                         var claims = token.Claims.ToList();
 
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                        var authProperties = new AuthenticationProperties
-                        {
-                            // AuthenticationProperties ile ek seçenekler belirleyebilirsiniz
-                            IsPersistent = true, // Örneğin, oturumun kalıcı olmasını sağlayabilirsiniz
-                            ExpiresUtc = DateTime.UtcNow.AddHours(1)
-                        };
+                        
 
                         // Kullanıcıyı oturum açma işlemi ile kimlik doğrulama
-                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
                         if (roles.Contains("Admin"))
                         {

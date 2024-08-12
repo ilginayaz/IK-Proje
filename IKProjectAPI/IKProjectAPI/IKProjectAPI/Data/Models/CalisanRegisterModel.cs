@@ -62,6 +62,7 @@ namespace IKProjectAPI.Data.Models
         public Cinsiyet Cinsiyet { get; set; }
         public IdentityResult? Result { get; set; }
         public string? Token { get; set; }
+        public string YoneticiId { get; set; }
 
     }
 }

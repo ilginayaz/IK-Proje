@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+@{
+    var nameClaim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")?.Value;
+    var surnameClaim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname")?.Value;
+    var photoClaim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/uri")?.Value;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Required meta tags -->
@@ -35,11 +41,11 @@
                     <div class="profile-desc">
                         <div class="profile-pic">
                             <div class="count-indicator">
-                                <img src="@Model.ProfilePhoto" alt="Yönetici Fotoğrafı" class="profile-img">
+                                <img src="@photoClaim" alt="Yönetici Fotoğrafı" class="profile-img">
                                 <span class="count bg-success"></span>
                             </div>
                             <div class="profile-name">
-                                <h5 class="mb-0 font-weight-normal">@Model.Adi @Model.Soyadi</h5>
+                                <h5 class="mb-0 font-weight-normal">@nameClaim @surnameClaim</h5>
                                 <span>Manager</span>
                             </div>
                         </div>
@@ -127,8 +133,8 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div class="navbar-profile">
-                                    <img src="@Model.ProfilePhoto" alt="Yönetici Fotoğrafı" class="profile-img" style="height:40px">
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">@Model.Adi @Model.Soyadi</p>
+                                    <img src="@photoClaim" alt="Yönetici Fotoğrafı" class="profile-img" style="height:40px">
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">@nameClaim @surnameClaim</p>
                                     <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                                 </div>
                             </a>

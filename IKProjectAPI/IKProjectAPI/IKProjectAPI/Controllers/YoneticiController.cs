@@ -166,20 +166,25 @@ namespace IKProjectAPI.Controllers
                 Status = Data.Enums.Status.AwatingApproval,
             };
             var claims = User.Claims.ToList();
-            var yoneticiId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            var yoneticiId = registerModel.YoneticiId;
                 var yonetici = await _userManager.FindByIdAsync(yoneticiId);
+                var sirket =await _context.sirketler.FindAsync(yonetici.SirketId);
             if (yonetici != null)
             {
-                yonetici.Sirket.SirketCalisanlari.Add(user);
-                user.SirketId = yonetici.Sirket.Id;
+                yonetici.Calisanlar.Add(user);
+                sirket.SirketCalisanlari.Add(user);
+                //yonetici.Sirket.SirketCalisanlari.Add(user);
+                user.SirketId = sirket.Id;
 
             }
 
-            var result = await _userManager.CreateAsync(user, registerModel.Password);
+            var result = await _userManager.CreateAsync(user, "Fhyi.1");
             if (result.Succeeded)
             {
                 //Kayıt başarılı, token dönebiliriz veya sadece başarılı yanıtı dönebiliriz
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                
                 _context.SaveChanges();
                 var confirmationLink = Url.Action("ConfirmEmail", "Auth", new { userId = user.Id, token = token }, Request.Scheme);
 
