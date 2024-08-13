@@ -195,7 +195,12 @@ namespace IKProject.Controllers
             {
                 // Oturumdaki tüm verileri temizler
                 await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                HttpContext.Session.Clear();
+                // JWTToken adlı çerezi temizler
+                if (HttpContext.Request.Cookies.ContainsKey("JWTToken"))
+                {
+                    // Çerezi sıfırlar (null), böylece tarayıcıdan silinir
+                    Response.Cookies.Delete("JWTToken");
+                }
 
                 // Account/Login sayfasına yönlendir
                 return RedirectToAction("Login", "Account");
