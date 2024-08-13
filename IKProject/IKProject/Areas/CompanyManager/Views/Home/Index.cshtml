@@ -310,7 +310,9 @@
                                     <p><strong>Email:</strong> @Model.Email</p>
                                     <p><strong>Departman:</strong> @Model.Departman</p>
                                     <p><strong>Adres:</strong> @Model.Adres</p>
-                                    <button class="btn-edit">Düzenle</button>
+                                    <a href="@Url.Action("EditProfile", "Home", new { area = "CompanyManager" })">
+                                        <button class="btn-edit">Düzenle</button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -628,33 +630,7 @@
     </div>
 
 
-    @* Kaydet Popupı İçin *@
-    <!-- Güncelleme Popup'ı -->
-    <div id="updateModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Bilgileri Güncelle</h2>
-            <form asp-action ="EditProfile" asp-controller="Home" method="post" enctype="multipart/form-data" id="updateForm">
-                <div class="form-group">
-                    <label for="photo">Profil Fotoğrafı:</label>
-                    <input type="text" id="photo" name="photo" value="@Model.ProfilePhoto">
-                </div>
-                <div class="form-group">
-                    <label for="address">Adres:</label>
-                    <input type="text" id="address" name="address" value="@Model.Adres">
-                </div>
-                <div class="form-group">
-                    <label for="phone">Telefon:</label>
-                    <input type="text" id="phone" name="phone" value="@Model.TelefonNumarasi">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" value="@Model.Email">
-                </div>
-                <button type="submit" class="btnn-edit">Güncelle</button>
-            </form>
-        </div>
-    </div>
+   
 
 
 
@@ -679,136 +655,6 @@
     <!-- Custom js for this page -->
     <script src="~/dashboardcss/js/dashboard.js"></script>
     <!-- End custom js for this page -->
-    @* Kaydet-Güncelle Popup *@
-    @* <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    var modal = document.getElementById("updateModal");
-    var btn = document.querySelector(".btn-edit");
-    var span = document.getElementsByClassName("close-button")[0];
-
-
-    btn.onclick = function () {
-    modal.style.display = "block";
-    }
-
-
-    span.onclick = function () {
-    modal.style.display = "none";
-    }
-
-
-    window.onclick = function (event) {
-    if (event.target == modal) {
-    modal.style.display = "none";
-    }
-    }
-    });
-    </script>
-
-    <script>
-    document.getElementById("updateForm").addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    var photo = document.getElementById("photo").value;
-    var address = document.getElementById("address").value;
-    var phone = document.getElementById("phone").value;
-    var email = document.getElementById("email").value;
-
-
-    fetch('/api/updateProfile', {
-    method: 'POST',
-    headers: {
-    'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-    photo: photo,
-    address: address,
-    phone: phone,
-    email: email
-    })
-    })
-    .then(response => response.json())
-    .then(data => {
-    if (data.success) {
-    alert("Bilgiler başarıyla güncellendi!");
-    window.location.reload();
-    } else {
-    alert("Güncelleme başarısız oldu.");
-    }
-    })
-    .catch(error => {
-    console.error('Hata:', error);
-    });
-
-    modal.style.display = "none";
-    });
-
-    </script> *@
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var modal = document.getElementById("updateModal");
-            var btn = document.querySelector(".btn-edit"); // Güncelle butonunun sınıfı
-            var span = document.getElementsByClassName("close-button")[0]; // Kapatma butonu
-
-            // Modal'ı açma
-            btn.onclick = function () {
-                modal.style.display = "block";
-            }
-
-            // Modal'ı kapama
-            span.onclick = function () {
-                modal.style.display = "none";
-            }
-
-            // Modal dışında bir yere tıklanıldığında modal'ı kapatma
-            window.onclick = function (event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
-        });
-    </script>
-
-    <script>
-        document.getElementById("updateForm").addEventListener("submit", function (event) {
-            event.preventDefault(); // Formun varsayılan gönderimini engelle
-
-            // Form verilerini al
-            var photo = document.getElementById("photo").value;
-            var address = document.getElementById("address").value;
-            var phone = document.getElementById("phone").value;
-            var email = document.getElementById("email").value;
-
-            // API isteği yap
-            fetch('/api/Calisan/UpdateUser', { // API URL'si doğru olmalı
-                method: 'PATCH', // İstek türü PATCH olmalı
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    photo: photo,
-                    address: address,
-                    phone: phone,
-                    email: email
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert("Bilgiler başarıyla güncellendi!");
-                        window.location.reload(); // Sayfayı yenileyerek değişiklikleri göster
-                    } else {
-                        alert("Güncelleme başarısız oldu.");
-                    }
-                })
-                .catch(error => {
-                    console.error('Hata:', error);
-                });
-
-            // Modal'ı kapama
-            modal.style.display = "none";
-        });
-    </script>
+   
 </body>
 </html>
