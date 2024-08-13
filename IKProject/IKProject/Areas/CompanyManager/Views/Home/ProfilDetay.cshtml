@@ -1,6 +1,6 @@
 ﻿@using IKProject.Data.Concrete
 
-@model IEnumerable<ApplicationUser>
+@model List<ApplicationUser>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,7 +44,7 @@
                 </tr>
             </thead>
             <tbody>
-                @* @foreach (var employee in Model)
+                @foreach (var employee in Model)
                 {
                     <tr data-name="@employee.Adi @employee.Soyadi"
                         data-email="@employee.Email"
@@ -66,7 +66,7 @@
                         <td>@employee.Adres</td>
                         <td>12</td>
                     </tr>
-                } *@
+                }
             </tbody>
         </table>
     </div>

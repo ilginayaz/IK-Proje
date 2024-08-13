@@ -2,6 +2,7 @@
 using IKProjectAPI.Data.Abstract;
 using IKProjectAPI.Data.Enums;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
 namespace IKProjectAPI.Data.Concrete
@@ -63,8 +64,10 @@ namespace IKProjectAPI.Data.Concrete
         public Status Status { get; set; } = Status.AwatingApproval;
 
         public string? YoneticiId { get; set; }
+        [JsonIgnore]
         public virtual ApplicationUser? Yonetici { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<ApplicationUser> Calisanlar { get; set; }
         public virtual ICollection<IzinIstegi> Izinler { get; set; }
         public virtual ICollection<Masraf> Masraflar { get; set; }

@@ -288,5 +288,47 @@ namespace IKProjectAPI.Controllers
             return BadRequest("Bilgileriniz onaylanamadı. Lütfen tekrar deneyin.");
         }
 
+        //Çalışanların bilgilerini getiren endpoint
+        [HttpGet("getUser")]
+        public async Task<IActionResult> GetUser(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound("Kullanıcı bulunamadı.");
+            }
+
+            return Ok(new
+            {
+                Email = user.Email,
+                ProfilePhoto = user.ProfilePhoto,
+                Adi = user.Adi,
+                IkinciAdi = user.IkinciAdi,
+                Soyadi = user.Soyadi,
+                IkinciSoyadi = user.IkinciSoyadi,
+                TelefonNumarasi = user.PhoneNumber,
+                DogumTarihi = user.DogumTarihi,
+                DogumYeri = user.DogumYeri,
+                TC = user.TC,
+                IseGirisTarihi = user.IseGirisTarihi,
+                IstenCikisTarihi = user.IstenCikisTarihi,
+                Sirket = user.Sirket,
+                Meslek = user.Meslek,
+                Departman = user.Departman,
+                Adres = user.Adres,
+                Maas = user.Maas,
+                Cinsiyet = user.Cinsiyet,
+                Token = user.Token,
+                CreatedTime = user.CreatedTime,
+                UpdatedTime = user.UpdatedTime,
+                DeletedTime = user.DeletedTime,
+                Status = user.Status,
+                YoneticiId = user.YoneticiId,
+                Yonetici = user.Yonetici,
+                Calisanlar = user.Calisanlar,
+                Izinler = user.Izinler
+            });
+        }
     }
 }

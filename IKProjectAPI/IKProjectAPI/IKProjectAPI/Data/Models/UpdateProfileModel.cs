@@ -1,6 +1,6 @@
-﻿namespace IKProject.Models
+﻿namespace IKProjectAPI.Data.Models
 {
-    public class UpdateProfileViewModel
+    public class UpdateProfileModel
     {
         public string Email { get; set; }
         public string ProfilePhoto { get; set; }
