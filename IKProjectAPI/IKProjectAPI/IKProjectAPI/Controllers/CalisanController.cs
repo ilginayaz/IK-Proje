@@ -1,5 +1,6 @@
 ﻿using IKProjectAPI.Data;
 using IKProjectAPI.Data.Concrete;
+using IKProjectAPI.Data.Models;
 using IKProjectAPI.NewFolder;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -12,7 +13,7 @@ namespace IKProjectAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "Admin,Yonetici,Calisan")]
+    
     public class CalisanController : ControllerBase
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -31,7 +32,7 @@ namespace IKProjectAPI.Controllers
         }
         //kullanıcıyı güncelle
         [HttpPatch("UpdateUser")]
-        public async Task<IActionResult> UpdateUser(ApplicationUser userModel)
+        public async Task<IActionResult> UpdateUser(UpdateProfileModel userModel)
         {
             ApplicationUser user = await _userManager.FindByEmailAsync(userModel.Email);
 
@@ -39,20 +40,8 @@ namespace IKProjectAPI.Controllers
             {
                 user.ProfilePhoto = userModel.ProfilePhoto;
                 user.Adres = userModel.Adres;
-                user.PhoneNumber = userModel.PhoneNumber;
+                user.PhoneNumber = userModel.TelefonNumarasi;
                 user.Status = Data.Enums.Status.Active;
-                //user.UpdatedTime = DateTime.Now;
-                //user.Adi = userModel.Adi;
-                //user.IkinciAdi = userModel.IkinciAdi;
-                //user.Soyadi = userModel.Soyadi;
-                //user.IkinciSoyadi = userModel.IkinciSoyadi;
-                //user.DogumTarihi = userModel.DogumTarihi;
-                //user.DogumYeri = userModel.DogumYeri;
-                //user.TC = userModel.TC;
-                //user.Sirket = userModel.Sirket;
-                //user.Departman = userModel.Departman;
-                //user.Meslek = userModel.Meslek;
-                //user.Cinsiyet = userModel.Cinsiyet;
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {

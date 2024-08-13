@@ -7,7 +7,7 @@
 
 <h2>Hesap Ayarları</h2>
 
-<form asp-action="EditProfile" asp-controller="Profile" method="post" enctype="multipart/form-data">
+<form asp-action="EditProfile" asp-controller="Home" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label asp-for="ProfilePhoto"></label>
         <input asp-for="ProfilePhoto" type="text" class="form-control-file" />
@@ -19,67 +19,17 @@
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Adi"></label>
-        <input asp-for="Adi" class="form-control" />
-        <span asp-validation-for="Adi" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Soyadi"></label>
-        <input asp-for="Soyadi" class="form-control" />
-        <span asp-validation-for="Soyadi" class="text-danger"></span>
-    </div>
-    <div class="form-group">
         <label asp-for="TelefonNumarasi"></label>
         <input asp-for="TelefonNumarasi" class="form-control" />
         <span asp-validation-for="TelefonNumarasi" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="SirketAdi"></label>
-        <input asp-for="SirketAdi" class="form-control" />
-        <span asp-validation-for="SirketAdi" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="SirketNumarasi"></label>
-        <input asp-for="SirketNumarasi" class="form-control" />
-        <span asp-validation-for="SirketNumarasi" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="VergiNo"></label>
-        <input asp-for="VergiNo" class="form-control" />
-        <span asp-validation-for="VergiNo" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="VergiOfisi"></label>
-        <input asp-for="VergiOfisi" class="form-control" />
-        <span asp-validation-for="VergiOfisi" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="SirketEmail"></label>
-        <input asp-for="SirketEmail" class="form-control" />
-        <span asp-validation-for="SirketEmail" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Sehir"></label>
-        <input asp-for="Sehir" class="form-control" />
-        <span asp-validation-for="Sehir" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Adres"></label>
         <input asp-for="Adres" class="form-control" />
         <span asp-validation-for="Adres" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="PostaKodu"></label>
-        <input asp-for="PostaKodu" class="form-control" />
-        <span asp-validation-for="PostaKodu" class="text-danger"></span>
-    </div>
+
 
     <button type="submit" class="btn btn-primary">Güncelle</button>
 </form>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

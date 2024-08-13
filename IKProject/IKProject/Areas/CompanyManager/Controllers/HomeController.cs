@@ -36,9 +36,21 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
 
             return NotFound("Kullanıcı bulunamadı.");
         }
-        public IActionResult ProfilDetay()
+        public async Task<IActionResult> ProfilDetay()
         {
-            return View();
+            var userId = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameIdentifier")?.Value;
+            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/getEmployees?yoneticiId={userId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var employees = JsonConvert.DeserializeObject<List<ApplicationUser>>(content);
+                return View(employees);
+            }
+            else
+            {
+                return View("Personel Bulunamadı!");
+            }
         }
 
 
@@ -47,7 +59,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         {
 
 
-            var response = await _httpClient.GetAsync($"http://localhost:5240/api/Yonetici/getUser?userId={userId}");
+            var response = await _httpClient.GetAsync($"http://localhost:5240/api/Auth/getUser?userId={userId}");
             if (response.IsSuccessStatusCode)
             {
 
@@ -61,7 +73,9 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         // yöneticinin çalışanları
         public async Task<IActionResult> GetEmployees()
         {
-            var response = await _httpClient.GetAsync("http://localhost:5240/api/Yonetici/getEmployees");
+            
+            var userId = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameIdentifier")?.Value;
+            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/getEmployees?yoneticiId={userId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -155,7 +169,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         public async Task<IActionResult> EditProfile()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Calisan/GetUser?userId={userId}");
+            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Auth/GetUser?userId={userId}");
 
             if (response.IsSuccessStatusCode)
             {

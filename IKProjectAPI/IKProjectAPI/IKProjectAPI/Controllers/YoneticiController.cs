@@ -31,71 +31,29 @@ namespace IKProjectAPI.Controllers
             _context = context;
             _emailSender = emailSender;
         }
-        //Çalışanların bilgilerini getiren endpoint
-        [HttpGet("getUser")]
-        public async Task<IActionResult> GetUser(string userId)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-
-            if (user == null)
-            {
-                return NotFound("Kullanıcı bulunamadı.");
-            }
-
-            return Ok(new
-            {
-                Email = user.Email,
-                ProfilePhoto = user.ProfilePhoto,
-                Adi = user.Adi,
-                IkinciAdi = user.IkinciAdi,
-                Soyadi = user.Soyadi,
-                IkinciSoyadi = user.IkinciSoyadi,
-                TelefonNumarasi = user.PhoneNumber,
-                DogumTarihi = user.DogumTarihi,
-                DogumYeri = user.DogumYeri,
-                TC = user.TC,
-                IseGirisTarihi = user.IseGirisTarihi,
-                IstenCikisTarihi = user.IstenCikisTarihi,
-                Sirket = user.Sirket,
-                Meslek = user.Meslek,
-                Departman = user.Departman,
-                Adres = user.Adres,
-                Maas = user.Maas,
-                Cinsiyet = user.Cinsiyet,
-                Token = user.Token,
-                CreatedTime = user.CreatedTime,
-                UpdatedTime = user.UpdatedTime,
-                DeletedTime = user.DeletedTime,
-                Status = user.Status,
-                YoneticiId = user.YoneticiId,
-                Yonetici = user.Yonetici,
-                Calisanlar = user.Calisanlar,
-                Izinler = user.Izinler
-            });
-        }
+        
 
 
 
         // Yöneticinin çalışanlarını getir
         [HttpGet("getEmployees")]
-        public async Task<IActionResult> GetEmployees()
+        public async Task<IActionResult> GetEmployees(string yoneticiId)
         {
-            // Öncelikle, yöneticinin bilgilerini alalım
-            var claims = User.Claims.ToList();
-            var yoneticiId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+           
+
             var yonetici = await _userManager.FindByIdAsync(yoneticiId);
             if (yonetici == null)
             {
                 return NotFound("Manager not found");
             }
 
-            // Yöneticinin çalışanlarını al
-            var calisanlarIds = yonetici.Calisanlar.Select(c => c.Id).ToList();
+            var yoneticiIds = await _context.Users.Select(c => c.YoneticiId).ToListAsync();
 
             // Çalışanların bilgilerini filtrele
             var calisanlar = await _context.Users
-                .Where(u => calisanlarIds.Contains(u.Id) && u.Status != Status.Passive)
+                .Where(u => u.YoneticiId == yoneticiId && u.Status != Status.Passive)
                 .ToListAsync();
+
 
             return Ok(calisanlar);
         }
