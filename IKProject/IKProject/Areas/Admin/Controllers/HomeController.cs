@@ -11,5 +11,13 @@ namespace IKProject.Areas.Admin.Controllers
         {
             return View();
         }
+        public IActionResult CompanyRegister()
+        {
+            return View();
+        }
+        public IActionResult CompanyList() 
+        {
+            return View();
+        }
     }
 }
