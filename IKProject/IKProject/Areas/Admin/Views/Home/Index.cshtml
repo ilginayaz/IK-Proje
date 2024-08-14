@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using IKProject.Data.Concrete
+@model ApplicationUser
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Required meta tags -->
@@ -109,20 +111,20 @@
                             <h4 class="card-title">Yönetici Bilgileri</h4>
                             <div class="summary-card" style="max-width:1000px">
                                 <div class="info-column">
-                                    <img src="/dashboardcss/images/faces/face2.jpg" alt="Yönetici Fotoğrafı" class="profile-img">
+                                    <img src="@Model.ProfilePhoto" alt="Yönetici Fotoğrafı" class="profile-img">
                                 </div>
                                 <div class="info-column">
-                                    <p><strong>Ad:</strong> Furkan </p>
-                                    <p><strong>Soyad:</strong> Baybura</p>
-                                    <p><strong>Telefon:</strong> 5066705958</p>
-                                    <p><strong>Doğum Tarihi:</strong> 31.07.1998</p>
-                                    <p><strong>Doğum Yeri:</strong> Konya</p>
+                                    <p><strong>Ad:</strong> @Model.Adi </p>
+                                    <p><strong>Soyad:</strong> @Model.Soyadi</p>
+                                    <p><strong>Telefon:</strong> @Model.TelefonNumarasi</p>
+                                    <p><strong>Doğum Tarihi:</strong> @Model.DogumTarihi</p>
+                                    <p><strong>Doğum Yeri:</strong> @Model.DogumYeri</p>
                                 </div>
                                 <div class="info-column">
-                                    <p><strong>TC Kimlik Numarası:</strong> 1111111111</p>
-                                    <p><strong>Email:</strong> furkanbaybura@hotmail.com</p>
-                                    <p><strong>Departman:</strong> Yazılım</p>
-                                    <p><strong>Adres:</strong> Ankara</p>
+                                    <p><strong>TC Kimlik Numarası:</strong> @Model.TC</p>
+                                    <p><strong>Email:</strong> @Model.Email</p>
+                                    <p><strong>Departman:</strong> @Model.Departman</p>
+                                    <p><strong>Adres:</strong> @Model.Adres</p>
                                     <a href="@Url.Action("EditProfile", "Home", new { area = "Admin" })">
                                         <button class="btn-edit">Düzenle</button>
                                     </a>
