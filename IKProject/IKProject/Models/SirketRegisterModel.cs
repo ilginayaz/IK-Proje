@@ -1,10 +1,9 @@
-﻿using IKProjectAPI.Data.Abstract;
-using IKProjectAPI.Data.Enums;
+﻿using IKProject.Data.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace IKProjectAPI.Data.Concrete
+namespace IKProject.Models
 {
-    public class Sirket :  IBaseEntity
+    public class SirketRegisterModel
     {
         public Guid Id { get; set; }
 
@@ -54,9 +53,5 @@ namespace IKProjectAPI.Data.Concrete
         [DataType(DataType.Date)]
         public DateTime? DeletedTime { get; set; }
         public Status Status { get; set; } = Status.AwatingApproval;
-
-        public virtual ICollection<ApplicationUser> SirketYoneticileri { get; set; }
-        public virtual ICollection<ApplicationUser>? SirketCalisanlari { get; set; }
-        public virtual ICollection<IzinTipi> IzinTipis { get; set; }
     }
 }

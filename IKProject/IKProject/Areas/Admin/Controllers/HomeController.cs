@@ -1,8 +1,10 @@
 ﻿using IKProject.Data.Concrete;
+using IKProject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Security.Claims;
+using System.Text;
 
 namespace IKProject.Areas.Admin.Controllers
 {
@@ -29,10 +31,28 @@ namespace IKProject.Areas.Admin.Controllers
 
             return NotFound("Kullanıcı bulunamadı.");
         }
-
+        [HttpGet]
         public IActionResult CompanyRegister()
         {
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CompanyRegister(SirketRegisterModel sirketRegisterModel)
+        {
+            sirketRegisterModel.SirketNumarasi = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+            var jsonContent = JsonConvert.SerializeObject(sirketRegisterModel);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync("https://localhost:7149/api/Company/SirketOlustur", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("RegisterEmployee");
+            }
+            else
+            {
+                return View("Tekrar deneyin!");
+            }
         }
         public IActionResult CompanyList() 
         {
