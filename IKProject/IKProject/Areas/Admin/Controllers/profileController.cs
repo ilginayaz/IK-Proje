@@ -1,4 +1,6 @@
-﻿using IKProject.Models;
+﻿using IKProject.Areas.Admin.Models;
+using IKProject.Data.Concrete;
+using IKProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -70,6 +72,27 @@ namespace IKProject.Areas.Admin.Controllers
 
             return View(model);
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Details()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Admin/GetAdminDetails?id={userId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var adminDetails = JsonConvert.DeserializeObject<AdminDetailsViewModel>(content);
+                return View(adminDetails);
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Admin bilgileri alınamadı.");
+                return View();
+            }
+        }
+
 
     }
 }
