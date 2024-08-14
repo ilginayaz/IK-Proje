@@ -4,6 +4,7 @@ using IKProjectAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IKProjectAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240814205130_ia7")]
+    partial class ia7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,8 +182,8 @@ namespace IKProjectAPI.Migrations
                             Adi = "Admin",
                             Adres = "Ilgın Mahallesi, Hivda Sokak, No:1, Ankara",
                             Cinsiyet = 1,
-                            ConcurrencyStamp = "0cea83b5-2bc3-4335-b822-bd8cdb82d366",
-                            CreatedTime = new DateTime(2024, 8, 15, 0, 11, 0, 711, DateTimeKind.Local).AddTicks(9486),
+                            ConcurrencyStamp = "19cba33f-d130-4b5d-a243-39c51ed04fbd",
+                            CreatedTime = new DateTime(2024, 8, 14, 23, 51, 29, 318, DateTimeKind.Local).AddTicks(1599),
                             Departman = 0,
                             DogumTarihi = new DateOnly(1997, 1, 1),
                             DogumYeri = 5,
@@ -193,10 +196,10 @@ namespace IKProjectAPI.Migrations
                             Meslek = 0,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEE9oaxkSoiwpkwZEBCYw8x0UlTrbzNfvGrBOUZdZ5/N9deM7Fqo27FqO3Y5GMhsISQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKR6u+OZsPTVAHsxHhthZkzVOCfdiGW3xUmlP2u+giQYq88uLJbvicZVDFwFw4a5JA==",
                             PhoneNumberConfirmed = false,
                             ProfilePhoto = "https://randomuser.me/api/portraits/men/11.jpg",
-                            SecurityStamp = "8678980EED564CECB09BD68613AC7382",
+                            SecurityStamp = "{8678980E-ED56-4CEC-B09B-D68613AC7382}",
                             SirketId = new Guid("7d06417e-6ccf-4680-4462-08dcb8609bcc"),
                             Soyadi = "User",
                             Status = 3,
