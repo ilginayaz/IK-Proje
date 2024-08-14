@@ -1,4 +1,5 @@
 ﻿using IKProjectAPI.Data.Concrete;
+using IKProjectAPI.Data.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ namespace IKProjectAPI.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<IdentityUserRole<int>>().HasKey(ir => new { ir.UserId, ir.RoleId });
+            builder.Entity<IdentityUserRole<string>>().HasKey(ir => new { ir.UserId, ir.RoleId });
 
 
             builder.Entity<IdentityRole>().HasData(
@@ -24,27 +25,46 @@ namespace IKProjectAPI.Data
                 new IdentityRole { Id = "3", Name = "Çalışan", NormalizedName = "CALISAN" }
             );
 
-            var hasher = new PasswordHasher<IdentityUser<int>>();
-            builder.Entity<IdentityUser<int>>().HasData(
-                new IdentityUser<int>
+            var hasher = new PasswordHasher<ApplicationUser>();
+            builder.Entity<ApplicationUser>().HasData(
+                new ApplicationUser
                 {
-                    Id = 1,
+                    
                     UserName = "admin",
                     NormalizedUserName = "ADMIN",
                     Email = "admin@admin.com",
                     NormalizedEmail = "ADMIN@ADMIN.COM",
                     EmailConfirmed = true,
                     PasswordHash = hasher.HashPassword(null, "Aa123..."),
-                    SecurityStamp = "{8678980E-ED56-4CEC-B09B-D68613AC7382}"
+                    SecurityStamp = "8678980EED564CECB09BD68613AC7382",
+
+
+
+                    Id = Guid.Parse("{E1FD9964-2C65-486E-83C5-4743FE5A819D}").ToString(),
+                    ProfilePhoto = "https://randomuser.me/api/portraits/men/11.jpg", 
+                    Adi = "Admin",
+                    Soyadi = "User",
+                    DogumTarihi = new DateOnly(1997, 1, 1),
+                    DogumYeri = Sehirler.ANKARA, 
+                    TC = "12345678901", 
+                    IseGirisTarihi = new DateOnly(2024, 1, 1),
+                    SirketId = Guid.Parse("{7D06417E-6CCF-4680-4462-08DCB8609BCC}"), 
+                    Meslek = Meslek.YazılımMühendisi, 
+                    Departman = Departman.Yazılım, 
+                    Adres = "Ilgın Mahallesi, Hivda Sokak, No:1, Ankara", 
+                    Maas = 10000m, 
+                    Cinsiyet = Cinsiyet.Kadın, 
+                    Token = null 
+
                 }
             );
 
 
-            builder.Entity<IdentityUserRole<int>>().HasData(
-                new IdentityUserRole<int>
+            builder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string>
                 {
-                    UserId = 1,
-                    RoleId = 1
+                    UserId = Guid.Parse("{E1FD9964-2C65-486E-83C5-4743FE5A819D}").ToString(),
+                    RoleId = "1"
                 }
             );
 
@@ -61,7 +81,7 @@ namespace IKProjectAPI.Data
                 .OnDelete(DeleteBehavior.Restrict); // İlişki silme davranışını ayarlayın
 
         }
-        public DbSet<Sirket> sirketler { get; set; }
+        public DbSet<IKProjectAPI.Data.Concrete.Sirket> sirketler { get; set; }
         public DbSet<Masraf> masraflar { get; set; }
         public DbSet<MasrafTipi> masrafTipleri { get; set; }
         public DbSet<IzinTipi> izinTipleri { get; set; }
