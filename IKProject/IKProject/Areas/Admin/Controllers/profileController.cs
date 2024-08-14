@@ -9,11 +9,11 @@ using System.Text;
 
 namespace IKProject.Areas.Admin.Controllers
 {
-    public class profileController : Controller
+    public class ProfileController : Controller
     {
         private HttpClient _httpClient;
 
-        public profileController(HttpClient httpClient)
+        public ProfileController(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
