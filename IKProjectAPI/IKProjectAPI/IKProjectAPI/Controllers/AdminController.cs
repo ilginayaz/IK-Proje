@@ -63,5 +63,35 @@ namespace IKProjectAPI.Controllers
             _emailSender.SendEmailAsync(user.Email, "FHYI GROUP - Hesabınız Reddedildi", "Hesabınız reddedildi üzgünüz :(");
             return Ok("Kullanıcı başarıyla reddedildi");
         }
+
+
+        [HttpGet("GetAdminDetails")]
+        public async Task<IActionResult> GetAdminDetails(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound("Admin bulunamadı.");
+            }
+
+            var adminDetails = new
+            {
+                user.ProfilePhoto,
+                user.Adi,
+                user.IkinciAdi,
+                user.Soyadi,
+                user.IkinciSoyadi,
+                user.DogumTarihi,
+                user.DogumYeri,
+                user.TC,
+                user.Adres,
+                user.Cinsiyet,
+                user.Email,
+                user.PhoneNumber
+            };
+
+            return Ok(adminDetails);
+        }
     }
 }

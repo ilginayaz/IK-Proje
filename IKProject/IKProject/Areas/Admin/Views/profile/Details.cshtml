@@ -1,0 +1,108 @@
+﻿@using IKProject.Areas.Admin.Models
+@model AdminDetailsViewModel
+
+<div class="admin-details">
+    <table class="admin-table">
+        <tr>
+            <td colspan="2" class="profile-photo-cell">
+                <img src="@Model.ProfilePhoto" alt="Profil Fotoğrafı" class="profile-photo" />
+            </td>
+        </tr>
+        <tr>
+            <th>Adı:</th>
+            <td>@Model.Adi @Model.Soyadi</td>
+        </tr>
+        @if (!string.IsNullOrEmpty(Model.IkinciAdi))
+        {
+            <tr>
+                <th>İkinci Adı:</th>
+                <td>@Model.IkinciAdi</td>
+            </tr>
+        }
+        @if (!string.IsNullOrEmpty(Model.IkinciSoyadi))
+        {
+            <tr>
+                <th>İkinci Soyadı:</th>
+                <td>@Model.IkinciSoyadi</td>
+            </tr>
+        }
+        <tr>
+            <th>Doğum Tarihi:</th>
+            <td>@Model.DogumTarihi.ToString("dd/MM/yyyy")</td>
+        </tr>
+        <tr>
+            <th>Doğum Yeri:</th>
+            <td>@Model.DogumYeri</td>
+        </tr>
+        <tr>
+            <th>TC:</th>
+            <td>@Model.TC</td>
+        </tr>
+        <tr>
+            <th>Adres:</th>
+            <td>@Model.Adres</td>
+        </tr>
+        <tr>
+            <th>Cinsiyet:</th>
+            <td>@Model.Cinsiyet</td>
+        </tr>
+        <tr>
+            <th>Email:</th>
+            <td>@Model.Email</td>
+        </tr>
+        <tr>
+            <th>Telefon:</th>
+            <td>@Model.PhoneNumber</td>
+        </tr>
+    </table>
+</div>
+
+
+<style>
+    .admin-details {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .admin-table th, .admin-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .admin-table th {
+            background-color: #002F35;
+            color: #ffffff;
+            font-weight: normal;
+            text-transform: uppercase;
+        }
+
+        .admin-table td {
+            color: #333;
+        }
+
+    .profile-photo-cell {
+        text-align: center;
+        padding-bottom: 20px;
+    }
+
+    .profile-photo {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+</style>
+
