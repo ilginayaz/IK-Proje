@@ -10,7 +10,7 @@ namespace IKProjectAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles ="Admin")]
+    
     public class AdminController : ControllerBase
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -26,6 +26,16 @@ namespace IKProjectAPI.Controllers
             _signInManager = signInManager;
             _context = context;
             _emailSender = emailSender;
+        }
+        [HttpGet("YoneticileriListele")]
+        public async Task<IActionResult> YoneticileriListele()
+        {
+            var yoneticiler = await _userManager.GetUsersInRoleAsync("Yonetici");
+            if (yoneticiler != null && yoneticiler.Any())
+            {
+            return Ok(yoneticiler);
+            }
+            return BadRequest("Herhangi bir yönetici bulunamadı");
         }
 
         [HttpPatch("YoneticiyiOnayla")]

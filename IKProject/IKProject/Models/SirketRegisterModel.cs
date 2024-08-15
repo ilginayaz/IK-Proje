@@ -5,8 +5,7 @@ namespace IKProject.Models
 {
     public class SirketRegisterModel
     {
-        public Guid Id { get; set; }
-
+        public string YoneticiId { get; set; }
         [Display(Name = "Şirket Adı")]
         [Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
         public string SirketAdi { get; set; }
@@ -23,9 +22,9 @@ namespace IKProject.Models
         [Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
         public string VergiOfisi { get; set; }
 
-        [Display(Name = "Çalışan Sayısı")]
-        [Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
-        public int CalisanSayisi { get; set; }
+        public string? LogoUrl { get; set; } // Şirket logosu URL'si
+        public string? SirketUnvani { get; set; } // Şirket unvanı
+        public string? Telefon { get; set; } // Şirketin telefon numarası
 
         [Display(Name = "Şirket Email")]
         [Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
@@ -44,14 +43,6 @@ namespace IKProject.Models
         public string PostaKodu { get; set; }
 
 
-        [DataType(DataType.Date)]
-        public DateTime CreatedTime { get; set; } = DateTime.Now;
-
-        [DataType(DataType.Date)]
-        public DateTime? UpdatedTime { get; set; }
-
-        [DataType(DataType.Date)]
-        public DateTime? DeletedTime { get; set; }
         public Status Status { get; set; } = Status.AwatingApproval;
     }
 }

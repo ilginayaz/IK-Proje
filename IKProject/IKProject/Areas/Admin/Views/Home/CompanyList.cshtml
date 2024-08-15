@@ -1,1 +1,192 @@
-﻿
+﻿@using IKProject.Data.Concrete
+@model List<Sirket>
+
+@{
+    ViewData["Title"] = "Şirket Listesi";
+}
+
+<h2>Şirket Listesi</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Logo</th>
+            <th>Şirket Adı</th>
+            <th>Unvan</th>
+            <th>Email</th>
+            <th>Telefon</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sirket in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(sirket.LogoUrl))
+                    {
+                        <img src="@sirket.LogoUrl" alt="Şirket Logosu" style="max-width: 100px; max-height: 100px;" />
+                    }
+                    else
+                    {
+                        <span>Logo Yok</span>
+                    }
+                </td>
+                <td><a href="javascript:void(0);" onclick="showCompanyDetails('@sirket.Id')">@sirket.SirketAdi</a></td>
+                <td>@sirket.SirketUnvani</td>
+                <td>@sirket.SirketEmail</td>
+                <td>@sirket.Telefon</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Şirket Detayları Popup -->
+<div id="companyDetailsModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeCompanyDetails()">&times;</span>
+        <div id="companyDetails"></div>
+    </div>
+</div>
+
+<!-- Kullanıcı Profili Popup -->
+<div id="userProfileModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeUserProfile()">&times;</span>
+        <div id="userProfileDetails"></div>
+    </div>
+</div>
+
+<script>
+    async function showCompanyDetails(companyId) {
+        const response = await fetch(`https://localhost:7149/api/Company/sirketDetay/${companyId}`);
+        if (response.ok) {
+            const company = await response.json();
+            displayCompanyDetails(company);
+        } else {
+            document.getElementById('companyDetails').innerHTML = 'Şirket detayları alınamadı.';
+        }
+    }
+
+    function displayCompanyDetails(company) {
+        // company.sirketYoneticileri bir nesne olarak dönüyorsa
+        const yoneticiler = company.sirketYoneticileri && Array.isArray(company.sirketYoneticileri.$values) ? company.sirketYoneticileri.$values : [];
+
+        let detailsHtml = `
+            <h3>${company.sirketAdi}</h3>
+            <div>
+                ${company.logoUrl ? `<img src="${company.logoUrl}" alt="Şirket Logosu" style="max-width: 200px; max-height: 200px;" />` : '<span>Logo Yok</span>'}
+                <p><strong>Unvan:</strong> ${company.sirketUnvani || 'Bilgi Yok'}</p>
+                <p><strong>Email:</strong> ${company.sirketEmail || 'Bilgi Yok'}</p>
+                <p><strong>Telefon:</strong> ${company.telefon || 'Bilgi Yok'}</p>
+                <p><strong>Vergi Numarası:</strong> ${company.vergiNo || 'Bilgi Yok'}</p>
+                <p><strong>Vergi Ofisi:</strong> ${company.vergiOfisi || 'Bilgi Yok'}</p>
+                <p><strong>Adres:</strong> ${company.address || 'Bilgi Yok'}</p>
+                <p><strong>Posta Kodu:</strong> ${company.postaKodu || 'Bilgi Yok'}</p>
+                <p><strong>Şehir:</strong> ${company.sehir || 'Bilgi Yok'}</p>
+                <p><strong>Durum:</strong> ${company.status || 'Bilgi Yok'}</p>
+            </div>
+            <h3>Yöneticiler</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Adı</th>
+                        <th>Soyadı</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${yoneticiler.length > 0 ? yoneticiler.map(yonetici => `
+                        <tr>
+                            <td><a href="javascript:void(0);" onclick="showUserProfile('${yonetici.id}')">${yonetici.adi || 'Bilgi Yok'}</a></td>
+                            <td>${yonetici.soyadi || 'Bilgi Yok'}</td>
+                            <td>${yonetici.email || 'Bilgi Yok'}</td>
+                        </tr>
+                    `).join('') : '<tr><td colspan="3">Yönetici Bilgisi Yok</td></tr>'}
+                </tbody>
+            </table>
+        `;
+        document.getElementById('companyDetails').innerHTML = detailsHtml;
+        document.getElementById('companyDetailsModal').style.display = 'block';
+    }
+
+
+    async function showUserProfile(userId) {
+        const response = await fetch(`https://localhost:7149/api/Auth/getUser?userId=${userId}`);
+        if (response.ok) {
+            const user = await response.json();
+            displayUserProfile(user);
+        } else {
+            document.getElementById('userProfileDetails').innerHTML = 'Kullanıcı profili alınamadı.';
+        }
+    }
+
+    function displayUserProfile(user) {
+        let profileHtml = `
+                <h3>${user.adi || 'Bilgi Yok'} ${user.soyadi || 'Bilgi Yok'}</h3>
+                <div>
+                    ${user.profilePhoto ? `<img src="${user.profilePhoto}" alt="Profil Fotoğrafı" style="max-width: 200px; max-height: 200px;" />` : '<span>Profil Fotoğrafı Yok</span>'}
+                    <p><strong>Adı:</strong> ${user.adi || 'Bilgi Yok'}</p>
+                    <p><strong>Soyadı:</strong> ${user.soyadi || 'Bilgi Yok'}</p>
+                    <p><strong>Email:</strong> ${user.email || 'Bilgi Yok'}</p>
+                    <p><strong>Telefon:</strong> ${user.phoneNumber || 'Bilgi Yok'}</p>
+                    <p><strong>Doğum Tarihi:</strong> ${user.dogumTarihi || 'Bilgi Yok'}</p>
+                    <p><strong>Doğum Yeri:</strong> ${user.dogumYeri || 'Bilgi Yok'}</p>
+                    <p><strong>TC:</strong> ${user.tc || 'Bilgi Yok'}</p>
+                    <p><strong>Adres:</strong> ${user.adres || 'Bilgi Yok'}</p>
+                    <p><strong>Cinsiyet:</strong> ${user.cinsiyet || 'Bilgi Yok'}</p>
+                </div>
+            `;
+        document.getElementById('userProfileDetails').innerHTML = profileHtml;
+        document.getElementById('userProfileModal').style.display = 'block';
+    }
+
+    function closeCompanyDetails() {
+        document.getElementById('companyDetailsModal').style.display = 'none';
+    }
+
+    function closeUserProfile() {
+        document.getElementById('userProfileModal').style.display = 'none';
+    }
+</script>
+
+<style>
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    .modal-content {
+        background-color: rgb(0,0,0);
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+    }
+
+    .close {
+        color: white;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: red;
+            text-decoration: none;
+            cursor: pointer;
+        }
+</style>
+
+
+
+
+

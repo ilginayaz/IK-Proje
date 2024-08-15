@@ -10,6 +10,9 @@ namespace IKProject.Data.Concrete
         public string VergiNo { get; set; }
         public string VergiOfisi { get; set; }
         public int CalisanSayisi { get; set; }
+        public string? LogoUrl { get; set; } // Şirket logosu URL'si
+        public string? SirketUnvani { get; set; } // Şirket unvanı
+        public string? Telefon { get; set; } // Şirketin telefon numarası
         public string SirketEmail { get; set; }
         public Sehirler Sehir { get; set; }
         public string Address { get; set; }

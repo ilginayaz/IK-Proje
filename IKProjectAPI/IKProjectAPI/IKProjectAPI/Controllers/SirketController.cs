@@ -1,16 +1,18 @@
 ﻿using IKProjectAPI.Data;
 using IKProjectAPI.Data.Concrete;
+using IKProjectAPI.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace IKProjectAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin,Yonetici")]
+    
     public class CompanyController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -25,19 +27,90 @@ namespace IKProjectAPI.Controllers
         }
 
         [HttpPost("SirketOlustur")]
-        public async Task<IActionResult> CreateCompany([FromBody] Sirket company)
+        public async Task<IActionResult> CreateCompany(SirketRegisterModel model)
         {
+            // Yönetici kontrolü
+            var yonetici = await _userManager.FindByIdAsync(model.YoneticiId);
+            if (yonetici == null)
+            {
+                return BadRequest("Yönetici bulunamadı");
+            }
+
+            // Model doğrulama
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            company.Id = Guid.NewGuid();
+            // Şirket numarası, vergi numarası veya şirket adı kontrolü
+            var existingCompany = await _context.sirketler
+                .FirstOrDefaultAsync(c => c.SirketNumarasi == model.SirketNumarasi
+                                       || c.VergiNo == model.VergiNo
+                                       || c.SirketAdi == model.SirketAdi
+                                       || c.SirketEmail == model.SirketEmail);
+
+            // Eğer aynı şirket numarası, vergi numarası veya şirket adından varsa hata döndür
+            if (existingCompany != null)
+            {
+                return BadRequest("Bu bilgilerle kayıtlı bir şirket zaten mevcut.");
+            }
+
+            // Şirket oluşturma
+            var company = new Sirket
+            {
+                Status = model.Status,
+                SirketAdi = model.SirketAdi,
+                SirketNumarasi = model.SirketNumarasi,
+                VergiNo = model.VergiNo,
+                VergiOfisi = model.VergiOfisi,
+                CalisanSayisi = 1,
+                SirketEmail = model.SirketEmail,
+                Sehir = model.Sehir,
+                Address = model.Address,
+                PostaKodu = model.PostaKodu,
+                CreatedTime = DateTime.Now
+            };
+
+            // Şirketi veritabanına kaydet
             _context.sirketler.Add(company);
             await _context.SaveChangesAsync();
 
+            // Şirketin yöneticisini ekleme
+            company.SirketYoneticileri.Add(yonetici);
+            await _context.SaveChangesAsync();
+
+            // Başarılı mesaj döndür
             return Ok(new { Message = "Şirket başarıyla oluşturuldu.", CompanyId = company.Id });
         }
+
+
+        [HttpGet("SirketYoneticileri/{companyId}")]
+        public async Task<IActionResult> GetCompanyManagers(Guid companyId)
+        {
+            // İlgili şirketi veritabanından buluyoruz.
+            var company = await _context.sirketler
+                                        .Include(s => s.SirketYoneticileri) // Yoneticileri dahil ediyoruz
+                                        .FirstOrDefaultAsync(s => s.Id == companyId);
+
+            // Şirket bulunamazsa hata döneriz.
+            if (company == null)
+            {
+                return NotFound("Şirket bulunamadı.");
+            }
+
+            // Şirketin yöneticilerini kontrol ediyoruz.
+            var managers = company.SirketYoneticileri;
+
+            // Eğer yöneticiler yoksa ya da liste boşsa bilgilendiriyoruz.
+            if (managers == null || !managers.Any())
+            {
+                return NotFound("Bu şirkete ait yönetici bulunamadı.");
+            }
+
+            // Yöneticileri döneriz.
+            return Ok(managers);
+        }
+
 
         //Sirket bilgilerini update 
         [HttpPost("SirketUpdate")]
@@ -76,6 +149,32 @@ namespace IKProjectAPI.Controllers
                 return Ok(new { Message = "Şirket bilgileri başarıyla güncellendi." });
             }
             return BadRequest("Yönetici ve şirket eşleşmiyor HATA!");
+        }
+
+        [HttpGet("sirketListele")]
+        public async Task<IActionResult> SirketListele()
+        {
+            var sirketler = _context.sirketler;
+            if (sirketler == null)
+            {
+                return BadRequest("Herhangi bir şirket bulunamadı.");
+            }
+            return Ok(sirketler);
+        }
+
+        [HttpGet("sirketDetay/{id}")]
+        public async Task<IActionResult> GetCompanyDetails(Guid id)
+        {
+            var sirket = await _context.sirketler
+                .Include(s => s.SirketYoneticileri)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
+            if (sirket == null)
+            {
+                return NotFound("Şirket bulunamadı.");
+            }
+
+            return Ok(sirket);
         }
 
 
