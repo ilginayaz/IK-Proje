@@ -26,21 +26,22 @@ namespace IKProjectAPI.Data
             );
 
             var hasher = new PasswordHasher<ApplicationUser>();
+            var user = new ApplicationUser();
             builder.Entity<ApplicationUser>().HasData(
                 new ApplicationUser
                 {
                     
-                    UserName = "admin",
-                    NormalizedUserName = "ADMIN",
+                    UserName = "admin@admin.com",
+                    NormalizedUserName = "ADMIN@ADMIN.COM",
                     Email = "admin@admin.com",
                     NormalizedEmail = "ADMIN@ADMIN.COM",
                     EmailConfirmed = true,
-                    PasswordHash = hasher.HashPassword(null, "Aa123..."),
+                    PasswordHash = hasher.HashPassword(null, "Admin1."),
                     SecurityStamp = "8678980EED564CECB09BD68613AC7382",
 
 
 
-                    Id = Guid.Parse("{E1FD9964-2C65-486E-83C5-4743FE5A819D}").ToString(),
+                    Id = Guid.Parse("{E1FD9964-2C65-486E-83C5-4743FE5A819C}").ToString(),
                     ProfilePhoto = "https://randomuser.me/api/portraits/men/11.jpg", 
                     Adi = "Admin",
                     Soyadi = "User",
@@ -63,7 +64,7 @@ namespace IKProjectAPI.Data
             builder.Entity<IdentityUserRole<string>>().HasData(
                 new IdentityUserRole<string>
                 {
-                    UserId = Guid.Parse("{E1FD9964-2C65-486E-83C5-4743FE5A819D}").ToString(),
+                    UserId = Guid.Parse("{E1FD9964-2C65-486E-83C5-4743FE5A819C}").ToString(),
                     RoleId = "1"
                 }
             );

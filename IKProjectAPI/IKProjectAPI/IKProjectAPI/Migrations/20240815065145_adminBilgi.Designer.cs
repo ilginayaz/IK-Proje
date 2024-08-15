@@ -4,6 +4,7 @@ using IKProjectAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IKProjectAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240815065145_adminBilgi")]
+    partial class adminBilgi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -174,13 +177,13 @@ namespace IKProjectAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e1fd9964-2c65-486e-83c5-4743fe5a819c",
+                            Id = "e1fd9964-2c65-486e-83c5-4743fe5a819a",
                             AccessFailedCount = 0,
                             Adi = "Admin",
                             Adres = "Ilgın Mahallesi, Hivda Sokak, No:1, Ankara",
                             Cinsiyet = 1,
-                            ConcurrencyStamp = "c2b814cb-d170-4deb-aa55-cd8e2b9273fd",
-                            CreatedTime = new DateTime(2024, 8, 15, 9, 59, 37, 901, DateTimeKind.Local).AddTicks(1333),
+                            ConcurrencyStamp = "2e60e4f1-6564-4f7f-9e6d-dd96ec33c30c",
+                            CreatedTime = new DateTime(2024, 8, 15, 9, 51, 45, 293, DateTimeKind.Local).AddTicks(5177),
                             Departman = 0,
                             DogumTarihi = new DateOnly(1997, 1, 1),
                             DogumYeri = 5,
@@ -192,8 +195,8 @@ namespace IKProjectAPI.Migrations
                             Maas = 10000m,
                             Meslek = 0,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
-                            NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEM0+ZbFEBO4maKKnkltN9DN6yNnZUw5cyeUnWAxn4GDJsvUbWLw0B/HEhY78QS5ILA==",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEB/JQDPXoSs16XL02xTStfTFTuWNE7ZXiO4/6OXmAcTqLndS2osVoAimLjbOkVaTUg==",
                             PhoneNumberConfirmed = false,
                             ProfilePhoto = "https://randomuser.me/api/portraits/men/11.jpg",
                             SecurityStamp = "8678980EED564CECB09BD68613AC7382",
@@ -202,7 +205,7 @@ namespace IKProjectAPI.Migrations
                             Status = 3,
                             TC = "12345678901",
                             TwoFactorEnabled = false,
-                            UserName = "admin@admin.com"
+                            UserName = "admin"
                         });
                 });
 

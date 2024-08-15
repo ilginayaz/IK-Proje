@@ -2,6 +2,7 @@
 using IKProject.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Newtonsoft.Json;
@@ -12,7 +13,7 @@ using System.Text;
 namespace IKProjectMVC.Areas.CompanyManager.Controllers
 {
     [Area("CompanyManager")]
-
+    [Authorize(Roles ="Yönetici")]
     public class HomeController : Controller
     {
         private readonly HttpClient _httpClient;
