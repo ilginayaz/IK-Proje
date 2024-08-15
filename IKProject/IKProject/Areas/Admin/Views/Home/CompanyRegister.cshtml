@@ -9,6 +9,17 @@
 
     <form asp-action="CompanyRegister" method="post">
         <div class="form-group">
+            <label asp-for="YoneticiId" class="control-label">Yönetici Seç</label>
+            <select asp-for="YoneticiId" class="form-control">
+                <option value="">Yönetici Seçiniz</option>
+                @foreach (var yonetici in ViewBag.Yoneticiler as List<SelectListItem>)
+                {
+                    <option value="@yonetici.Value">@yonetici.Text</option>
+                }
+            </select>
+            <span asp-validation-for="YoneticiId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
             <label asp-for="SirketAdi"></label>
             <input asp-for="SirketAdi" class="form-control" />
             <span asp-validation-for="SirketAdi" class="text-danger"></span>
@@ -32,11 +43,6 @@
             <span asp-validation-for="VergiOfisi" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
-            <label asp-for="CalisanSayisi"></label>
-            <input asp-for="CalisanSayisi" class="form-control" />
-            <span asp-validation-for="CalisanSayisi" class="text-danger"></span>
-        </div>
 
         <div class="form-group">
             <label asp-for="SirketEmail"></label>
@@ -54,6 +60,24 @@
             <label asp-for="PostaKodu"></label>
             <input asp-for="PostaKodu" class="form-control" />
             <span asp-validation-for="PostaKodu" class="text-danger"></span>
+        </div>
+        <!-- Yeni Alanlar -->
+        <div class="form-group">
+            <label asp-for="LogoUrl"></label>
+            <input asp-for="LogoUrl" class="form-control" />
+            <span asp-validation-for="LogoUrl" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="SirketUnvani"></label>
+            <input asp-for="SirketUnvani" class="form-control" />
+            <span asp-validation-for="SirketUnvani" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Telefon"></label>
+            <input asp-for="Telefon" class="form-control" />
+            <span asp-validation-for="Telefon" class="text-danger"></span>
         </div>
 
         <div class="form-group">

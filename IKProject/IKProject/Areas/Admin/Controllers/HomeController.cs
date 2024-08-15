@@ -1,7 +1,9 @@
 ﻿using IKProject.Data.Concrete;
 using IKProject.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Security.Claims;
 using System.Text;
@@ -33,14 +35,28 @@ namespace IKProject.Areas.Admin.Controllers
             return NotFound("Kullanıcı bulunamadı.");
         }
         [HttpGet]
-        public IActionResult CompanyRegister()
+        public async Task<IActionResult> CompanyRegister()
         {
+            var response = await _httpClient.GetAsync("https://localhost:7149/api/admin/YoneticileriListele");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var yoneticiler = JsonConvert.DeserializeObject<List<YoneticiModel>>(content);
+
+                var managerList = yoneticiler.Select(manager => new SelectListItem
+                {
+                    Value = manager.Id.ToString(),
+                    Text = $"{manager.Adi} {manager.Soyadi}"
+                }).ToList();
+                ViewBag.Yoneticiler = managerList;
+            }
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> CompanyRegister(SirketRegisterModel sirketRegisterModel)
         {
-            sirketRegisterModel.SirketNumarasi = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+           
             var jsonContent = JsonConvert.SerializeObject(sirketRegisterModel);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
@@ -55,9 +71,38 @@ namespace IKProject.Areas.Admin.Controllers
                 return View("Tekrar deneyin!");
             }
         }
-        public IActionResult CompanyList() 
+        [HttpGet]
+        public async  Task<IActionResult> CompanyList() 
         {
-            return View();
+            var response = await _httpClient.GetAsync("https://localhost:7149/api/Company/sirketListele");
+
+            if (response.IsSuccessStatusCode)
+            {
+               var content = await response.Content.ReadAsStringAsync();
+                var sirketler = JsonConvert.DeserializeObject<List<Sirket>>(content);
+                return View(sirketler);
+            }
+            return View("Hata Oluştu");
+        }
+        public async Task<List<SelectListItem>> ManagerList()
+        {
+            var response = await _httpClient.GetAsync("https://localhost:7149/api/admin/YoneticileriListele");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var yoneticiler = JsonConvert.DeserializeObject<List<YoneticiModel>>(content);
+                
+                var managerList = yoneticiler.Select(manager => new SelectListItem
+                {
+                    Value = manager.Id.ToString(),
+                    Text = $"{manager.Adi} {manager.Soyadi}"
+                }).ToList();
+
+                return managerList;
+                
+            }
+            return null;
         }
         public async Task<IActionResult> GetUser(string userId)
         {

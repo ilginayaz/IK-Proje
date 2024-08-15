@@ -1,19 +1,11 @@
-﻿using IKProjectAPI.Data.Abstract;
-using IKProjectAPI.Data.Enums;
+﻿using IKProjectAPI.Data.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace IKProjectAPI.Data.Concrete
+namespace IKProjectAPI.Data.Models
 {
-    public class Sirket :  IBaseEntity
+    public class SirketRegisterModel
     {
-        public Sirket()
-        {
-            SirketYoneticileri = new List<ApplicationUser>();
-            SirketCalisanlari = new List<ApplicationUser>();
-            IzinTipis = new List<IzinTipi>();
-        }
-        public Guid Id { get; set; }
-
+        public string YoneticiId { get; set; }
         [Display(Name = "Şirket Adı")]
         [Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
         public string SirketAdi { get; set; }
@@ -30,7 +22,6 @@ namespace IKProjectAPI.Data.Concrete
         [Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
         public string VergiOfisi { get; set; }
 
-        public int CalisanSayisi { get; set; }
         public string? LogoUrl { get; set; } // Şirket logosu URL'si
         public string? SirketUnvani { get; set; } // Şirket unvanı
         public string? Telefon { get; set; } // Şirketin telefon numarası
@@ -52,18 +43,7 @@ namespace IKProjectAPI.Data.Concrete
         public string PostaKodu { get; set; }
 
 
-        [DataType(DataType.Date)]
-        public DateTime CreatedTime { get; set; } = DateTime.Now;
 
-        [DataType(DataType.Date)]
-        public DateTime? UpdatedTime { get; set; }
-
-        [DataType(DataType.Date)]
-        public DateTime? DeletedTime { get; set; }
         public Status Status { get; set; } = Status.AwatingApproval;
-
-        public virtual ICollection<ApplicationUser> SirketYoneticileri { get; set; }
-        public virtual ICollection<ApplicationUser>? SirketCalisanlari { get; set; }
-        public virtual ICollection<IzinTipi> IzinTipis { get; set; }
     }
 }

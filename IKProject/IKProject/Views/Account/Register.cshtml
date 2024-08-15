@@ -150,6 +150,24 @@
         <input asp-for="PostaKodu" class="form-control" />
         <span asp-validation-for="PostaKodu" class="text-danger"></span>
     </div>
+    <!-- Yeni Alanlar -->
+    <div class="form-group">
+        <label asp-for="LogoUrl"></label>
+        <input asp-for="LogoUrl" class="form-control" />
+        <span asp-validation-for="LogoUrl" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SirketUnvani"></label>
+        <input asp-for="SirketUnvani" class="form-control" />
+        <span asp-validation-for="SirketUnvani" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Telefon"></label>
+        <input asp-for="Telefon" class="form-control" />
+        <span asp-validation-for="Telefon" class="text-danger"></span>
+    </div>
 
     <button type="submit" class="btn btn-primary">Kayıt Ol</button>
 </form>
