@@ -64,7 +64,7 @@ namespace IKProject.Areas.Admin.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("RegisterEmployee");
+                return RedirectToAction("CompanyList");
             }
             else
             {
@@ -117,6 +117,14 @@ namespace IKProject.Areas.Admin.Controllers
                 return Ok(user);
             }
             return NotFound("Personel bulunamadı.");
+        }
+        public IActionResult Success()
+        {
+            return View();
+        }
+        public IActionResult Unsuccess()
+        {
+            return View();
         }
     }
 }

@@ -211,10 +211,13 @@ namespace IKProject.Controllers
                 return RedirectToAction("Index", "Home", new { area = "CompanyManager" });
             }
         }
-
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
 
     }
-
+    
     public class TokenResponse
     {
         public string Token { get; set; }
