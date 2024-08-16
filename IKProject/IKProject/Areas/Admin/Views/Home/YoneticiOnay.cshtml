@@ -1,0 +1,58 @@
+﻿@model IEnumerable<IKProject.Models.YoneticiModel>
+
+@{
+    ViewData["Title"] = "Yönetici Onaylama";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+    <h3>Onay Bekleyen Şirket Yöneticileri</h3>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Adı</th>
+                <th>Soyadı</th>
+                <th>Email</th>
+                <th>Telefon</th>
+                <th>Şirket</th>
+                <th>Onayla</th>
+                <th>Reddet</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var yonetici in Model)
+            {
+                <tr>
+
+                    <td>@yonetici.Adi</td>
+                    <td>@yonetici.Soyadi</td>
+                    <td>@yonetici.Email</td>
+                    <td>@yonetici.TelefonNumarasi</td>
+                    <td>
+                        @if (yonetici.Sirket != null)
+                        {
+                            @yonetici.Sirket.SirketAdi
+                        }
+                        else
+                        {
+                            <span>Şirket bilgisi mevcut değil</span>
+                        }
+                    </td>
+                   <td>
+                        <form asp-action="Onayla" method="post">
+                            <input type="hidden" name="id" value="@yonetici.Id" />
+                            <button type="submit" class="btn btn-success">Onayla</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form asp-action="Reddet" method="post">
+                            <input type="hidden" name="id" value="@yonetici.Id" />
+                            <button type="submit" class="btn btn-danger">Reddet</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

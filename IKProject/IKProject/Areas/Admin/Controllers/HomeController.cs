@@ -1,9 +1,11 @@
 ﻿using IKProject.Data.Concrete;
+using IKProject.Data.Enums;
 using IKProject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Security.Claims;
 using System.Text;
@@ -20,6 +22,7 @@ namespace IKProject.Areas.Admin.Controllers
         public HomeController(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            
         }
         public async Task <IActionResult> Index()
         {
@@ -118,5 +121,99 @@ namespace IKProject.Areas.Admin.Controllers
             }
             return NotFound("Personel bulunamadı.");
         }
+
+
+
+
+
+        // Yönetici onaylama sayfası
+        public async Task<IActionResult> YoneticiOnay()
+        {
+            var response = await _httpClient.GetAsync("https://localhost:7149/api/Admin/YoneticileriListele");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var yoneticiler = JsonConvert.DeserializeObject<List<YoneticiModel>>(content);
+                var bekleyenYoneticiler = yoneticiler.Where(y => y.Status == Status.AwatingApproval).ToList();
+
+                return View(bekleyenYoneticiler);
+            }
+
+            return View("Hata Oluştu");
+        }
+
+
+
+        // Yönetici onaylama işlemi
+        [HttpPost]
+        public async Task<IActionResult> Onayla(string id)
+        {
+            var requestUri = $"https://localhost:7149/api/Admin/YoneticiyiOnayla?id={id}";
+            var response = await _httpClient.PatchAsync(requestUri, null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("YoneticiOnay");
+            }
+
+            return View("Hata Oluştu");
+        }
+
+
+
+        // Yönetici reddetme işlemi
+        [HttpPost]
+        public async Task<IActionResult> Reddet(string id)
+        {
+            var requestUri = $"https://localhost:7149/api/Admin/YoneticiyiReddet?id={id}";
+            var response = await _httpClient.PatchAsync(requestUri, null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("YoneticiOnay");
+            }
+
+            return View("Hata Oluştu");
+        }
+
+
+
+        // Onaylı yöneticiler listesi
+        public async Task<IActionResult> YoneticiListe()
+        {
+            var response = await _httpClient.GetAsync("https://localhost:7149/api/Admin/YoneticileriListele");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var yoneticiler = JsonConvert.DeserializeObject<List<YoneticiModel>>(content);
+                var onayliYoneticiler = yoneticiler.Where(y => y.Status == Status.Active).ToList();
+
+                return View(onayliYoneticiler);
+            }
+
+            return View("Hata Oluştu");
+        }
+
+
+
+
+        // Yönetici silme işlemi
+        [HttpPost]
+        public async Task<IActionResult> Sil(string id)
+        {
+            var requestUri = $"https://localhost:7149/api/Yonetici/DeleteUser?id={id}";
+            var response = await _httpClient.PatchAsync(requestUri, null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("YoneticiListe");
+            }
+
+            return View("Hata Oluştu");
+        }
+
+
     }
 }
