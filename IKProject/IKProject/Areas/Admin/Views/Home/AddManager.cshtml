@@ -1,26 +1,14 @@
 ﻿@model IKProject.Models.SirketRegisterModel
-@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
 @using IKProject.Data.Enums
 @{
-    ViewData["Title"] = "Şirket Ekle";
+    ViewData["Title"] = "Yönetici Ekle";
 }
 
 <div class="form-container">
-    <h2>Şirket Ekle</h2>
+    <h2>Yönetici Ekle</h2>
 
     <form asp-action="CompanyRegister" method="post">
-        <div class="form-group">
-            <label asp-for="YoneticiId" class="control-label">Yönetici Seç</label>
-            <select asp-for="YoneticiId" class="form-control">
-                <option value="">Yönetici Seçiniz</option>
-                @foreach (var yonetici in ViewBag.Yoneticiler as List<SelectListItem>)
-                {
-                    <option value="@yonetici.Value">@yonetici.Text</option>
-                }
-            </select>
-            <span asp-validation-for="YoneticiId" class="text-danger"></span>
-        </div>
+       
         <div class="form-group">
             <label asp-for="SirketAdi"></label>
             <input asp-for="SirketAdi" class="form-control" />
@@ -88,7 +76,7 @@
             <span asp-validation-for="Sehir" class="text-danger"></span>
         </div>
 
-        <button type="submit" class="btn btn-primary">Şirket Ekle</button>
+        <button type="submit" class="btn btn-primary">Yönetici Ekle</button>
     </form>
 </div>
 
@@ -100,7 +88,6 @@
 
     .form-container {
         width: 500px;
-       
         margin: 50px auto;
         padding: 30px;
         background-color: #2c3e50;
@@ -109,7 +96,6 @@
         position: relative;
         top: 50px;
         left: 550px;
-        
     }
 
         .form-container h2 {
