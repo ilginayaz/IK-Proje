@@ -208,10 +208,10 @@ namespace IKProject.Areas.Admin.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("YoneticiListe");
+                return Json(new { success = true });
             }
 
-            return View("Hata Oluştu");
+            return Json(new { success = false });
         }
 
 
