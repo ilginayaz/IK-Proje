@@ -68,6 +68,9 @@ namespace IKProjectAPI.Controllers
                 Sehir = model.Sehir,
                 Address = model.Address,
                 PostaKodu = model.PostaKodu,
+                Telefon=model.Telefon,
+                SirketUnvani= model.SirketUnvani,
+                LogoUrl=model.LogoUrl,
                 CreatedTime = DateTime.Now
             };
 
@@ -76,7 +79,7 @@ namespace IKProjectAPI.Controllers
             await _context.SaveChangesAsync();
 
             // Şirketin yöneticisini ekleme
-            company.SirketYoneticileri.Add(yonetici);
+            company.SirketYoneticileri.Add(yonetici);            
             await _context.SaveChangesAsync();
 
             // Başarılı mesaj döndür

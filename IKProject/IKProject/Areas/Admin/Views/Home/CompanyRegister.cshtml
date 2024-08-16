@@ -1,4 +1,6 @@
 ﻿@model IKProject.Models.SirketRegisterModel
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
 @using IKProject.Data.Enums
 @{
     ViewData["Title"] = "Şirket Ekle";
