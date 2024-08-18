@@ -29,12 +29,12 @@ namespace IKProjectAPI.Controllers
         [HttpPost("SirketOlustur")]
         public async Task<IActionResult> CreateCompany(SirketRegisterModel model)
         {
-            // Yönetici kontrolü
-            var yonetici = await _userManager.FindByIdAsync(model.YoneticiId);
-            if (yonetici == null)
-            {
-                return BadRequest("Yönetici bulunamadı");
-            }
+            //// Yönetici kontrolü
+            //var yonetici = await _userManager.FindByIdAsync(model.YoneticiId);
+            //if (yonetici == null)
+            //{
+            //    return BadRequest("Yönetici bulunamadı");
+            //}
 
             // Model doğrulama
             if (!ModelState.IsValid)
@@ -78,9 +78,9 @@ namespace IKProjectAPI.Controllers
             _context.sirketler.Add(company);
             await _context.SaveChangesAsync();
 
-            // Şirketin yöneticisini ekleme
-            company.SirketYoneticileri.Add(yonetici);            
-            await _context.SaveChangesAsync();
+            //// Şirketin yöneticisini ekleme
+            //company.SirketYoneticileri.Add(yonetici);            
+            //await _context.SaveChangesAsync();
 
             // Başarılı mesaj döndür
             return Ok(new { Message = "Şirket başarıyla oluşturuldu.", CompanyId = company.Id });

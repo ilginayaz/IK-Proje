@@ -5,9 +5,9 @@ namespace IKProjectAPI.Data.Models
 {
     public class SirketRegisterModel
     {
-        public string YoneticiId { get; set; }
-        [Display(Name = "Şirket Adı")]
-        [Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
+        //public string YoneticiId { get; set; }
+        //[Display(Name = "Şirket Adı")]
+        //[Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
         public string SirketAdi { get; set; }
 
         [Display(Name = "Şirket Numarası")]

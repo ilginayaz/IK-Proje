@@ -1,4 +1,4 @@
-﻿@model IKProject.Models.SirketRegisterModel
+﻿@model IKProject.Models.YoneticiRegisterModel
 @using IKProject.Data.Enums
 @{
     ViewData["Title"] = "Yönetici Ekle";
@@ -7,76 +7,89 @@
 <div class="form-container">
     <h2>Yönetici Ekle</h2>
 
-    <form asp-action="CompanyRegister" method="post">
-       
+    <form id="registrationForm" asp-action="AddManager" method="post" enctype="multipart/form-data">
+        <h3>Kişisel Bilgiler</h3>
         <div class="form-group">
-            <label asp-for="SirketAdi"></label>
-            <input asp-for="SirketAdi" class="form-control" />
-            <span asp-validation-for="SirketAdi" class="text-danger"></span>
+            <label asp-for="Email" class="control-label"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="SirketNumarasi"></label>
-            <input asp-for="SirketNumarasi" class="form-control" />
-            <span asp-validation-for="SirketNumarasi" class="text-danger"></span>
+            <label asp-for="ProfilePhoto" class="control-label"></label>
+            <input asp-for="ProfilePhoto" class="form-control" type="text" />
+            <span asp-validation-for="ProfilePhoto" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="VergiNo"></label>
-            <input asp-for="VergiNo" class="form-control" />
-            <span asp-validation-for="VergiNo" class="text-danger"></span>
+            <label asp-for="Adi" class="control-label"></label>
+            <input asp-for="Adi" class="form-control" />
+            <span asp-validation-for="Adi" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="VergiOfisi"></label>
-            <input asp-for="VergiOfisi" class="form-control" />
-            <span asp-validation-for="VergiOfisi" class="text-danger"></span>
-        </div>
-
-
-        <div class="form-group">
-            <label asp-for="SirketEmail"></label>
-            <input asp-for="SirketEmail" class="form-control" />
-            <span asp-validation-for="SirketEmail" class="text-danger"></span>
+            <label asp-for="IkinciAdi" class="control-label"></label>
+            <input asp-for="IkinciAdi" class="form-control" />
+            <span asp-validation-for="IkinciAdi" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="Address"></label>
-            <input asp-for="Address" class="form-control" />
-            <span asp-validation-for="Address" class="text-danger"></span>
+            <label asp-for="Soyadi" class="control-label"></label>
+            <input asp-for="Soyadi" class="form-control" />
+            <span asp-validation-for="Soyadi" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="PostaKodu"></label>
-            <input asp-for="PostaKodu" class="form-control" />
-            <span asp-validation-for="PostaKodu" class="text-danger"></span>
-        </div>
-        <!-- Yeni Alanlar -->
-        <div class="form-group">
-            <label asp-for="LogoUrl"></label>
-            <input asp-for="LogoUrl" class="form-control" />
-            <span asp-validation-for="LogoUrl" class="text-danger"></span>
+            <label asp-for="IkinciSoyadi" class="control-label"></label>
+            <input asp-for="IkinciSoyadi" class="form-control" />
+            <span asp-validation-for="IkinciSoyadi" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="SirketUnvani"></label>
-            <input asp-for="SirketUnvani" class="form-control" />
-            <span asp-validation-for="SirketUnvani" class="text-danger"></span>
+            <label asp-for="Cinsiyet" class="control-label"></label>
+            <select asp-for="Cinsiyet" class="form-control">
+                @foreach (var cinsiyet in Enum.GetValues(typeof(Cinsiyet)))
+                {
+                    <option value="@cinsiyet">@cinsiyet</option>
+                }
+            </select>
+            <span asp-validation-for="Cinsiyet" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="Telefon"></label>
-            <input asp-for="Telefon" class="form-control" />
-            <span asp-validation-for="Telefon" class="text-danger"></span>
+            <label asp-for="TC" class="control-label"></label>
+            <input asp-for="TC" class="form-control" />
+            <span asp-validation-for="TC" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="Sehir" class="control-label"></label>
-            <select asp-for="Sehir" asp-items="@(new SelectList(Enum.GetValues(typeof(Sehirler))))" class="form-control"></select>
-            <span asp-validation-for="Sehir" class="text-danger"></span>
+            <label asp-for="TelefonNumarasi" class="control-label"></label>
+            <input asp-for="TelefonNumarasi" class="form-control" />
+            <span asp-validation-for="TelefonNumarasi" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Adres" class="control-label"></label>
+            <textarea asp-for="Adres" class="form-control"></textarea>
+            <span asp-validation-for="Adres" class="text-danger"></span>
         </div>
 
-        <button type="submit" class="btn btn-primary">Yönetici Ekle</button>
+        <div class="form-group">
+            <label asp-for="DogumTarihi" class="control-label"></label>
+            <input asp-for="DogumTarihi" class="form-control" type="date" />
+            <span asp-validation-for="DogumTarihi" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DogumYeri" class="control-label"></label>
+            <select asp-for="DogumYeri" class="form-control">
+                @foreach (var sehir in Enum.GetValues(typeof(Sehirler)))
+                {
+                    <option value="@sehir">@sehir</option>
+                }
+            </select>
+            <span asp-validation-for="DogumYeri" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Yöneticiyi Kaydet</button>
     </form>
 </div>
 
