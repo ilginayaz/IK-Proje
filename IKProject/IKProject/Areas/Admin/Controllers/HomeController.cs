@@ -215,9 +215,90 @@ namespace IKProject.Areas.Admin.Controllers
             return Json(new { success = false });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> AssignCompanyManager()
+        {
+            try
+            {
+                // Yönetici listesini al
+                var yoneticilerResponse = await _httpClient.GetAsync("https://localhost:7149/api/admin/YoneticileriListele");
+                if (!yoneticilerResponse.IsSuccessStatusCode)
+                {
+                    throw new Exception("Yönetici listesi yüklenirken hata oluştu.");
+                }
+
+                var yoneticilerContent = await yoneticilerResponse.Content.ReadAsStringAsync();
+                var yoneticiler = JsonConvert.DeserializeObject<List<YoneticiModel>>(yoneticilerContent) ?? new List<YoneticiModel>();
+                var managerList = yoneticiler.Select(manager => new SelectListItem
+                {
+                    Value = manager.Id.ToString(),
+                    Text = $"{manager.Adi} {manager.Soyadi}"
+                }).ToList();
+                ViewBag.Yoneticiler = managerList;
+
+                // Şirket listesini al
+                var sirketlerResponse = await _httpClient.GetAsync("https://localhost:7149/api/Company/sirketListele");
+                if (!sirketlerResponse.IsSuccessStatusCode)
+                {
+                    throw new Exception("Şirket listesi yüklenirken hata oluştu.");
+                }
+
+                var sirketlerContent = await sirketlerResponse.Content.ReadAsStringAsync();
+                var sirketler = JsonConvert.DeserializeObject<List<Sirket>>(sirketlerContent) ?? new List<Sirket>();
+                var sirketList = sirketler.Select(sirket => new SelectListItem
+                {
+                    Value = sirket.Id.ToString(),
+                    Text = $"{sirket.SirketNumarasi} {sirket.SirketAdi}"
+                }).ToList();
+                ViewBag.Sirketler = sirketList;
+            }
+            catch (Exception ex)
+            {
+                // Hata işleme ve loglama
+                Console.WriteLine(ex.Message); // veya Debug.WriteLine(ex.Message);
+                                               // Kullanıcıya uygun bir hata mesajı göster
+                ViewBag.ErrorMessage = "Veriler yüklenirken bir hata oluştu.";
+            }
+
+            return View();
+        }
 
 
-        public IActionResult Success()
+
+
+        [HttpPost]
+        public async Task<IActionResult> AssignCompanyManager(AssignCompanyManagerViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // API'ye istek gönderme
+            var requestUrl = "https://localhost:7149/api/Admin/assignCompanyManager"; 
+
+            var requestData = new
+            {
+                SirketId = model.SirketId,
+                YoneticiId = model.YoneticiId
+            };
+
+            var jsonContent = new StringContent(JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync("https://localhost:7149/api/Admin/assignCompanyManager", jsonContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["SuccessMessage"] = "Yönetici başarıyla şirkete atandı.";
+                return RedirectToAction("AssignCompanyManager");
+            }
+
+            TempData["ErrorMessage"] = "Yönetici ataması başarısız oldu.";
+            return View(model);
+        }
+    
+
+    public IActionResult Success()
         {
             return View();
         }
@@ -225,9 +306,35 @@ namespace IKProject.Areas.Admin.Controllers
         {
             return View();
         }
+        [HttpGet]
         public IActionResult AddManager()
         {
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddManager(YoneticiRegisterModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync("https://localhost:7149/api/admin/register", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+
+                    TempData["SuccessMessage"] = "Kayıt başarılı.";
+                    return RedirectToAction("YoneticiListe");
+                }
+                else
+                {
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    ModelState.AddModelError(string.Empty, $"Kayıt başarısız. Hata: {response.StatusCode}, Mesaj: {errorMessage}");
+                }
+            }
+
+
+            return View("AddManager", model);
         }
 
     }

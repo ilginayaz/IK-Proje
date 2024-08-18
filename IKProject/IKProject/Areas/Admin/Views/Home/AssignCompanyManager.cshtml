@@ -1,0 +1,42 @@
+﻿@model AssignCompanyManagerViewModel
+
+<form asp-action="AssignCompanyManager" method="post" id="assignManagerForm">
+    <div class="form-group">
+        <label for="SirketId">Şirket Seçin</label>
+        <select id="SirketId" name="SirketId" class="form-control" asp-for="SirketId">
+            <option value="">Şirket Seçin</option>
+            @if (ViewBag.Sirketler != null)
+            {
+                @foreach (var sirket in ViewBag.Sirketler as IEnumerable<SelectListItem>)
+                {
+                    <option value="@sirket.Value">@sirket.Text</option>
+                }
+            }
+        </select>
+        <span asp-validation-for="SirketId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="YoneticiId">Yönetici Seçin</label>
+        <select id="YoneticiId" name="YoneticiId" class="form-control" asp-for="YoneticiId">
+            <option value="">Yönetici Seçin</option>
+            @if (ViewBag.Yoneticiler != null)
+            {
+                @foreach (var yonetici in ViewBag.Yoneticiler as IEnumerable<SelectListItem>)
+                {
+                    <option value="@yonetici.Value">@yonetici.Text</option>
+                }
+            }
+        </select>
+        <span asp-validation-for="YoneticiId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Yönetici Ata</button>
+</form>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
