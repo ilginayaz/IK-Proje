@@ -104,7 +104,7 @@ namespace IKProjectAPI.Controllers
             });
         }
         [HttpPost("izinOlustur")]
-        public async Task<IActionResult> IzinCreate(string userId, IzinIstegi izinIstegi, int tipId)
+        public async Task<IActionResult> IzinCreate(string userId, IzinIstegi izinIstegi)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -115,8 +115,7 @@ namespace IKProjectAPI.Controllers
             {
                 return BadRequest("İstek bilgileri hatalı");
             }
-            izinIstegi.IzinTipiId = tipId;
-            izinIstegi.AppUserId = user.Id;
+            izinIstegi.ApplicationUserId = user.Id;
             izinIstegi.Status = Data.Enums.Status.AwatingApproval;
             izinIstegi.OnayDurumu = Data.Enums.OnayDurumu.Beklemede;
             _context.izinIstekleri.Add(izinIstegi);
@@ -136,7 +135,6 @@ namespace IKProjectAPI.Controllers
                     izin.UpdatedTime = DateTime.Now;
                     izin.BitisTarihi = izinIstegi.BitisTarihi;
                     izin.BaslangicTarihi = izinIstegi.BaslangicTarihi;
-                    izin.IzinTipiId = izinIstegi.IzinTipiId;
                     _context.Update(izin);
                     _context.SaveChanges();
                     _emailSender.SendEmailAsync(user.Email, "FHYI Group - İzin İsteği", $"Sevgili çalışanımız {user.Adi} {user.Soyadi} {izinIstegi.IzinGunSayisi} günlük izniniz güncellenmiştir. İyi günler!");
@@ -173,7 +171,161 @@ namespace IKProjectAPI.Controllers
             var user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
-                var list = _context.izinIstekleri.Where(x => x.AppUserId == userId).ToList();
+                var list = _context.izinIstekleri.Where(x => x.ApplicationUserId == userId).ToList();
+                return Ok(list);
+            }
+            return BadRequest("Kullanıcı bulunamadı");
+        }
+
+
+
+        [HttpPost("HarcamaOlustur")]
+        public async Task<IActionResult> HarcamaCreate(string userId, HarcamaTalep izinIstegi)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return BadRequest("Kullanıcı Bulunamadı");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("İstek bilgileri hatalı");
+            }
+            izinIstegi.ApplicationUserId = user.Id;
+            izinIstegi.Status = Data.Enums.Status.AwatingApproval;
+            izinIstegi.OnayDurumu = Data.Enums.OnayDurumu.Beklemede;
+            _context.HarcamaTalepleri.Add(izinIstegi);
+            _context.SaveChanges();
+            _emailSender.SendEmailAsync(user.Email, "FHYI Group - İzin İsteği", $"Sevgili çalışanımız {user.Adi} {user.Soyadi}  harcamanız oluşturulmuştur. İyi günler!");
+            return Ok("İzin isteği başarıyla oluşturuldu");
+        }
+        [HttpPatch("HarcamaGuncelle")]
+        public async Task<IActionResult> HarcamaUpdate(string userId, HarcamaTalep izinIstegi)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            var izin = _context.HarcamaTalepleri.Find(izinIstegi.Id);
+            if (user != null)
+            {
+                if (izin != null)
+                {
+                    izin.UpdatedTime = DateTime.Now;
+                    izin.MasrafTarihi = izinIstegi.MasrafTarihi;
+                    izin.ParaBirimi = izinIstegi.ParaBirimi;
+                    izin.Aciklama = izinIstegi.Aciklama;
+                    izin.GiderTutari = izinIstegi.GiderTutari;
+                    _context.Update(izin);
+                    _context.SaveChanges();
+                    _emailSender.SendEmailAsync(user.Email, "FHYI Group - İzin İsteği", $"Sevgili çalışanımız {user.Adi} {user.Soyadi}  harcamanız güncellenmiştir. İyi günler!");
+                    return Ok("İzin isteği başarıyla güncellenmiştir.");
+                }
+                return BadRequest("Böyle bir izin bulunamadı");
+            }
+            return BadRequest("Kullanıcı bulunamadı");
+        }
+        [HttpPatch("HarcamaSil")]
+        public async Task<IActionResult> HarcamaDelete(string userId, HarcamaTalep izinIstegi)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            var izin = _context.HarcamaTalepleri.Find(izinIstegi.Id);
+            if (user != null)
+            {
+                if (izin != null)
+                {
+                    izin.UpdatedTime = DateTime.Now;
+                    izin.DeletedTime = DateTime.Now;
+                    izin.Status = Data.Enums.Status.Passive;
+                    _context.Update(izin);
+                    _context.SaveChanges();
+                    _emailSender.SendEmailAsync(user.Email, "FHYI Group - İzin İsteği", $"Sevgili çalışanımız {user.Adi} {user.Soyadi} harcamanız izniniz silinmiştir. İyi günler!");
+                    return Ok("İzin isteği başarıyla silinmiştir..");
+                }
+                return BadRequest("Böyle bir izin bulunamadı");
+            }
+            return BadRequest("Kullanıcı bulunamadı");
+        }
+        [HttpGet("HarcamaGetById")]
+        public async Task<IActionResult> HarcamaGet(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                var list = _context.HarcamaTalepleri.Where(x => x.ApplicationUserId == userId).ToList();
+                return Ok(list);
+            }
+            return BadRequest("Kullanıcı bulunamadı");
+        }
+
+        [HttpPost("AvansOlustur")]
+        public async Task<IActionResult> AvansCreate(string userId, AvansTalep izinIstegi)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return BadRequest("Kullanıcı Bulunamadı");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("İstek bilgileri hatalı");
+            }
+            izinIstegi.ApplicationUserId = user.Id;
+            izinIstegi.Status = Data.Enums.Status.AwatingApproval;
+            izinIstegi.OnayDurumu = Data.Enums.OnayDurumu.Beklemede;
+            _context.AvansTalepleri.Add(izinIstegi);
+            _context.SaveChanges();
+            _emailSender.SendEmailAsync(user.Email, "FHYI Group - İzin İsteği", $"Sevgili çalışanımız {user.Adi} {user.Soyadi}  avans talebiniz  oluşturulmuştur. İyi günler!");
+            return Ok("İzin isteği başarıyla oluşturuldu");
+        }
+        [HttpPatch("AvansGuncelle")]
+        public async Task<IActionResult> AvansUpdate(string userId, AvansTalep izinIstegi)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            var izin = _context.AvansTalepleri.Find(izinIstegi.Id);
+            if (user != null)
+            {
+                if (izin != null)
+                {
+                    izin.UpdatedTime = DateTime.Now;
+                    izin.TalepTarihi = izinIstegi.TalepTarihi;
+                    izin.ParaBirimi = izinIstegi.ParaBirimi;
+                    izin.Aciklama = izinIstegi.Aciklama;
+                    izin.Tutar = izinIstegi.Tutar;
+                    _context.Update(izin);
+                    _context.SaveChanges();
+                    _emailSender.SendEmailAsync(user.Email, "FHYI Group - İzin İsteği", $"Sevgili çalışanımız {user.Adi} {user.Soyadi}  avans talebiniz güncellenmiştir. İyi günler!");
+                    return Ok("İzin isteği başarıyla güncellenmiştir.");
+                }
+                return BadRequest("Böyle bir izin bulunamadı");
+            }
+            return BadRequest("Kullanıcı bulunamadı");
+        }
+        [HttpPatch("HarcamaSil")]
+        public async Task<IActionResult> HarcamaDelete(string userId, AvansTalep izinIstegi)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            var izin = _context.AvansTalepleri.Find(izinIstegi.Id);
+            if (user != null)
+            {
+                if (izin != null)
+                {
+                    izin.UpdatedTime = DateTime.Now;
+                    izin.DeletedTime = DateTime.Now;
+                    izin.Status = Data.Enums.Status.Passive;
+                    _context.Update(izin);
+                    _context.SaveChanges();
+                    _emailSender.SendEmailAsync(user.Email, "FHYI Group - İzin İsteği", $"Sevgili çalışanımız {user.Adi} {user.Soyadi} avans talebiniz  silinmiştir. İyi günler!");
+                    return Ok("İzin isteği başarıyla silinmiştir..");
+                }
+                return BadRequest("Böyle bir izin bulunamadı");
+            }
+            return BadRequest("Kullanıcı bulunamadı");
+        }
+        [HttpGet("AvansGetById")]
+        public async Task<IActionResult> AvansGet(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                var list = _context.AvansTalepleri.Where(x => x.ApplicationUserId == userId).ToList();
                 return Ok(list);
             }
             return BadRequest("Kullanıcı bulunamadı");

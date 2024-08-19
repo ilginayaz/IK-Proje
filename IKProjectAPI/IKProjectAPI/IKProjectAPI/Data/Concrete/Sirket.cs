@@ -10,7 +10,6 @@ namespace IKProjectAPI.Data.Concrete
         {
             SirketYoneticileri = new List<ApplicationUser>();
             SirketCalisanlari = new List<ApplicationUser>();
-            IzinTipis = new List<IzinTipi>();
         }
         public Guid Id { get; set; }
 
@@ -64,6 +63,5 @@ namespace IKProjectAPI.Data.Concrete
 
         public virtual ICollection<ApplicationUser> SirketYoneticileri { get; set; }
         public virtual ICollection<ApplicationUser>? SirketCalisanlari { get; set; }
-        public virtual ICollection<IzinTipi> IzinTipis { get; set; }
     }
 }
