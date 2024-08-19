@@ -8,6 +8,8 @@
     <h1>@ViewData["Title"]</h1>
     <h3>Onay Bekleyen Şirket Yöneticileri</h3>
 
+    <div id="resultMessage" class="alert d-none"></div>
+
     <table class="table table-striped">
         <thead>
             <tr>
@@ -15,7 +17,7 @@
                 <th>Soyadı</th>
                 <th>Email</th>
                 <th>Telefon</th>
-                <th>Şirket</th>
+              @*   <th>Şirket</th> *@
                 <th>Onayla</th>
                 <th>Reddet</th>
             </tr>
@@ -23,13 +25,12 @@
         <tbody>
             @foreach (var yonetici in Model)
             {
-                <tr>
-
+                <tr id="row-@yonetici.Id">
                     <td>@yonetici.Adi</td>
                     <td>@yonetici.Soyadi</td>
                     <td>@yonetici.Email</td>
                     <td>@yonetici.TelefonNumarasi</td>
-                    <td>
+                   @*  <td>
                         @if (yonetici.Sirket != null)
                         {
                             @yonetici.Sirket.SirketAdi
@@ -38,21 +39,74 @@
                         {
                             <span>Şirket bilgisi mevcut değil</span>
                         }
-                    </td>
-                   <td>
-                        <form asp-action="Onayla" method="post">
-                            <input type="hidden" name="id" value="@yonetici.Id" />
-                            <button type="submit" class="btn btn-success">Onayla</button>
-                        </form>
+                    </td> *@
+                    <td>
+                        <button class="btn btn-success onayla-btn" data-id="@yonetici.Id">Onayla</button>
                     </td>
                     <td>
-                        <form asp-action="Reddet" method="post">
-                            <input type="hidden" name="id" value="@yonetici.Id" />
-                            <button type="submit" class="btn btn-danger">Reddet</button>
-                        </form>
+                        <button class="btn btn-danger reddet-btn" data-id="@yonetici.Id">Reddet</button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Onayla butonuna tıklama işlemi
+            $('.onayla-btn').click(function () {
+                var id = $(this).data('id');
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Onayla", "Home", new { area = "Admin" })',
+                    data: { id: id },
+                    success: function (response) {
+                        if (response.success) {
+                            $('#row-' + id).remove();  
+                            showMessage("Yönetici onaylandı!", "success");
+                        } else {
+                            //showMessage("Onaylama işlemi başarısız oldu.", "danger");
+                        }
+                    },
+                    error: function () {
+                        showMessage("Bir hata oluştu.", "danger");
+                    }
+                });
+            });
+
+            // Reddet butonuna tıklama işlemi
+            $('.reddet-btn').click(function () {
+                var id = $(this).data('id');
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Reddet", "Home", new { area = "Admin" })',
+                    data: { id: id },
+                    success: function (response) {
+                        if (response.success) {
+                            $('#row-' + id).remove();  // Satırı kaldır
+                            showMessage("Yönetici reddedildi.", "warning");
+                        } else {
+                           // showMessage("Reddetme işlemi başarısız oldu.", "danger");
+                        }
+                    },
+                    error: function () {
+                        showMessage("Bir hata oluştu.", "danger");
+                    }
+                });
+            });
+
+            // Mesaj gösterme fonksiyonu
+            function showMessage(message, type) {
+                var resultMessage = $('#resultMessage');
+                resultMessage.removeClass().addClass('alert alert-' + type).text(message).removeClass('d-none');
+
+                // Mesajı birkaç saniye sonra gizle
+                setTimeout(function () {
+                    resultMessage.addClass('d-none');
+                }, 3000);
+            }
+        });
+    </script>
+}
