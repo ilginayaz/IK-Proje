@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Security.Claims;
 
 namespace IKProjectAPI.Controllers
@@ -60,11 +61,10 @@ namespace IKProjectAPI.Controllers
 
         //Yönetici çalışanlarının İzinler listesi
         [HttpGet("izinListesi")]
-        public async Task<IActionResult> IzinListesi()
+        public async Task<IActionResult> IzinListesi(string managerId)
         {
-            var claims = User.Claims.ToList();
-            var yoneticiId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var yonetici = await _userManager.FindByIdAsync(yoneticiId);
+
+            var yonetici = await _userManager.FindByIdAsync(managerId);
             if (yonetici == null)
             {
                 return NotFound("Kullanıcı bulunamadı");
@@ -75,9 +75,53 @@ namespace IKProjectAPI.Controllers
 
             // Çalışanların izin isteklerini filtrele
             var izinIstekleri = await _context.izinIstekleri
-                .Where(x => calisanlarIds.Contains(x.AppUserId) && x.OnayDurumu != OnayDurumu.Reddedildi && x.Status != Status.Passive)
+                .Where(x => calisanlarIds.Contains(x.ApplicationUserId) && x.OnayDurumu != OnayDurumu.Reddedildi && x.Status != Status.Passive)
                 .ToListAsync();
             
+            return Ok(izinIstekleri);
+        }
+
+        //Yönetici çalışanlarının Avanslar listesi
+        [HttpGet("avansListesi")]
+        public async Task<IActionResult> AvansListesi(string managerId)
+        {
+
+            var yonetici = await _userManager.FindByIdAsync(managerId);
+            if (yonetici == null)
+            {
+                return NotFound("Kullanıcı bulunamadı");
+            }
+
+            // Kullanıcının kendi çalışanlarını al
+            var calisanlarIds = yonetici.Calisanlar.Select(c => c.Id).ToList();
+
+            // Çalışanların avans isteklerini filtrele
+            var izinIstekleri = await _context.AvansTalepleri
+                .Where(x => calisanlarIds.Contains(x.ApplicationUserId) && x.OnayDurumu != OnayDurumu.Reddedildi && x.Status != Status.Passive)
+                .ToListAsync();
+
+            return Ok(izinIstekleri);
+        }
+
+        //Yönetici çalışanlarının Harcama listesi
+        [HttpGet("harcamaListesi")]
+        public async Task<IActionResult> harcamaListesi(string managerId)
+        {
+
+            var yonetici = await _userManager.FindByIdAsync(managerId);
+            if (yonetici == null)
+            {
+                return NotFound("Kullanıcı bulunamadı");
+            }
+
+            // Kullanıcının kendi çalışanlarını al
+            var calisanlarIds = yonetici.Calisanlar.Select(c => c.Id).ToList();
+
+            // Çalışanların harcama isteklerini filtrele
+            var izinIstekleri = await _context.AvansTalepleri
+                .Where(x => calisanlarIds.Contains(x.ApplicationUserId) && x.OnayDurumu != OnayDurumu.Reddedildi && x.Status != Status.Passive)
+                .ToListAsync();
+
             return Ok(izinIstekleri);
         }
 
@@ -243,5 +287,84 @@ namespace IKProjectAPI.Controllers
             return BadRequest("Böyle bir izin bulunamadı");
         }
 
+
+        [HttpPatch("AvansOnayla")]
+        public async Task<IActionResult> AvansOnayla(string id)
+        {
+            var izin = await _context.AvansTalepleri.FindAsync(id);
+
+            if (izin != null)
+            {
+                var calisan =await _userManager.FindByIdAsync(izin.ApplicationUserId);
+                if (calisan != null)
+                {
+
+                    if (izin.Tutar < (calisan.Maas)*3)
+                    {
+
+                    izin.OnayDurumu = Data.Enums.OnayDurumu.Onaylandı;
+                    izin.Status = Data.Enums.Status.Active;
+                    _context.Update(izin);
+                    _context.SaveChanges();
+                    _emailSender.SendEmailAsync(izin.ApplicationUser.Email, "FHYI Group - Avans Durumu Değişikliği", $"Sevgili çalışanımız {izin.ApplicationUser.Adi} {izin.ApplicationUser.Soyadi} {izin.Tutar} {izin.ParaBirimi}  izniniz onaylanmıştır. İyi günler!");
+                    return Ok("İzin isteği başarıyla onaylandı");
+                    }
+                    return BadRequest("Avans talep eden çalışan bulunamadı.");
+                }
+                return BadRequest("Maaşının 3 katından fazla avans isteyemezsin");
+            }
+            return BadRequest("Böyle bir izin bulunamadı");
+        }
+
+        //Avans Reddet 
+        [HttpPatch("AvansReddet")]
+        public async Task<IActionResult> AvansReddet(string id)
+        {
+            var izin = await _context.AvansTalepleri.FindAsync(id);
+            if (izin != null)
+            {
+                izin.OnayDurumu = Data.Enums.OnayDurumu.Reddedildi;
+                izin.Status = Data.Enums.Status.Passive;
+                _context.Update(izin);
+                await _context.SaveChangesAsync();
+                _emailSender.SendEmailAsync(izin.ApplicationUser.Email, "FHYI Group - Avans Durumu Değişikliği", $"Sevgili çalışanımız {izin.ApplicationUser.Adi} {izin.ApplicationUser.Soyadi} {izin.Tutar} {izin.ParaBirimi} izniniz reddedilmiştir. İyi günler!");
+                return Ok("İzin isteği başarıyla reddedildi");
+            }
+            return BadRequest("Böyle bir izin bulunamadı");
+        }
+
+        [HttpPatch("HarcamaOnayla")]
+        public async Task<IActionResult> HarcamaOnayla(string id)
+        {
+            var izin = await _context.HarcamaTalepleri.FindAsync(id);
+
+            if (izin != null)
+            {
+                izin.OnayDurumu = Data.Enums.OnayDurumu.Onaylandı;
+                izin.Status = Data.Enums.Status.Active;
+                _context.Update(izin);
+                _context.SaveChanges();
+                _emailSender.SendEmailAsync(izin.ApplicationUser.Email, "FHYI Group - Harcama Durumu Değişikliği", $"Sevgili çalışanımız {izin.ApplicationUser.Adi} {izin.ApplicationUser.Soyadi} {izin.GiderTutari} {izin.ParaBirimi}  izniniz onaylanmıştır. İyi günler!");
+                return Ok("İzin isteği başarıyla onaylandı");
+            }
+            return BadRequest("Böyle bir izin bulunamadı");
+        }
+
+        //Harcama Reddet 
+        [HttpPatch("HarcamaReddet")]
+        public async Task<IActionResult> HarcamaReddet(string id)
+        {
+            var izin = await _context.HarcamaTalepleri.FindAsync(id);
+            if (izin != null)
+            {
+                izin.OnayDurumu = Data.Enums.OnayDurumu.Reddedildi;
+                izin.Status = Data.Enums.Status.Passive;
+                _context.Update(izin);
+                await _context.SaveChangesAsync();
+                _emailSender.SendEmailAsync(izin.ApplicationUser.Email, "FHYI Group - Harcama Durumu Değişikliği", $"Sevgili çalışanımız {izin.ApplicationUser.Adi} {izin.ApplicationUser.Soyadi} {izin.GiderTutari} {izin.ParaBirimi} izniniz reddedilmiştir. İyi günler!");
+                return Ok("İzin isteği başarıyla reddedildi");
+            }
+            return BadRequest("Böyle bir izin bulunamadı");
+        }
     }
 }

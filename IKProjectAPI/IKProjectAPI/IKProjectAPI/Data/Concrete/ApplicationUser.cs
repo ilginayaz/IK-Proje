@@ -13,7 +13,7 @@ namespace IKProjectAPI.Data.Concrete
         {
             Izinler = new HashSet<IzinIstegi>();
             Calisanlar = new HashSet<ApplicationUser>();
-            Masraflar = new HashSet<Masraf>();
+            Masraflar = new HashSet<HarcamaTalep>();
         }
 
         [Display(Name = "Profil Fotoğrafınız")]
@@ -53,7 +53,7 @@ namespace IKProjectAPI.Data.Concrete
         public Meslek Meslek { get; set; }
         public Departman Departman { get; set; }
         public string Adres { get; set; }
-        public decimal Maas {  get; set; }
+        public decimal Maas { get; set; } = 20000;
         public Cinsiyet Cinsiyet { get; set; }
         public string? Token { get; set; }
 
@@ -70,7 +70,7 @@ namespace IKProjectAPI.Data.Concrete
         [JsonIgnore]
         public virtual ICollection<ApplicationUser> Calisanlar { get; set; }
         public virtual ICollection<IzinIstegi> Izinler { get; set; }
-        public virtual ICollection<Masraf> Masraflar { get; set; }
+        public virtual ICollection<HarcamaTalep> Masraflar { get; set; }
 
     }
 }

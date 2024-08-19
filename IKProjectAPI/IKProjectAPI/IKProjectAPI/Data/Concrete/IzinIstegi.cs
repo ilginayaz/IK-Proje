@@ -13,18 +13,17 @@ namespace IKProjectAPI.Data.Concrete
 
         public string IstekYorumu { get; set; }
 
-        public OnayDurumu? OnayDurumu { get; set; }
+        public OnayDurumu? OnayDurumu { get; set; } = Enums.OnayDurumu.Beklemede;
 
-
+        public IzinTuru IzinTuru { get; set; }
         public DateTime CreatedTime { get; set; } = DateTime.Now;
         public DateTime? UpdatedTime { get; set; }
         public DateTime? DeletedTime { get; set; }
         public Status Status { get; set; } = Status.AwatingApproval;
 
-        public string AppUserId { get; set; }
+        public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
-        public IzinTipi IzinTipi { get; set; }
-        public int IzinTipiId { get; set; }
+
     }
 }

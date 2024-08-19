@@ -4,6 +4,7 @@ using IKProjectAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IKProjectAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240819135740_talepler")]
+    partial class talepler
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,11 +182,8 @@ namespace IKProjectAPI.Migrations
                             Adi = "Admin",
                             Adres = "Ilgın Mahallesi, Hivda Sokak, No:1, Ankara",
                             Cinsiyet = 1,
-
                             ConcurrencyStamp = "d8bd58c5-6a42-4a6e-a0b3-1413a22472bf",
                             CreatedTime = new DateTime(2024, 8, 19, 16, 57, 39, 838, DateTimeKind.Local).AddTicks(9216),
-
-
                             Departman = 0,
                             DogumTarihi = new DateOnly(1997, 1, 1),
                             DogumYeri = 5,
@@ -196,11 +196,7 @@ namespace IKProjectAPI.Migrations
                             Meslek = 0,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-
-                            
-
                             PasswordHash = "AQAAAAIAAYagAAAAEBamkcoUxVV2E2344xHtJ4DvW+bd5Ym//FBj6jWlj68AYiISkkdRpdPZc0opiYMlqQ==",
-
                             PhoneNumberConfirmed = false,
                             ProfilePhoto = "https://randomuser.me/api/portraits/men/11.jpg",
                             SecurityStamp = "8678980EED564CECB09BD68613AC7382",

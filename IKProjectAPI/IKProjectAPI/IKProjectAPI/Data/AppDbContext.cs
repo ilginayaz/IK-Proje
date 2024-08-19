@@ -83,10 +83,8 @@ namespace IKProjectAPI.Data
 
         }
         public DbSet<IKProjectAPI.Data.Concrete.Sirket> sirketler { get; set; }
-        public DbSet<Masraf> masraflar { get; set; }
-        public DbSet<MasrafTipi> masrafTipleri { get; set; }
-        public DbSet<IzinTipi> izinTipleri { get; set; }
-        public DbSet<IzinOdenek> izinOdenekler { get; set; }
+        public DbSet<HarcamaTalep> HarcamaTalepleri { get; set; }
+        public DbSet<AvansTalep> AvansTalepleri { get; set; }
         public DbSet<IzinIstegi> izinIstekleri { get; set; }
 
 

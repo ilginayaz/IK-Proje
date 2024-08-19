@@ -3,17 +3,17 @@ using IKProjectAPI.Data.Enums;
 
 namespace IKProjectAPI.Data.Concrete
 {
-    public class IzinOdenek : IBaseEntity
+    public class AvansTalep : IBaseEntity
     {
         public int Id { get; set; }
-        public int GunSayisi { get; set; }
-        public int Periyot {  get; set; }
-
+        public DateTime TalepTarihi { get; set; }
+        public decimal Tutar {  get; set; }
+        public ParaBirimi ParaBirimi { get; set; }
+        public string Aciklama { get; set; }
+        public OnayDurumu OnayDurumu { get; set; } = Enums.OnayDurumu.Beklemede;
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
-        public int IzinTipiId { get; set; }
-        public IzinTipi IzinTipi { get; set; }
 
         public DateTime CreatedTime { get; set; } = DateTime.Now;
         public DateTime? UpdatedTime { get; set; }
