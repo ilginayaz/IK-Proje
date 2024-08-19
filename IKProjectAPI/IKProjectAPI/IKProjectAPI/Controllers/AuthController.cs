@@ -198,13 +198,14 @@ namespace IKProjectAPI.Controllers
             {
                 return BadRequest("Kullanıcı bulunamadı.");
             }
-            if (await _userManager.IsInRoleAsync(user, "Calisan")) 
-            {
-                var a = "log";
-            }
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var resetLink = Url.Action("ResetPassword", "Account", new { token=token, email = user.Email }, Request.Scheme);
 
+            // Şifre sıfırlama token'ını oluştur
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            // Şifre sıfırlama bağlantısını oluştur
+            var resetLink = Url.Action("ResetPassword", "Auth", new { token = token, email = user.Email }, Request.Scheme);
+
+            // E-posta gönderimi
             await _emailSender.SendEmailAsync(user.Email, "FHYI Group - Şifre Sıfırlama Talebi",
                 $"<p>Lütfen şifrenizi sıfırlamak için aşağıdaki bağlantıya tıklayın:</p><a href='{resetLink}'>Şifre Sıfırla</a>");
 
@@ -214,22 +215,28 @@ namespace IKProjectAPI.Controllers
         [HttpPost("ResetPassword")]
         public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
         {
+            // Kullanıcıyı e-posta ile bul
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 return BadRequest("Kullanıcı bulunamadı.");
             }
 
+            // Şifre sıfırlama işlemi
             var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
             if (result.Succeeded)
             {
-
-                _emailSender.SendEmailAsync(model.Email, "FHYI Group - Şifre Değiştirme Başarılı", "<h1>Şifreniz Başarıyla Değiştirildi!</h1><p>Hesabınızın şifresi değiştirildi.</p>");
+                // Şifre başarıyla değiştirildiğinde e-posta gönder
+                await _emailSender.SendEmailAsync(model.Email, "FHYI Group - Şifre Değiştirme Başarılı",
+                    "<h1>Şifreniz Başarıyla Değiştirildi!</h1><p>Hesabınızın şifresi başarıyla değiştirildi.</p>");
                 return Ok("Şifreniz başarıyla sıfırlandı.");
             }
 
-            return BadRequest("Şifre sıfırlama başarısız oldu.");
+            // Hata durumunda dönen sonuçları kullanıcıya ilet
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            return BadRequest($"Şifre sıfırlama başarısız oldu: {errors}");
         }
+
 
         [HttpPost("ChangePassword")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel model)
