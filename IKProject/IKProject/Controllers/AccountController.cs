@@ -167,23 +167,54 @@ namespace IKProject.Controllers
 
 
 
+        [HttpGet("ResetPassword")]
+        public IActionResult ResetPassword(string token, string email)
+        {
+            if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
+            {
+                return BadRequest("Geçersiz istek.");
+            }
+
+            // Modeli doldur
+            var model = new ResetPasswordModel
+            {
+                Token = token,
+                Email = email
+            };
+
+            return View(model);
+        }
+
 
         [HttpGet]
         public IActionResult ForgotPassword()
         {
             return View();
         }
-
         [HttpPost]
-        public async Task<IActionResult> ForgotPassword(string email)
+        public async Task ForgotPasswordPost(string email)
         {
-            // mail entegrasyonu eksik. 
 
-            TempData["Message"] = "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.";
-            return RedirectToAction("ForgotPassword");
+                var requestUri = "https://localhost:7149/api/Auth/ForgotPassword";
+                var content = new StringContent(JsonConvert.SerializeObject(new { email }), Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync($"https://localhost:7149/api/Auth/ForgotPassword?email={email}", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine("Başarı: " + result);
+                    // Kullanıcıya bildirim
+                }
+                else
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine("Hata: " + error);
+                    // Hata işleme
+                }
+            
         }
 
-       
 
         [HttpPost]
         public async Task<IActionResult> Logout()

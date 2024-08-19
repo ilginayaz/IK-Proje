@@ -1,0 +1,36 @@
+﻿@model IEnumerable<IzinIstegiViewModel>
+
+@{
+    ViewData["Title"] = "İzinler";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Başlangıç Tarihi</th>
+            <th>Bitiş Tarihi</th>
+            <th>İzin Gün Sayısı</th>
+            <th>İstek Yorumu</th>
+            <th>İzin Türü</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var izin in Model)
+        {
+            <tr>
+                <td>@izin.BaslangicTarihi.ToShortDateString()</td>
+                <td>@izin.BitisTarihi.ToShortDateString()</td>
+                <td>@izin.IzinGunSayisi</td>
+                <td>@izin.IstekYorumu</td>
+                <td>@izin.IzinTuru</td>
+                <td>
+                    <a asp-action="IzinGuncelle" asp-route-id="@izin.Id" class="btn btn-primary">Güncelle</a>
+                    <a asp-action="IzinSil" asp-route-id="@izin.Id" class="btn btn-danger" onclick="return confirm('Bu izni silmek istediğinizden emin misiniz?');">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

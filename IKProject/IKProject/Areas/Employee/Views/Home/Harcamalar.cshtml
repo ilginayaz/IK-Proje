@@ -1,0 +1,34 @@
+﻿@model IEnumerable<HarcamaTalepViewModel>
+
+@{
+    ViewData["Title"] = "Harcamalar";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Açıklama</th>
+            <th>Gider Tutarı</th>
+            <th>Para Birimi</th>
+            <th>Masraf Tarihi</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var harcama in Model)
+        {
+            <tr>
+                <td>@harcama.Aciklama</td>
+                <td>@harcama.GiderTutari</td>
+                <td>@harcama.ParaBirimi</td>
+                <td>@harcama.MasrafTarihi.ToShortDateString()</td>
+                <td>
+                    <a asp-action="HarcamaGuncelle" asp-route-id="@harcama.Id" class="btn btn-primary">Güncelle</a>
+                    <a asp-action="HarcamaSil" asp-route-id="@harcama.Id" class="btn btn-danger" onclick="return confirm('Bu harcamayı silmek istediğinizden emin misiniz?');">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
