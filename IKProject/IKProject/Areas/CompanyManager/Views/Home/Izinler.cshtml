@@ -1,8 +1,8 @@
 ﻿@using IKProject.Data.Concrete
-@model IEnumerable<IzinIstegi>
+@model List<IzinIstegi>
 
 @{
-    ViewData["Title"] = "İzinler";
+    ViewData["Title"] = "Bekleyen İzinler";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -10,7 +10,7 @@
 <table class="table">
     <thead>
         <tr>
-            
+            <th>Adı Soyadı</th>
             <th>Başlangıç Tarihi</th>
             <th>Bitiş Tarihi</th>
             <th>İzin Gün Sayısı</th>
@@ -24,7 +24,7 @@
         @foreach (var izin in Model)
         {
             <tr>
-                
+                <td>@izin.ApplicationUser.Adi @izin.ApplicationUser.Soyadi</td>
                 <td>@izin.BaslangicTarihi.ToShortDateString()</td>
                 <td>@izin.BitisTarihi.ToShortDateString()</td>
                 <td>@izin.IzinGunSayisi</td>
@@ -32,8 +32,8 @@
                 <td>@izin.IzinTuru</td>
                 <td>@izin.OnayDurumu</td>
                 <td>
-                    <a asp-action="IzinGuncelle" asp-route-id="@izin.Id" class="btn btn-primary">Güncelle</a>
-                    <a asp-action="IzinSil" asp-route-id="@izin.Id" class="btn btn-danger" onclick="return confirm('Bu izni silmek istediğinizden emin misiniz?');">Sil</a>
+                    <a asp-action="OnaylaIzin" asp-route-id="@izin.Id" class="btn btn-primary">Onayla</a>
+                    <a asp-action="ReddetIzin" asp-route-id="@izin.Id" class="btn btn-danger" onclick="return confirm('Bu izni silmek istediğinizden emin misiniz?');">Reddet</a>
                 </td>
             </tr>
         }

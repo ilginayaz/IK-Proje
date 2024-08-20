@@ -1,5 +1,8 @@
 ﻿using IKProjectAPI.Data.Abstract;
 using IKProjectAPI.Data.Enums;
+using System.Text.Json.Serialization;
+
+
 
 namespace IKProjectAPI.Data.Concrete
 {
@@ -22,6 +25,7 @@ namespace IKProjectAPI.Data.Concrete
         public Status Status { get; set; } = Status.AwatingApproval;
 
         public string ApplicationUserId { get; set; }
+        [JsonIgnore]
         public ApplicationUser ApplicationUser { get; set; }
 
 

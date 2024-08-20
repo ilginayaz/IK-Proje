@@ -69,13 +69,14 @@ namespace IKProjectAPI.Controllers
             {
                 return NotFound("Kullanıcı bulunamadı");
             }
-
+            var calisanlar = _context.Users.Where(x => x.YoneticiId == managerId).Select(x => x.Id)
+    .ToList();
             // Kullanıcının kendi çalışanlarını al
             var calisanlarIds = yonetici.Calisanlar.Select(c => c.Id).ToList();
 
             // Çalışanların izin isteklerini filtrele
             var izinIstekleri = await _context.izinIstekleri
-                .Where(x => calisanlarIds.Contains(x.ApplicationUserId) && x.OnayDurumu != OnayDurumu.Reddedildi && x.Status != Status.Passive)
+                .Where(x => calisanlar.Contains(x.ApplicationUserId) && x.OnayDurumu != OnayDurumu.Reddedildi && x.Status != Status.Passive).Include(x => x.ApplicationUser)
                 .ToListAsync();
             
             return Ok(izinIstekleri);
@@ -91,13 +92,14 @@ namespace IKProjectAPI.Controllers
             {
                 return NotFound("Kullanıcı bulunamadı");
             }
-
             // Kullanıcının kendi çalışanlarını al
-            var calisanlarIds = yonetici.Calisanlar.Select(c => c.Id).ToList();
+            var calisanlar = _context.Users.Where(x => x.YoneticiId == managerId).Select(x => x.Id)
+    .ToList();
+           
 
             // Çalışanların avans isteklerini filtrele
             var izinIstekleri = await _context.AvansTalepleri
-                .Where(x => calisanlarIds.Contains(x.ApplicationUserId) && x.OnayDurumu != OnayDurumu.Reddedildi && x.Status != Status.Passive)
+                .Where(x => calisanlar.Contains(x.ApplicationUserId) && x.OnayDurumu != OnayDurumu.Reddedildi && x.Status != Status.Passive).Include(x => x.ApplicationUser)
                 .ToListAsync();
 
             return Ok(izinIstekleri);
@@ -115,11 +117,12 @@ namespace IKProjectAPI.Controllers
             }
 
             // Kullanıcının kendi çalışanlarını al
-            var calisanlarIds = yonetici.Calisanlar.Select(c => c.Id).ToList();
+            var calisanlar = _context.Users.Where(x => x.YoneticiId == managerId).Select(x => x.Id)
+    .ToList();
 
             // Çalışanların harcama isteklerini filtrele
             var izinIstekleri = await _context.AvansTalepleri
-                .Where(x => calisanlarIds.Contains(x.ApplicationUserId) && x.OnayDurumu != OnayDurumu.Reddedildi && x.Status != Status.Passive)
+                .Where(x => calisanlar.Contains(x.ApplicationUserId) && x.OnayDurumu != OnayDurumu.Reddedildi && x.Status != Status.Passive).Include(x => x.ApplicationUser)
                 .ToListAsync();
 
             return Ok(izinIstekleri);

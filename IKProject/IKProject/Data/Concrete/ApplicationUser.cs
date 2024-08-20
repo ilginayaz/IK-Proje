@@ -7,7 +7,7 @@ namespace IKProject.Data.Concrete
     {
         public ApplicationUser()
         {
-            Izinler = new HashSet<IzinTipi>();
+            Izinler = new HashSet<IzinIstegi>();
             Calisanlar = new HashSet<ApplicationUser>();
             //Yoneticiler = new HashSet<Masraf>();
         }
@@ -85,7 +85,7 @@ namespace IKProject.Data.Concrete
         public virtual ApplicationUser? Yonetici { get; set; }
 
         public virtual ICollection<ApplicationUser> Calisanlar { get; set; }
-        public virtual ICollection<IzinTipi> Izinler { get; set; }
+        public virtual ICollection<IzinIstegi> Izinler { get; set; }
         //public virtual ICollection<Masraf> Yoneticiler { get; set; }
     }
 }
