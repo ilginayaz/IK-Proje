@@ -54,7 +54,7 @@ namespace IKProject.Areas.Employee.Controllers
         public async Task<IActionResult> Izinler()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var izinler = await _httpClient.GetFromJsonAsync<List<IzinIstegiViewModel>>($"https://localhost:7149/api/Calisan/izinGetById?userId={userId}");
+            var izinler = await _httpClient.GetFromJsonAsync<List<IzinIstegi>>($"https://localhost:7149/api/Calisan/izinGetById?userId={userId}");
 
             if (izinler == null)
             {
@@ -105,6 +105,13 @@ namespace IKProject.Areas.Employee.Controllers
         public async Task<IActionResult> IzinOlustur(IzinIstegiViewModel model)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                TempData["Message"] = "Kullanıcı bulunamadı";
+                return View(model);
+            }
+            model.ApplicationUserId = userId;
+            ModelState.Remove("ApplicationUserId");
 
             if (!ModelState.IsValid)
             {

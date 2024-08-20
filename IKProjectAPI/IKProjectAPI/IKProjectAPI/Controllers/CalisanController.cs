@@ -177,7 +177,8 @@ namespace IKProjectAPI.Controllers
             var user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
-                var list = _context.izinIstekleri.Where(x => x.ApplicationUserId == userId).ToList();
+                var list = _context.izinIstekleri.Where(x=> x.ApplicationUserId == userId).ToList();
+                
                 return Ok(list);
             }
             return BadRequest("Kullanıcı bulunamadı");

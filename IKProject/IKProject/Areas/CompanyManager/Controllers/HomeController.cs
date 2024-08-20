@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Newtonsoft.Json;
+using NuGet.Protocol;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
@@ -89,16 +90,23 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
                 return View("Personel Bulunamadı!");
             }
         }
-
         // izinler listesi 
-        public async Task<IActionResult> IzinListesi()
+        public async Task<IActionResult> Izinler()
         {
-            var response = await _httpClient.GetAsync("http://localhost:5240/api/Yonetici/izinListesi");
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/izinListesi?managerId={userId}");
 
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
                 var izinListesi = JsonConvert.DeserializeObject<List<IzinIstegi>>(content);
+
+                foreach (var item in izinListesi)
+                {
+                    item.IzinGunSayisi = (item.BitisTarihi - item.BaslangicTarihi).Days;
+
+                }
+
                 return View(izinListesi);
             }
             else
@@ -106,6 +114,27 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
                 return View("Tekrar deneyin!");
             }
         }
+
+        // izinler listesi 
+        public async Task<IActionResult> IzinListesi()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/izinListesi?managerId={userId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var izinListesi = JsonConvert.DeserializeObject<List<IzinIstegi>>(content);
+
+              
+                return View(izinListesi);
+            }
+            else
+            {
+                return View("Tekrar deneyin!");
+            }
+        }
+
         [HttpGet]
         public IActionResult RegisterEmployee()
         {

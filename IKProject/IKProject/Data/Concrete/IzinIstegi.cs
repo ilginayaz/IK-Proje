@@ -20,10 +20,12 @@ namespace IKProject.Data.Concrete
         public DateTime? DeletedTime { get; set; }
         public Status Status { get; set; } = Status.AwatingApproval;
 
+        public  string Name { get; set; }
+        public  string Surname { get; set; }
+
         public string AppUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
-        public IzinTipi IzinTipi { get; set; }
-        public int IzinTipiId { get; set; }
+        public IzinTuru IzinTuru { get; set; }
     }
 }
