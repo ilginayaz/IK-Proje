@@ -372,7 +372,9 @@ namespace IKProject.Areas.Employee.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     TempData["SuccessMessage"] = "Profiliniz başarıyla güncellendi.";
-                    return RedirectToAction("Index", "CompanyManager");
+
+                   
+                    return View(model);
                 }
                 else
                 {
@@ -387,6 +389,7 @@ namespace IKProject.Areas.Employee.Controllers
 
             return View(model);
         }
+
 
     }
 }
