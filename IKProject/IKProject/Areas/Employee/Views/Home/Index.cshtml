@@ -26,7 +26,7 @@
     <style>
         .cardd {
             border-radius: 15px;
-            background: linear-gradient(to right, darkblue, #FFA27F);
+            background: linear-gradient(to right, #EF3038, #CC8899);
             padding: 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             max-width: 800px;
@@ -126,9 +126,6 @@
                                     <p><strong>Email:</strong> @Model.Email</p>
                                     <p><strong>Departman:</strong> @Model.Departman</p>
                                     <p><strong>Adres:</strong> @Model.Adres</p>
-                                    <a href="@Url.Action("EditProfile", "Home", new { area = "Employee" })">
-                                        <button class="btn-edit">Düzenle</button>
-                                    </a>
                                 </div>
                             </div>
                         </div>
