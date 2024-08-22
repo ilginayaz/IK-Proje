@@ -115,6 +115,44 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
         }
 
+        // avanslar listesi 
+        public async Task<IActionResult> Avanslar()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/avansListesi?managerId={userId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var izinListesi = JsonConvert.DeserializeObject<List<AvansTalep>>(content);
+
+                return View(izinListesi);
+            }
+            else
+            {
+                return View("Tekrar deneyin!");
+            }
+        }
+
+        // Harcama listesi 
+        public async Task<IActionResult> Harcamalar()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/harcamaListesi?managerId={userId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var izinListesi = JsonConvert.DeserializeObject<List<HarcamaTalep>>(content);
+
+                return View(izinListesi);
+            }
+            else
+            {
+                return View("Tekrar deneyin!");
+            }
+        }
+
         // izinler listesi 
         public async Task<IActionResult> IzinListesi()
         {
@@ -170,7 +208,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("IzinListesi");
+                return RedirectToAction("Izinler");
             }
             else
             {
@@ -186,7 +224,71 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("IzinListesi");
+                return RedirectToAction("Izinler");
+            }
+            else
+            {
+                return View("Tekrar deneyin!");
+            }
+        }
+
+        // avans onaylama
+        [HttpPatch]
+        public async Task<IActionResult> OnaylaAvans(string izinId)
+        {
+            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/avansOnayla?id={izinId}", null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Avanslar");
+            }
+            else
+            {
+                return View("Tekrar deneyin!");
+            }
+        }
+
+        // avans reddetme
+        [HttpPatch]
+        public async Task<IActionResult> ReddetAvans(string izinId)
+        {
+            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/avansReddet?id={izinId}", null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Avanslar");
+            }
+            else
+            {
+                return View("Tekrar deneyin!");
+            }
+        }
+
+        // harcama onaylama
+        [HttpPatch]
+        public async Task<IActionResult> OnaylaHarcama(string izinId)
+        {
+            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/harcamaOnayla?id={izinId}", null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Harcamalar");
+            }
+            else
+            {
+                return View("Tekrar deneyin!");
+            }
+        }
+
+        // harcama reddetme
+        [HttpPatch]
+        public async Task<IActionResult> ReddetHarcama(string izinId)
+        {
+            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/harcamaReddet?id={izinId}", null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Harcamalar");
             }
             else
             {

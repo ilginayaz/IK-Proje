@@ -1,0 +1,63 @@
+﻿@model HarcamaTalepViewModel
+
+@{
+    ViewData["Title"] = "Harcama Oluştur";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="HarcamaOlustur" method="post">
+    <div class="form-group">
+        <label asp-for="MasrafTarihi" class="control-label"></label>
+        <input asp-for="MasrafTarihi" class="form-control" type="date" id="masrafTarihi" />
+        <span asp-validation-for="MasrafTarihi" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Aciklama" class="control-label"></label>
+        <textarea asp-for="Aciklama" class="form-control"></textarea>
+        <span asp-validation-for="Aciklama" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ParaBirimi" class="control-label"></label>
+        <select asp-for="ParaBirimi" class="form-control">
+            <option value="">-- Seçiniz --</option>
+            @foreach (var paraBirimi in Enum.GetValues(typeof(IKProject.Data.Enums.ParaBirimi)).Cast<IKProject.Data.Enums.ParaBirimi>())
+            {
+                <option value="@paraBirimi">@paraBirimi</option>
+            }
+        </select>
+        <span asp-validation-for="ParaBirimi" class="text-danger"></span>
+
+        <label asp-for="GiderTutari" class="control-label"></label>
+        <input asp-for="GiderTutari" class="form-control" type="number" />
+        <span asp-validation-for="GiderTutari" class="text-danger"></span>
+    </div>
+    <input type="hidden" asp-for="ApplicationUserId" />
+    <div class="form-group">
+        <input type="submit" value="Oluştur" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var today = new Date();
+        var oneMonthAgo = new Date();
+        oneMonthAgo.setMonth(today.getMonth() - 1);
+
+        // Tarih formatını yyyy-MM-dd şeklinde ayarlıyoruz
+        var minDate = oneMonthAgo.toISOString().split('T')[0];
+        var maxDate = today.toISOString().split('T')[0];
+
+        // Input elementini seçiyoruz
+        var input = document.getElementById("masrafTarihi");
+        input.setAttribute("min", minDate);
+        input.setAttribute("max", maxDate);
+    });
+</script>

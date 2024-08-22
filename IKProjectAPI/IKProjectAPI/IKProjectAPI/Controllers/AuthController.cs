@@ -182,7 +182,8 @@ namespace IKProjectAPI.Controllers
                         var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
                         var confirmationLink = Url.Action("ResetPassword", "Auth", new { userId = user.Id, token = resetToken }, Request.Scheme);
 
-                        await _emailSender.SendEmailAsync(user.Email, "FHYI Group Şifre Sıfırlama", $"Lütfen şifrenizi sıfırlamak için <a href='{confirmationLink}'>buraya tıklayın</a>.");
+                        //await _emailSender.SendEmailAsync(user.Email, "FHYI Group Şifre Sıfırlama", $"Lütfen şifrenizi sıfırlamak için <a href='{confirmationLink}'>buraya tıklayın</a>.");
+                        _emailSender.SendEmailAsync(user.Email, "FHYI Group Geçici Şifre ", $"Geçici Şifreniz : <strong >Fhyi.1</strong>.");
                         return Ok("Email başarıyla onaylandı ve Çalışana Şifre sıfırlama isteği gönderildi");
                     }
                     return Ok("Email başarıyla onaylandı");

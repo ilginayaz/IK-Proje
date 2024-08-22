@@ -48,7 +48,7 @@ namespace IKProjectAPI.Data.Concrete
         public DateOnly IseGirisTarihi { get; set; } = DateOnly.FromDateTime(DateTime.Now);
         [DataType(DataType.Date)]
         public DateOnly IstenCikisTarihi { get; set; }
-        public Guid SirketId { get; set; }
+        public Guid? SirketId { get; set; }
         public Sirket Sirket { get; set; }
         public Meslek Meslek { get; set; }
         public Departman Departman { get; set; }

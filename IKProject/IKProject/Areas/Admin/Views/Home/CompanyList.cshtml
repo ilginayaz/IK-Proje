@@ -68,8 +68,8 @@
     }
 
     function displayCompanyDetails(company) {
-        // company.sirketYoneticileri bir nesne olarak dönüyorsa
-        const yoneticiler = company.sirketYoneticileri && Array.isArray(company.sirketYoneticileri.$values) ? company.sirketYoneticileri.$values : [];
+        // sirketYoneticileri doğrudan bir dizi olarak döndüğünden, bu şekilde alıyoruz
+        const yoneticiler = company.sirketYoneticileri || [];
 
         let detailsHtml = `
             <h3>${company.sirketAdi}</h3>
@@ -108,6 +108,7 @@
         document.getElementById('companyDetails').innerHTML = detailsHtml;
         document.getElementById('companyDetailsModal').style.display = 'block';
     }
+
 
 
     async function showUserProfile(userId) {

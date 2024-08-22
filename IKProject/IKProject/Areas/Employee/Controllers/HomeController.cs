@@ -50,6 +50,20 @@ namespace IKProject.Areas.Employee.Controllers
             }
             return NotFound("Personel bulunamadı.");
         }
+        public async Task<ApplicationUser> GetApplicationUser(string userId)
+        {
+
+
+            var response = await _httpClient.GetAsync($"http://localhost:5240/api/Auth/getUser?userId={userId}");
+            if (response.IsSuccessStatusCode)
+            {
+
+                var content = await response.Content.ReadAsStringAsync();
+                var user = JsonConvert.DeserializeObject<ApplicationUser>(content); //
+                return user;
+            }
+            return null;
+        }
         [HttpGet]
         public async Task<IActionResult> Izinler()
         {
@@ -182,14 +196,17 @@ namespace IKProject.Areas.Employee.Controllers
         [HttpGet]
         public IActionResult HarcamaOlustur()
         {
-            return View();
+            var model = new HarcamaTalepViewModel();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            model.ApplicationUserId = userId;
+            return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> HarcamaOlustur(HarcamaTalepViewModel model)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
+            
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -264,16 +281,33 @@ namespace IKProject.Areas.Employee.Controllers
         [HttpGet]
         public IActionResult AvansOlustur()
         {
-            return View();
+            var model = new AvansTalepViewModel();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            model.ApplicationUserId = userId;
+            return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> AvansOlustur(AvansTalepViewModel model)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await GetApplicationUser(userId);
+            model.ApplicationUserId = userId;
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "Kullanıcı bilgileri alınamadı.");
+                return View(model);
+            }
 
             if (!ModelState.IsValid)
             {
+                return View(model);
+            }
+            
+            // Maaşın avans talebinin 3 katından fazla olup olmadığını kontrol et
+            if (user.Maas < model.Tutar * 3)
+            {
+                ModelState.AddModelError(string.Empty, "Avans talebi maaşın 3 katından fazla olamaz.");
                 return View(model);
             }
 
@@ -291,6 +325,7 @@ namespace IKProject.Areas.Employee.Controllers
                 return View(model);
             }
         }
+
 
         [HttpGet]
         public IActionResult AvansGuncelle(int id)
