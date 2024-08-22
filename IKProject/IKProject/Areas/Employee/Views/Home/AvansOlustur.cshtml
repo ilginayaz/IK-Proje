@@ -1,0 +1,65 @@
+﻿@model AvansTalepViewModel
+
+@{
+    ViewData["Title"] = "Avans Oluştur";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="AvansOlustur" method="post">
+    <div class="form-group">
+        <label asp-for="TalepTarihi" class="control-label"></label>
+        <input asp-for="TalepTarihi" class="form-control" type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+        <span asp-validation-for="TalepTarihi" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="Aciklama" class="control-label"></label>
+        <textarea asp-for="Aciklama" class="form-control"></textarea>
+        <span asp-validation-for="Aciklama" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ParaBirimi" class="control-label"></label>
+        <select asp-for="ParaBirimi" class="form-control">
+            <option value="">-- Seçiniz --</option>
+            @foreach (var paraBirimi in Enum.GetValues(typeof(IKProject.Data.Enums.ParaBirimi)).Cast<IKProject.Data.Enums.ParaBirimi>())
+            {
+                <option value="@paraBirimi">@paraBirimi</option>
+            }
+        </select>
+        <span asp-validation-for="ParaBirimi" class="text-danger"></span>
+
+        <label asp-for="Tutar" class="control-label"></label>
+        <input asp-for="Tutar" class="form-control" type="number" />
+        <span asp-validation-for="Tutar" class="text-danger"></span>
+    </div>
+    <input type="hidden" asp-for="ApplicationUserId" />
+    <div class="form-group">
+        <input type="submit" value="Oluştur" class="btn btn-primary" />
+    </div>
+</form>
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+
+@if (ViewData.ModelState.Values.Any(v => v.Errors.Count > 0))
+{
+    <div class="alert alert-danger">
+        @foreach (var modelState in ViewData.ModelState.Values)
+        {
+            foreach (var error in modelState.Errors)
+            {
+                <p>@error.ErrorMessage</p>
+            }
+        }
+    </div>
+}
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+}

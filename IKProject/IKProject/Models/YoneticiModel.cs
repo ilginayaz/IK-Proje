@@ -67,7 +67,7 @@ namespace IKProject.Models
         [DataType(DataType.Date)]
         public DateTime? IstenCikisTarihi { get; set; }  // Nullable DateTime
 
-        public Guid SirketId { get; set; }
+        public Guid? SirketId { get; set; }
         public Sirket? Sirket { get; set; }
 
         public Meslek Meslek { get; set; }

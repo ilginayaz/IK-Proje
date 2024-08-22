@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Linq;
 using System.Security.Claims;
 
@@ -63,24 +64,35 @@ namespace IKProjectAPI.Controllers
         [HttpGet("izinListesi")]
         public async Task<IActionResult> IzinListesi(string managerId)
         {
-
+            // Yöneticiyi kontrol et
             var yonetici = await _userManager.FindByIdAsync(managerId);
             if (yonetici == null)
             {
-                return NotFound("Kullanıcı bulunamadı");
+                return NotFound("Yönetici bulunamadı");
             }
-            var calisanlar = _context.Users.Where(x => x.YoneticiId == managerId).Select(x => x.Id)
-    .ToList();
-            // Kullanıcının kendi çalışanlarını al
-            var calisanlarIds = yonetici.Calisanlar.Select(c => c.Id).ToList();
 
-            // Çalışanların izin isteklerini filtrele
-            var izinIstekleri = await _context.izinIstekleri
-                .Where(x => calisanlar.Contains(x.ApplicationUserId) && x.OnayDurumu != OnayDurumu.Reddedildi && x.Status != Status.Passive).Include(x => x.ApplicationUser)
+            // Yöneticinin çalışanlarının ID'lerini al
+            var calisanlar = await _context.Users
+                .Where(x => x.YoneticiId == managerId)
+                .Select(x => x.Id)
                 .ToListAsync();
-            
-            return Ok(izinIstekleri);
+
+            // Çalışanların izin isteklerini filtrele ve ilgili ApplicationUser nesnesini dahil et
+            var izinIstekleri = await _context.izinIstekleri
+                .Where(x => calisanlar.Contains(x.ApplicationUserId) &&
+                            x.OnayDurumu != OnayDurumu.Reddedildi &&
+                            x.Status != Status.Passive)
+                .Include(x => x.ApplicationUser) // ApplicationUser verisini dahil et
+                .ToListAsync();
+            // Serileştirme seçeneklerini ayarla
+            var jsonSettings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore // Döngüsel referanslardan kaçın
+            };
+
+            return Ok(JsonConvert.SerializeObject(izinIstekleri, jsonSettings));
         }
+
 
         //Yönetici çalışanlarının Avanslar listesi
         [HttpGet("avansListesi")]
@@ -102,7 +114,13 @@ namespace IKProjectAPI.Controllers
                 .Where(x => calisanlar.Contains(x.ApplicationUserId) && x.OnayDurumu != OnayDurumu.Reddedildi && x.Status != Status.Passive).Include(x => x.ApplicationUser)
                 .ToListAsync();
 
-            return Ok(izinIstekleri);
+            // Serileştirme seçeneklerini ayarla
+            var jsonSettings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore // Döngüsel referanslardan kaçın
+            };
+
+            return Ok(JsonConvert.SerializeObject(izinIstekleri, jsonSettings));
         }
 
         //Yönetici çalışanlarının Harcama listesi
@@ -124,8 +142,13 @@ namespace IKProjectAPI.Controllers
             var izinIstekleri = await _context.AvansTalepleri
                 .Where(x => calisanlar.Contains(x.ApplicationUserId) && x.OnayDurumu != OnayDurumu.Reddedildi && x.Status != Status.Passive).Include(x => x.ApplicationUser)
                 .ToListAsync();
+            // Serileştirme seçeneklerini ayarla
+            var jsonSettings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore // Döngüsel referanslardan kaçın
+            };
 
-            return Ok(izinIstekleri);
+            return Ok(JsonConvert.SerializeObject(izinIstekleri, jsonSettings));
         }
 
         //Çalışan kayıt et

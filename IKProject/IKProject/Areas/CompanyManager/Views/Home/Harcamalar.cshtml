@@ -1,0 +1,39 @@
+﻿@using IKProject.Data.Concrete
+@model List<HarcamaTalep>
+
+@{
+    ViewData["Title"] = "Bekleyen Harcamalar";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Adı Soyadı</th>
+            <th>Açıklama</th>
+            <th>Masraf Tarihi</th>
+            <th>Gider Tutarı</th>
+            <th>Para Birimi</th>
+            <th>Onay Durumu</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var izin in Model)
+        {
+            <tr>
+                <td>@izin.ApplicationUser.Adi @izin.ApplicationUser.Soyadi</td>
+                <td>@izin.Aciklama</td>
+                <td>@izin.MasrafTarihi.ToShortDateString()</td>
+                <td>@izin.GiderTutari</td>
+                <td>@izin.ParaBirimi</td>
+                <td>@izin.OnayDurumu</td>
+                <td>
+                    <a asp-action="OnaylaHarcama" asp-route-id="@izin.Id" class="btn btn-primary">Onayla</a>
+                    <a asp-action="ReddetHarcama" asp-route-id="@izin.Id" class="btn btn-danger" onclick="return confirm('Bu harcamayı silmek istediğinizden emin misiniz?');">Reddet</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

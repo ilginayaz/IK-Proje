@@ -96,12 +96,41 @@ namespace IKProjectAPI.Controllers
             }
             return BadRequest("Herhangi bir yönetici bulunamadı");
         }
+        [HttpGet("OnayBekleyenYoneticiler")]
+        public async Task<IActionResult> OnayBekleyenYoneticiler()
+        {
+            var yoneticiler = await _userManager.GetUsersInRoleAsync("Yonetici");
+           var onayBekleyenler = yoneticiler.Where(x => x.Status == Data.Enums.Status.AwatingApproval);
+            if (onayBekleyenler != null && onayBekleyenler.Any())
+            {
+                return Ok(onayBekleyenler);
+            }
+            return BadRequest("Herhangi bir yönetici bulunamadı");
+        }
+
+        [HttpGet("BosYoneticileriListele")]
+        public async Task<IActionResult> BosYoneticileriListele()
+        {
+            // "Yonetici" rolündeki kullanıcıları alıyoruz
+            var yoneticiler = await _userManager.GetUsersInRoleAsync("Yonetici");
+
+            // sirketId'si null olan yöneticileri filtreliyoruz
+            var bosYoneticiler = yoneticiler.Where(y => y.SirketId == null).ToList();
+
+            if (bosYoneticiler.Any())
+            {
+                return Ok(bosYoneticiler);
+            }
+
+            return BadRequest("Herhangi bir yönetici bulunamadı");
+        }
+
 
         [HttpPatch("YoneticiyiOnayla")]
         public async Task<IActionResult> YoneticiyiOnayla(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            var sirket = _context.sirketler.Where(s => s.SirketYoneticileri.Any(y => y.Id == user.Id) && s.Status == Data.Enums.Status.AwatingApproval).FirstOrDefault();
+            var sirket = _context.sirketler.Where(s => s.Id == user.SirketId && s.Status == Data.Enums.Status.AwatingApproval).FirstOrDefault();
             
             if (user == null)
             {
@@ -112,7 +141,8 @@ namespace IKProjectAPI.Controllers
 
             user.Status = Data.Enums.Status.Active;
             sirket.Status = Data.Enums.Status.Active;
-                _emailSender.SendEmailAsync(user.Email, "FHYI GROUP - Hesabınız Onaylandı", "Hesabınız onaylanmıştır");
+                await _context.SaveChangesAsync();
+               await _emailSender.SendEmailAsync(user.Email, "FHYI GROUP - Hesabınız Onaylandı", "Hesabınız onaylanmıştır");
             return Ok("Kullanıcı ve Şirket başarıyla onaylandı");
             }
             return BadRequest("Kullanıcıya ait Sirket Bulunamadı");
@@ -122,14 +152,30 @@ namespace IKProjectAPI.Controllers
         public async Task<IActionResult> YoneticiyiReddet(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            var sirket = _context.sirketler.Where(s => s.SirketYoneticileri.Any(y => y.Id == user.Id) && s.Status == Data.Enums.Status.AwatingApproval).FirstOrDefault();
+            var sirket = _context.sirketler.Where(s => s.Id == user.SirketId && s.Status == Data.Enums.Status.AwatingApproval).FirstOrDefault();
             if (user == null)
             {
                 return BadRequest("Kullanıcı Bulunamadı");
             }
             user.Status = Data.Enums.Status.Passive;
             sirket.Status = Data.Enums.Status.Passive;
-            _emailSender.SendEmailAsync(user.Email, "FHYI GROUP - Hesabınız Reddedildi", "Hesabınız reddedildi üzgünüz :(");
+            await _context.SaveChangesAsync();
+           await _emailSender.SendEmailAsync(user.Email, "FHYI GROUP - Hesabınız Reddedildi", "Hesabınız reddedildi üzgünüz :(");
+            return Ok("Kullanıcı başarıyla reddedildi");
+        }
+
+        [HttpPatch("YoneticiyiSil")]
+        public async Task<IActionResult> YoneticiyiSil(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            var sirket = _context.sirketler.Where(s => s.SirketYoneticileri.Any(y => y.Id == user.Id) && s.Status == Data.Enums.Status.Active).FirstOrDefault();
+            if (user == null)
+            {
+                return BadRequest("Kullanıcı Bulunamadı");
+            }
+            user.Status = Data.Enums.Status.Passive;
+            await _context.SaveChangesAsync();
+            _emailSender.SendEmailAsync(user.Email, "FHYI GROUP - Hesabınız ve Şirketiniz Hakkında Bilgilendirme", "Hesabınız ve Şirketiniz silindi üzgünüz :(");
             return Ok("Kullanıcı başarıyla reddedildi");
         }
 

@@ -130,7 +130,7 @@ namespace IKProject.Areas.Admin.Controllers
         // Yönetici onaylama sayfası
         public async Task<IActionResult> YoneticiOnay()
         {
-            var response = await _httpClient.GetAsync("https://localhost:7149/api/Admin/YoneticileriListele");
+            var response = await _httpClient.GetAsync("https://localhost:7149/api/Admin/OnayBekleyenYoneticiler");
 
             if (response.IsSuccessStatusCode)
             {
@@ -204,7 +204,7 @@ namespace IKProject.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Sil(string id)
         {
-            var requestUri = $"https://localhost:7149/api/Yonetici/DeleteUser?id={id}";
+            var requestUri = $"https://localhost:7149/api/Admin/YoneticiyiSil?id={id}";
             var response = await _httpClient.PatchAsync(requestUri, null);
 
             if (response.IsSuccessStatusCode)
@@ -221,10 +221,10 @@ namespace IKProject.Areas.Admin.Controllers
             try
             {
                 // Yönetici listesini al
-                var yoneticilerResponse = await _httpClient.GetAsync("https://localhost:7149/api/admin/YoneticileriListele");
+                var yoneticilerResponse = await _httpClient.GetAsync("https://localhost:7149/api/admin/BosYoneticileriListele");
                 if (!yoneticilerResponse.IsSuccessStatusCode)
                 {
-                    throw new Exception("Yönetici listesi yüklenirken hata oluştu.");
+                    throw new Exception("Boşta Yönetici bulunamadı.");
                 }
 
                 var yoneticilerContent = await yoneticilerResponse.Content.ReadAsStringAsync();
@@ -257,7 +257,7 @@ namespace IKProject.Areas.Admin.Controllers
                 // Hata işleme ve loglama
                 Console.WriteLine(ex.Message); // veya Debug.WriteLine(ex.Message);
                                                // Kullanıcıya uygun bir hata mesajı göster
-                ViewBag.ErrorMessage = "Veriler yüklenirken bir hata oluştu.";
+                ViewBag.ErrorMessage = ex.Message;
             }
 
             return View();

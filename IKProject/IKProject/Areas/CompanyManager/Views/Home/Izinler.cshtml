@@ -20,6 +20,9 @@
             <th>İşlem</th>
         </tr>
     </thead>
+    @if (Model != null)
+    {
+        
     <tbody>
         @foreach (var izin in Model)
         {
@@ -38,4 +41,5 @@
             </tr>
         }
     </tbody>
+    }
 </table>
