@@ -114,7 +114,6 @@ namespace IKProject.Areas.Admin.Controllers
             var response = await _httpClient.GetAsync($"http://localhost:5240/api/Auth/getUser?userId={userId}");
             if (response.IsSuccessStatusCode)
             {
-
                 var content = await response.Content.ReadAsStringAsync();
                 var user = JsonConvert.DeserializeObject<ApplicationUser>(content); //
                 return Ok(user);
@@ -148,7 +147,7 @@ namespace IKProject.Areas.Admin.Controllers
 
         // Yönetici onaylama işlemi
         [HttpPost]
-        public async Task<IActionResult> Onayla(string id)
+        public async Task<IActionResult> YoneticiOnay(string id)
         {
             var requestUri = $"https://localhost:7149/api/Admin/YoneticiyiOnayla?id={id}";
             var response = await _httpClient.PatchAsync(requestUri, null);
