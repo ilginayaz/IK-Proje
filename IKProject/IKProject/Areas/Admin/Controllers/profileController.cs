@@ -92,11 +92,7 @@ namespace IKProject.Areas.Admin.Controllers
                 return View();
             }
         }
-        public IActionResult ChangePassword()
-        {
-            return View();
-        }
-
+       
 
     }
 
