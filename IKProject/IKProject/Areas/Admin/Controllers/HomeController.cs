@@ -140,7 +140,7 @@ namespace IKProject.Areas.Admin.Controllers
                 return View(bekleyenYoneticiler);
             }
 
-            return View("Hata Oluştu");
+            return View();
         }
 
 

@@ -1,16 +1,16 @@
 ﻿using IKProject.Areas.Admin.Models;
-using IKProject.Data.Concrete;
 using IKProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 
 namespace IKProject.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class ProfileController : Controller
     {
+
         private HttpClient _httpClient;
 
         public ProfileController(HttpClient httpClient)
@@ -22,7 +22,7 @@ namespace IKProject.Areas.Admin.Controllers
         {
             return View();
         }
-        public async  Task<IActionResult> Edit()
+        public async Task<IActionResult> Edit()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var response = await _httpClient.GetAsync($"https://localhost:7149/api/Auth/GetUser?userId={userId}");
@@ -40,7 +40,7 @@ namespace IKProject.Areas.Admin.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(UpdateProfileViewModel model) 
+        public async Task<IActionResult> Edit(UpdateProfileViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -92,7 +92,12 @@ namespace IKProject.Areas.Admin.Controllers
                 return View();
             }
         }
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
 
 
     }
+
 }
