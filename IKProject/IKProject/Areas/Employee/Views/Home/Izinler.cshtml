@@ -28,7 +28,7 @@
                 <tr>
                     <td>@izin.BaslangicTarihi.ToShortDateString()</td>
                     <td>@izin.BitisTarihi.ToShortDateString()</td>
-                    <td>@izin.IzinGunSayisi</td>
+                    <td>@(1 + (izin.BitisTarihi - izin.BaslangicTarihi).TotalDays)</td>
                     <td>@izin.IstekYorumu</td>
                     <td>@izin.IzinTuru</td>
                     <td>@izin.OnayDurumu</td>
