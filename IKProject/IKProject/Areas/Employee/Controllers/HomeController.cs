@@ -426,5 +426,41 @@ namespace IKProject.Areas.Employee.Controllers
         }
 
 
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var changePasswordModel = new ChangePasswordViewModel
+            {
+                OldPassword = model.OldPassword,
+                NewPassword = model.NewPassword
+            };
+
+            var content = new StringContent(JsonConvert.SerializeObject(changePasswordModel), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync("https://localhost:7149/api/Auth/ChangePassword", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["SuccessMessage"] = "Şifreniz başarıyla değiştirildi.";
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                ModelState.AddModelError(string.Empty, $"Şifre değişikliği başarısız oldu: {errorMessage}");
+                return View(model);
+            }
+        }
+
     }
 }
