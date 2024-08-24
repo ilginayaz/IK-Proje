@@ -12,7 +12,7 @@
     <form asp-action="HarcamaOlustur" method="post" class="custom-form">
         <div class="form-group">
             <label asp-for="MasrafTarihi" class="control-label">Harcama Tarihi</label>
-            <input asp-for="MasrafTarihi" class="form-control" type="date" />
+            <input asp-for="MasrafTarihi" class="form-control" type="date" id="MasrafTarihi" />
             <span asp-validation-for="MasrafTarihi" class="text-danger"></span>
         </div>
 
@@ -122,6 +122,10 @@
         color: #ff4d4d;
     }
 
+    input[type="number"].form-control {
+        color: #ffffff;
+    }
+
 </style>
 
 
@@ -133,16 +137,19 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var today = new Date();
-        var oneMonthAgo = new Date();
-        oneMonthAgo.setMonth(today.getMonth() - 1);
+        var threeMonthsAgo = new Date();
+        threeMonthsAgo.setMonth(today.getMonth() - 3);
 
         // Tarih formatını yyyy-MM-dd şeklinde ayarlıyoruz
-        var minDate = oneMonthAgo.toISOString().split('T')[0];
+        var minDate = threeMonthsAgo.toISOString().split('T')[0];
         var maxDate = today.toISOString().split('T')[0];
 
         // Input elementini seçiyoruz
-        var input = document.getElementById("masrafTarihi");
-        input.setAttribute("min", minDate);
-        input.setAttribute("max", maxDate);
+        var input = document.getElementById("MasrafTarihi");
+        if (input) {
+            input.setAttribute("min", minDate);
+            input.setAttribute("max", maxDate);
+        }
     });
+
 </script>

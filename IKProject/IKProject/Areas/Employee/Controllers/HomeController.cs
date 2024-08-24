@@ -361,15 +361,14 @@ namespace IKProject.Areas.Employee.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                TempData["Message"] = "Avans başarıyla silinmiştir.";
-                return RedirectToAction("Avanslar");
+                return Json(new { success = true, message = "Avans başarıyla silinmiştir." });
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
-                return RedirectToAction("Avanslar");
+                return Json(new { success = false, message = "Bir hata oluştu." });
             }
         }
+
 
         [HttpGet]
         public async Task<IActionResult> BilgiGuncelle()
