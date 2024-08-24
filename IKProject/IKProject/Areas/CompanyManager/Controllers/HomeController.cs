@@ -51,7 +51,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return View("Personel Bulunamadı!");
+                return BadRequest("Personel Bulunamadı!");
             }
         }
 
@@ -87,7 +87,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return View("Personel Bulunamadı!");
+                return BadRequest("Personel Bulunamadı!");
             }
         }
         // izinler listesi 
@@ -111,7 +111,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return View("Tekrar deneyin!");
+                return BadRequest("Tekrar deneyin!");
             }
         }
 
@@ -130,7 +130,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return View("Tekrar deneyin!");
+                return BadRequest("Tekrar deneyin!");
             }
         }
 
@@ -149,7 +149,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return View("Tekrar deneyin!");
+                return BadRequest("Tekrar deneyin!");
             }
         }
 
@@ -169,7 +169,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return View("Tekrar deneyin!");
+                return BadRequest("Tekrar deneyin!");
             }
         }
 
@@ -196,15 +196,19 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return View("Tekrar deneyin!");
+                return BadRequest("Tekrar deneyin!");
             }
         }
 
         // izin onaylama
-        [HttpPatch]
-        public async Task<IActionResult> OnaylaIzin(string izinId)
+        [HttpGet]
+        public async Task<IActionResult> OnaylaIzin(int izinId)
         {
             var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/izinOnayla?id={izinId}", null);
+            if (izinId == 0)
+            {
+                return BadRequest("Geçersiz izin ID'si.");
+            }
 
             if (response.IsSuccessStatusCode)
             {
@@ -212,12 +216,12 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return View("Tekrar deneyin!");
+                return BadRequest("Tekrar deneyin!");
             }
         }
 
         // izin reddetme
-        [HttpPatch]
+        [HttpGet]
         public async Task<IActionResult> ReddetIzin(string izinId)
         {
             var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/izinReddet?id={izinId}", null);
@@ -228,7 +232,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return View("Tekrar deneyin!");
+                return BadRequest("Tekrar deneyin!");
             }
         }
 
@@ -244,7 +248,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return View("Tekrar deneyin!");
+                return BadRequest("Tekrar deneyin!");
             }
         }
 
@@ -260,7 +264,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return View("Tekrar deneyin!");
+                return BadRequest("Tekrar deneyin!");
             }
         }
 
@@ -276,7 +280,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return View("Tekrar deneyin!");
+                return BadRequest("Tekrar deneyin!");
             }
         }
 
@@ -292,7 +296,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return View("Tekrar deneyin!");
+                return BadRequest("Tekrar deneyin!");
             }
         }
 
