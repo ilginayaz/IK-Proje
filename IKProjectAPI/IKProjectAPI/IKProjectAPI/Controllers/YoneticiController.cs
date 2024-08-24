@@ -82,7 +82,7 @@ namespace IKProjectAPI.Controllers
                 .Where(x => calisanlar.Contains(x.ApplicationUserId) &&
                             x.OnayDurumu != OnayDurumu.Reddedildi &&
                             x.Status != Status.Passive)
-                .Include(x => x.ApplicationUser) // ApplicationUser verisini dahil et
+               // ApplicationUser verisini dahil et
                 .ToListAsync();
             // Serileştirme seçeneklerini ayarla
             var jsonSettings = new JsonSerializerSettings
@@ -280,7 +280,7 @@ namespace IKProjectAPI.Controllers
         }
 
         [HttpPatch("izinOnayla")]
-        public async Task<IActionResult> IzinOnayla(string id)
+        public async Task<IActionResult> IzinOnayla(int id)
         {
             var izin = await _context.izinIstekleri.FindAsync(id);
             
