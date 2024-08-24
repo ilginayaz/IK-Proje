@@ -136,12 +136,12 @@
                 <h5 class="text-primary">Hizmetlerimiz</h5>
                 <h1>Şirket ihtiyaçlarına özel sunduğumuz hizmetler</h1>
             </div>
-            <div class="row g-5 services-inner">
-                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay=".3s">
+            <div class="row g-5 services-inner" >
+                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay=".3s" data-bs-toggle="modal" data-bs-target="#izinModal">
                     <div class="services-item bg-light">
                         <div class="p-4 text-center services-content">
                             <div class="services-content-icon">
-                                <i class="fa fa-code fa-7x mb-4 text-primary"></i>
+                                <i class="fa fa-regular fa-users fa-7x mb-4 text-primary"></i>
                                 <h4 class="mb-3">İzin Yönetimi</h4>
                                 <p class="mb-4">Çalışanların izin taleplerini ve yıllık izinlerini etkin bir şekilde yönetmenizi sağlar.</p>
 
@@ -149,11 +149,34 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay=".5s">
+
+
+
+                <!-- İzin Modal -->
+                <div class="modal fade" id="izinModal" tabindex="-1" aria-labelledby="izinModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="izinModalLabel">İzin Yönetimi</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p> İzin yönetim sistemimiz, çalışanlarınızın izin taleplerini kolayca takip etmenizi ve onaylamanızı sağlar. Çalışanlarınız, kişisel ve yıllık izinlerini dijital ortamda yönetebilir, izin planlarını görebilir ve yöneticileriyle hızlı bir şekilde iletişime geçebilir. Bu sistem, izin süreçlerini basitleştirir ve yönetici onaylarını hızlandırarak operasyonel verimliliği artırır.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay=".5s" data-bs-toggle="modal" data-bs-target="#mesaiModal">
                     <div class="services-item bg-light">
                         <div class="p-4 text-center services-content">
                             <div class="services-content-icon">
-                                <i class="fa fa-file-code fa-7x mb-4 text-primary"></i>
+                                <i class="fa fa-solid fa-user-clock fa-7x mb-4 text-primary"></i>
                                 <h4 class="mb-3">Mesai Yönetimi</h4>
                                 <p class="mb-4">Fazla mesai ve çalışma saatlerini düzenleyerek verimliliği artırmanıza yardımcı olur.</p>
 
@@ -161,11 +184,34 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay=".7s">
+
+
+                <!-- Mesai Modal -->
+                <div class="modal fade" id="mesaiModal" tabindex="-1" aria-labelledby="mesaiModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="mesaiModalLabel">Mesai Yönetimi</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p> Mesai yönetim modülümüz, fazla mesai saatlerini ve çalışma sürelerini hassas bir şekilde takip etmenizi sağlar. Çalışanlar, mesai giriş ve çıkış saatlerini kolayca kaydedebilirken, yöneticiler de bu verileri gerçek zamanlı olarak inceleyebilir ve onaylayabilir. Bu sayede, iş gücü yönetiminizi optimize eder ve iş gücü maliyetlerini kontrol altında tutmanıza yardımcı olur.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay=".7s" data-bs-toggle="modal" data-bs-target="#performansModal">
                     <div class="services-item bg-light">
                         <div class="p-4 text-center services-content">
                             <div class="services-content-icon">
-                                <i class="fa fa-external-link-alt fa-7x mb-4 text-primary"></i>
+                                <i class="fa fa-solid fa-chart-line fa-7x mb-4 text-primary"></i>
+                                
                                 <h4 class="mb-3">Performans Yönetimi</h4>
                                 <p class="mb-4">Çalışan performansını değerlendirmek ve geliştirmek için kapsamlı çözümler sunar.</p>
 
@@ -173,11 +219,33 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay=".3s">
+
+                <!-- performans Modal -->
+                <div class="modal fade" id="performansModal" tabindex="-1" aria-labelledby="performansModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="performansModalLabel">Performans Yönetimi</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p> Performans yönetimi aracımız, çalışanlarınızın performansını sistematik bir şekilde değerlendirmenizi sağlar. Belirlenen hedeflere ulaşma durumlarını takip edebilir, düzenli performans değerlendirme raporları oluşturabilir ve gelişim alanlarını belirleyebilirsiniz. Bu araç, çalışan memnuniyetini artırarak genel iş verimliliğinizi destekler.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay=".3s" data-bs-toggle="modal" data-bs-target="#veriModal">
                     <div class="services-item bg-light">
                         <div class="p-4 text-center services-content">
                             <div class="services-content-icon">
-                                <i class="fas fa-user-secret fa-7x mb-4 text-primary"></i>
+                                <i class="fas fa-regular fa-user-shield fa-7x mb-4 text-primary"></i>
                                 <h4 class="mb-3">Veri Güvenliği</h4>
                                 <p class="mb-4">Personel bilgilerini güvenle saklayarak şirketinizin veri güvenliğini sağlar.</p>
 
@@ -186,11 +254,34 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay=".5s">
+
+
+
+                <!-- veri Modal -->
+                <div class="modal fade" id="veriModal" tabindex="-1" aria-labelledby="veriModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="veriModalLabel">Veri Güvenliği</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p> Veri güvenliği modülümüz, hassas insan kaynakları bilgilerinizi en yüksek güvenlik standartlarına göre korur. Şifreleme, veri yedekleme ve erişim kontrolleri gibi ileri düzey güvenlik önlemleri ile çalışan verilerinizin güvenliğini sağlarız. Bu sistem, veri kaybı risklerini minimize eder ve gizliliği ön planda tutar.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay=".5s" data-bs-toggle="modal" data-bs-target="#raporModal">
                     <div class="services-item bg-light">
                         <div class="p-4 text-center services-content">
                             <div class="services-content-icon">
-                                <i class="fa fa-envelope-open fa-7x mb-4 text-primary"></i>
+                                <i class="fa fa-solid fa-file-invoice fa-7x mb-4 text-primary"></i>
+ 
                                 <h4 class="mb-3">Çalışan Raporlama</h4>
                                 <p class="mb-4">Çalışanlarınızın performans ve katılım durumlarını ayrıntılı raporlarla izleyin.</p>
 
@@ -198,11 +289,32 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay=".7s">
+
+
+                <!-- rapor Modal -->
+                <div class="modal fade" id="raporModal" tabindex="-1" aria-labelledby="raporModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="raporModalLabel">Çalışan Raporlama</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p> Çalışan raporlama sistemimiz, çeşitli performans ve faaliyet raporlarını kolayca oluşturmanızı sağlar. İş gücü analizleri, izin ve mesai raporları gibi detaylı verileri anlık olarak elde edebilir ve stratejik kararlarınızı bu verilerle destekleyebilirsiniz. Bu sistem, veri tabanlı karar alma sürecinizi güçlendirir.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay=".7s" data-bs-toggle="modal" data-bs-target="#isModal">
                     <div class="services-item bg-light">
                         <div class="p-4 text-center services-content">
                             <div class="services-content-icon">
-                                <i class="fas fa-laptop fa-7x mb-4 text-primary"></i>
+                                <i class="fas fa-solid fa-laptop-medical fa-7x mb-4 text-primary"></i>
                                 <h4 class="mb-3">İşe Alım</h4>
                                 <p class="mb-4">Doğru adayları bulmak ve işe alım süreçlerinizi optimize etmek için güçlü araçlar sunar.</p>
 
@@ -210,6 +322,28 @@
                         </div>
                     </div>
                 </div>
+
+
+
+                <!-- İş Modal -->
+                <div class="modal fade" id="isModal" tabindex="-1" aria-labelledby="isModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="isModalLabel">İşe Alım</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p> İşe alım modülümüz, açık pozisyonlara uygun adayları hızlı ve etkili bir şekilde bulmanızı sağlar. Başvuru takip sistemi, adayların başvuru durumlarını izlemeyi ve mülakat süreçlerini yönetmeyi kolaylaştırır. Bu süreç, doğru yetenekleri çekmenize ve organizasyonunuzun ihtiyaçlarına uygun ekip üyeleri seçmenize yardımcı olur.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
