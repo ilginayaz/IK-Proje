@@ -313,6 +313,8 @@ namespace IKProject.Areas.Admin.Controllers
         {
             return View();
         }
+
+
         [HttpGet]
         public IActionResult AddManager()
         {
@@ -321,17 +323,32 @@ namespace IKProject.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> AddManager(YoneticiRegisterModel model)
         {
-            //ModelState.Remove("Password");
             if (ModelState.IsValid)
             {
-                var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-
-                var response = await _httpClient.PostAsync("https://localhost:7149/api/admin/register", content);
                 
+                var existingManagerResponse = await _httpClient.GetAsync($"https://localhost:7149/api/admin/check-tc?tc={model.TC}");
+
+                if (existingManagerResponse.IsSuccessStatusCode)
+                {
+                    var exists = await existingManagerResponse.Content.ReadAsStringAsync();
+                    if (bool.Parse(exists))
+                    {
+                        ModelState.AddModelError("TC", "Bu TC kimlik numarası zaten kayıtlı.");
+                        return View("AddManager", model);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "TC kontrolü sırasında bir hata oluştu.");
+                    return View("AddManager", model);
+                }
+
+                
+                var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync("https://localhost:7149/api/admin/register", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-
                     TempData["SuccessMessage"] = "Kayıt başarılı.";
                     return RedirectToAction("YoneticiOnay");
                 }
@@ -341,7 +358,6 @@ namespace IKProject.Areas.Admin.Controllers
                     ModelState.AddModelError(string.Empty, $"Kayıt başarısız. Hata: {response.StatusCode}, Mesaj: {errorMessage}");
                 }
             }
-
 
             return View("AddManager", model);
         }
