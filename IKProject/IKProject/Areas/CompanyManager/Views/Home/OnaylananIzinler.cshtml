@@ -2,7 +2,7 @@
 @model List<IzinIstegi>
 
 @{
-    ViewData["Title"] = "Bekleyen İzinler";
+    ViewData["Title"] = "Onaylanan İzinler";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -20,46 +20,43 @@
     </div>
 }
 
-    <div class="table-container">
-        <h2>Bekleyen İzinler</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Adı Soyadı</th>
-                    <th>Başlangıç Tarihi</th>
-                    <th>Bitiş Tarihi</th>
-                    <th>İzin Gün Sayısı</th>
-                    <th>İstek Yorumu</th>
-                    <th>İzin Türü</th>
-                    <th>Onay Durumu</th>
-                    <th>İşlem</th>
-                </tr>
-            </thead>
-            @if (Model != null)
-            {
+<div class="table-container">
+    <h2>Onaylanan İzinler</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Adı Soyadı</th>
+                <th>Başlangıç Tarihi</th>
+                <th>Bitiş Tarihi</th>
+                <th>İzin Gün Sayısı</th>
+                <th>İstek Yorumu</th>
+                <th>İzin Türü</th>
+                <th>Onay Durumu</th>
+                
+            </tr>
+        </thead>
+        @if (Model != null)
+        {
 
-                <tbody>
-                    @foreach (var izin in Model)
-                    {
-                        <tr>
-                            <td>@izin.ApplicationUser.Adi @izin.ApplicationUser.Soyadi</td>
-                            <td>@izin.BaslangicTarihi.ToShortDateString()</td>
-                            <td>@izin.BitisTarihi.ToShortDateString()</td>
-                            <td>@izin.IzinGunSayisi</td>
-                            <td>@izin.IstekYorumu</td>
-                            <td>@izin.IzinTuru</td>
-                            <td>@izin.OnayDurumu</td>
+            <tbody>
+                @foreach (var izin in Model)
+                {
+                    <tr>
+                        <td>@izin.ApplicationUser.Adi @izin.ApplicationUser.Soyadi</td>
+                        <td>@izin.BaslangicTarihi.ToShortDateString()</td>
+                        <td>@izin.BitisTarihi.ToShortDateString()</td>
+                        <td>@izin.IzinGunSayisi</td>
+                        <td>@izin.IstekYorumu</td>
+                        <td>@izin.IzinTuru</td>
+                        <td>@izin.OnayDurumu</td>
 
-                            <td>
-                                <a asp-action="OnaylaIzin" asp-route-id="@izin.Id" class="btn btn-primary">Onayla</a>
-                                <a asp-action="ReddetIzin" asp-route-id="@izin.Id" class="btn btn-danger" onclick="return confirm('Bu izni silmek istediğinizden emin misiniz?');">Reddet</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            }
-        </table>
-    </div>
+                       
+                    </tr>
+                }
+            </tbody>
+        }
+    </table>
+</div>
 
 <style>
     .table-container {
@@ -134,4 +131,3 @@
             border-color: #c0392b;
         }
 </style>
-

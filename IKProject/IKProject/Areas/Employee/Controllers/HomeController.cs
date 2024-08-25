@@ -156,30 +156,29 @@ namespace IKProject.Areas.Employee.Controllers
         [HttpPost]
         public async Task<IActionResult> IzinGuncelle(IzinIstegiViewModel model)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            model.ApplicationUserId = userId;
+            var jsonContent = JsonConvert.SerializeObject(model);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/izinGuncelle",content);
 
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-
-                var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-                var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/izinGuncelle?userId={userId}", content);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    TempData["Message"] = "İzin isteği başarıyla güncellenmiştir.";
-                    return RedirectToAction("Izinler");  // İzinler listesi sayfasına yönlendir
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
-                    return View(model);
-                }
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Message"] = "İzin isteği başarıyla güncellenmiştir.";
+                return RedirectToAction("Izinler");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
+                return View(model);
+            }
         }
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> IzinSil(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var content = new StringContent(JsonConvert.SerializeObject(new { Id = id }), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/izinSil?userId={userId}", content);
+            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/izinSil?id={id}", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -238,8 +237,9 @@ namespace IKProject.Areas.Employee.Controllers
         public async Task<IActionResult> HarcamaGuncelle(HarcamaTalepViewModel model)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            model.ApplicationUserId = userId;
             var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/HarcamaGuncelle?userId={userId}", content);
+            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/HarcamaGuncelle", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -253,18 +253,14 @@ namespace IKProject.Areas.Employee.Controllers
             }
         }
 
-        [HttpGet]
-        public IActionResult HarcamaSil(int id)
-        {
-            return View();
-        }
+       
 
-        [HttpPost]
-        public async Task<IActionResult> HarcamaSil(HarcamaTalepViewModel model)
+        [HttpGet]
+        public async Task<IActionResult> HarcamaSil(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/HarcamaSil?userId={userId}", content);
+            var content = new StringContent(JsonConvert.SerializeObject(new { Id = id }), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/HarcamaSil?id={id}", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -274,7 +270,7 @@ namespace IKProject.Areas.Employee.Controllers
             else
             {
                 ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
-                return View(model);
+                return RedirectToAction("Harcamalar");
             }
         }
 
@@ -337,8 +333,9 @@ namespace IKProject.Areas.Employee.Controllers
         public async Task<IActionResult> AvansGuncelle(AvansTalepViewModel model)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            model.ApplicationUserId = userId;
             var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/AvansGuncelle?userId={userId}", content);
+            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/AvansGuncelle", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -352,20 +349,22 @@ namespace IKProject.Areas.Employee.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> AvansSil(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var content = new StringContent(JsonConvert.SerializeObject(new { Id = id }), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/AvansSil?userId={userId}", content);
+            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/AvansSil?id={id}", content);
 
             if (response.IsSuccessStatusCode)
             {
-                return Json(new { success = true, message = "Avans başarıyla silinmiştir." });
+                TempData["Message"] = "İzin başarıyla silinmiştir.";
+                return RedirectToAction("Avanslar");
             }
             else
             {
-                return Json(new { success = false, message = "Bir hata oluştu." });
+                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
+                return RedirectToAction("Avanslar");
             }
         }
 

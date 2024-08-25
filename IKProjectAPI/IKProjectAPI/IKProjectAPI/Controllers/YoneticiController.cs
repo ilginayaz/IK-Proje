@@ -33,9 +33,23 @@ namespace IKProjectAPI.Controllers
             _context = context;
             _emailSender = emailSender;
         }
-        
 
 
+
+        [HttpPatch("CalisanSil")]
+        public async Task<IActionResult> CalisanSil(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            
+            if (user == null)
+            {
+                return BadRequest("Kullanıcı Bulunamadı");
+            }
+            user.Status = Data.Enums.Status.Passive;
+            await _context.SaveChangesAsync();
+          
+            return Ok("Kullanıcı başarıyla Silindi");
+        }
 
         // Yöneticinin çalışanlarını getir
         [HttpGet("getEmployees")]
@@ -57,7 +71,7 @@ namespace IKProjectAPI.Controllers
 
             // Çalışanların bilgilerini filtrele
             var calisanlar = await _context.Users
-                .Where(u => u.YoneticiId == yoneticiId && u.Status != Status.Passive)
+                .Where(u => u.YoneticiId == yoneticiId && u.Status == Status.Active)
                 .ToListAsync();
 
 
@@ -90,8 +104,82 @@ namespace IKProjectAPI.Controllers
             // Çalışanların izin isteklerini filtrele ve ilgili ApplicationUser nesnesini dahil et
             var izinIstekleri = await _context.izinIstekleri
                 .Where(x => calisanlar.Contains(x.ApplicationUserId) &&
-                            x.OnayDurumu != OnayDurumu.Reddedildi &&
-                            x.Status != Status.Passive)
+                            x.OnayDurumu == OnayDurumu.Beklemede &&
+                            x.Status == Status.AwatingApproval)
+                .Include(x => x.ApplicationUser) // ApplicationUser verisini dahil et
+                .ToListAsync();
+            // Serileştirme seçeneklerini ayarla
+            var jsonSettings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore // Döngüsel referanslardan kaçın
+            };
+
+            return Ok(JsonConvert.SerializeObject(izinIstekleri, jsonSettings));
+        }
+        [HttpGet("OnaylananIzinler")]
+        public async Task<IActionResult> OnaylananIzinler(string managerId)
+        {
+
+            if (string.IsNullOrEmpty(managerId))
+            {
+                ModelState.AddModelError("ManagerId", "Yönetici ID'si boş olamaz.");
+                return BadRequest(ModelState);
+            }
+            // Yöneticiyi kontrol et
+            var yonetici = await _userManager.FindByIdAsync(managerId);
+            if (yonetici == null)
+            {
+                return NotFound("Yönetici bulunamadı");
+            }
+
+            // Yöneticinin çalışanlarının ID'lerini al
+            var calisanlar = await _context.Users
+                .Where(x => x.YoneticiId == managerId)
+                .Select(x => x.Id)
+                .ToListAsync();
+
+            // Çalışanların izin isteklerini filtrele ve ilgili ApplicationUser nesnesini dahil et
+            var izinIstekleri = await _context.izinIstekleri
+                .Where(x => calisanlar.Contains(x.ApplicationUserId) &&
+                            x.OnayDurumu == OnayDurumu.Onaylandı &&
+                            x.Status == Status.Active)
+                .Include(x => x.ApplicationUser) // ApplicationUser verisini dahil et
+                .ToListAsync();
+            // Serileştirme seçeneklerini ayarla
+            var jsonSettings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore // Döngüsel referanslardan kaçın
+            };
+
+            return Ok(JsonConvert.SerializeObject(izinIstekleri, jsonSettings));
+        }
+        [HttpGet("ReddedilenIzinler")]
+        public async Task<IActionResult> ReddedilenIzinler(string managerId)
+        {
+
+            if (string.IsNullOrEmpty(managerId))
+            {
+                ModelState.AddModelError("ManagerId", "Yönetici ID'si boş olamaz.");
+                return BadRequest(ModelState);
+            }
+            // Yöneticiyi kontrol et
+            var yonetici = await _userManager.FindByIdAsync(managerId);
+            if (yonetici == null)
+            {
+                return NotFound("Yönetici bulunamadı");
+            }
+
+            // Yöneticinin çalışanlarının ID'lerini al
+            var calisanlar = await _context.Users
+                .Where(x => x.YoneticiId == managerId)
+                .Select(x => x.Id)
+                .ToListAsync();
+
+            // Çalışanların izin isteklerini filtrele ve ilgili ApplicationUser nesnesini dahil et
+            var izinIstekleri = await _context.izinIstekleri
+                .Where(x => calisanlar.Contains(x.ApplicationUserId) &&
+                            x.OnayDurumu == OnayDurumu.Reddedildi &&
+                            x.Status == Status.Passive)
                 .Include(x => x.ApplicationUser) // ApplicationUser verisini dahil et
                 .ToListAsync();
             // Serileştirme seçeneklerini ayarla
@@ -126,7 +214,46 @@ namespace IKProjectAPI.Controllers
 
             // Çalışanların avans isteklerini filtrele
             var izinIstekleri = await _context.AvansTalepleri
-                .Where(x => calisanlar.Contains(x.ApplicationUserId) && x.OnayDurumu != OnayDurumu.Reddedildi && x.Status != Status.Passive).Include(x => x.ApplicationUser)
+                .Where(x => calisanlar.Contains(x.ApplicationUserId) && x.OnayDurumu == OnayDurumu.Beklemede && x.Status != Status.Passive).Include(x => x.ApplicationUser)
+                .ToListAsync();
+
+            // Serileştirme seçeneklerini ayarla
+            var jsonSettings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore // Döngüsel referanslardan kaçın
+            };
+
+            return Ok(JsonConvert.SerializeObject(izinIstekleri, jsonSettings));
+
+
+
+        }
+
+
+
+        [HttpGet("OnaylananAvanslar")]
+
+        public async Task<IActionResult> OnaylananAvanslar(string managerId)
+        {
+            if (string.IsNullOrEmpty(managerId))
+            {
+                ModelState.AddModelError("ManagerId", "Yönetici ID'si boş olamaz.");
+                return BadRequest(ModelState);
+            }
+
+            var yonetici = await _userManager.FindByIdAsync(managerId);
+            if (yonetici == null)
+            {
+                return NotFound("Kullanıcı bulunamadı");
+            }
+            // Kullanıcının kendi çalışanlarını al
+            var calisanlar = _context.Users.Where(x => x.YoneticiId == managerId).Select(x => x.Id)
+    .ToList();
+
+
+            // Çalışanların avans isteklerini filtrele
+            var izinIstekleri = await _context.AvansTalepleri
+                .Where(x => calisanlar.Contains(x.ApplicationUserId) && x.OnayDurumu == OnayDurumu.Onaylandı && x.Status != Status.Active).Include(x => x.ApplicationUser)
                 .ToListAsync();
 
             // Serileştirme seçeneklerini ayarla
@@ -137,6 +264,50 @@ namespace IKProjectAPI.Controllers
 
             return Ok(JsonConvert.SerializeObject(izinIstekleri, jsonSettings));
         }
+
+
+
+        [HttpGet("ReddedilenAvanslar")]
+
+        public async Task<IActionResult> ReddedilenAvanslar(string managerId)
+        {
+            if (string.IsNullOrEmpty(managerId))
+            {
+                ModelState.AddModelError("ManagerId", "Yönetici ID'si boş olamaz.");
+                return BadRequest(ModelState);
+            }
+
+            var yonetici = await _userManager.FindByIdAsync(managerId);
+            if (yonetici == null)
+            {
+                return NotFound("Kullanıcı bulunamadı");
+            }
+            // Kullanıcının kendi çalışanlarını al
+            var calisanlar = _context.Users.Where(x => x.YoneticiId == managerId).Select(x => x.Id)
+    .ToList();
+
+
+            // Çalışanların avans isteklerini filtrele
+            var izinIstekleri = await _context.AvansTalepleri
+                .Where(x => calisanlar.Contains(x.ApplicationUserId) && x.OnayDurumu == OnayDurumu.Reddedildi && x.Status != Status.Passive).Include(x => x.ApplicationUser)
+                .ToListAsync();
+
+            // Serileştirme seçeneklerini ayarla
+            var jsonSettings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore // Döngüsel referanslardan kaçın
+            };
+
+            return Ok(JsonConvert.SerializeObject(izinIstekleri, jsonSettings));
+        }
+
+
+
+
+
+
+
+
 
         //Yönetici çalışanlarının Harcama listesi
         [HttpGet("harcamaListesi")]
@@ -160,7 +331,7 @@ namespace IKProjectAPI.Controllers
 
             // Çalışanların harcama isteklerini filtrele
             var izinIstekleri = await _context.HarcamaTalepleri
-                .Where(x => calisanlar.Contains(x.ApplicationUserId) && x.OnayDurumu != OnayDurumu.Reddedildi && x.Status != Status.Passive).Include(x => x.ApplicationUser)
+                .Where(x => calisanlar.Contains(x.ApplicationUserId) && x.OnayDurumu == OnayDurumu.Beklemede && x.Status == Status.Passive).Include(x => x.ApplicationUser)
                 .ToListAsync();
             // Serileştirme seçeneklerini ayarla
            var jsonSettings = new JsonSerializerSettings
@@ -170,6 +341,77 @@ namespace IKProjectAPI.Controllers
 
             return Ok(JsonConvert.SerializeObject(izinIstekleri, jsonSettings));
         }
+
+
+
+        [HttpGet("OnaylananHarcamalar")]
+        public async Task<IActionResult> OnaylananHarcamalar(string managerId)
+        {
+            if (string.IsNullOrEmpty(managerId))
+            {
+                ModelState.AddModelError("ManagerId", "Yönetici ID'si boş olamaz.");
+                return BadRequest(ModelState);
+            }
+
+            var yonetici = await _userManager.FindByIdAsync(managerId);
+            if (yonetici == null)
+            {
+                return NotFound("Kullanıcı bulunamadı");
+            }
+
+            // Kullanıcının kendi çalışanlarını al
+            var calisanlar = _context.Users.Where(x => x.YoneticiId == managerId).Select(x => x.Id)
+    .ToList();
+
+            // Çalışanların harcama isteklerini filtrele
+            var izinIstekleri = await _context.HarcamaTalepleri
+                .Where(x => calisanlar.Contains(x.ApplicationUserId) && x.OnayDurumu == OnayDurumu.Onaylandı && x.Status == Status.Active).Include(x => x.ApplicationUser)
+                .ToListAsync();
+            // Serileştirme seçeneklerini ayarla
+            var jsonSettings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore // Döngüsel referanslardan kaçın
+            };
+
+            return Ok(JsonConvert.SerializeObject(izinIstekleri, jsonSettings));
+        }
+
+
+
+        [HttpGet("ReddedilenHarcamalar")]
+        public async Task<IActionResult> ReddedilenHarcamalar(string managerId)
+        {
+            if (string.IsNullOrEmpty(managerId))
+            {
+                ModelState.AddModelError("ManagerId", "Yönetici ID'si boş olamaz.");
+                return BadRequest(ModelState);
+            }
+
+            var yonetici = await _userManager.FindByIdAsync(managerId);
+            if (yonetici == null)
+            {
+                return NotFound("Kullanıcı bulunamadı");
+            }
+
+            // Kullanıcının kendi çalışanlarını al
+            var calisanlar = _context.Users.Where(x => x.YoneticiId == managerId).Select(x => x.Id)
+    .ToList();
+
+            // Çalışanların harcama isteklerini filtrele
+            var izinIstekleri = await _context.HarcamaTalepleri
+                .Where(x => calisanlar.Contains(x.ApplicationUserId) && x.OnayDurumu == OnayDurumu.Reddedildi && x.Status == Status.Passive).Include(x => x.ApplicationUser)
+                .ToListAsync();
+            // Serileştirme seçeneklerini ayarla
+            var jsonSettings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore // Döngüsel referanslardan kaçın
+            };
+
+            return Ok(JsonConvert.SerializeObject(izinIstekleri, jsonSettings));
+        }
+
+
+
 
         //Çalışan kayıt et
         [HttpPost("register")]
@@ -213,7 +455,7 @@ namespace IKProjectAPI.Controllers
                 Cinsiyet = registerModel.Cinsiyet,
                 UserName = registerModel.Email,
                 Token = string.Empty,
-                Status = Data.Enums.Status.AwatingApproval,
+                Status = Data.Enums.Status.Active,
                 Maas = 20000
             };
             var claims = User.Claims.ToList();
