@@ -29,13 +29,6 @@ namespace IKProjectAPI.Controllers
         [HttpPost("SirketOlustur")]
         public async Task<IActionResult> CreateCompany(SirketRegisterModel model)
         {
-            //// Yönetici kontrolü
-            //var yonetici = await _userManager.FindByIdAsync(model.YoneticiId);
-            //if (yonetici == null)
-            //{
-            //    return BadRequest("Yönetici bulunamadı");
-            //}
-
             // Model doğrulama
             if (!ModelState.IsValid)
             {
@@ -52,7 +45,27 @@ namespace IKProjectAPI.Controllers
             // Eğer aynı şirket numarası, vergi numarası veya şirket adından varsa hata döndür
             if (existingCompany != null)
             {
-                return BadRequest("Bu bilgilerle kayıtlı bir şirket zaten mevcut.");
+                if (existingCompany.SirketNumarasi == model.SirketNumarasi)
+                {
+                    ModelState.AddModelError("SirketNumarasi", "Bu şirket numarası ile kayıtlı bir şirket zaten mevcut. Lütfen farklı bir numara deneyiniz.");
+                }
+
+                if (existingCompany.VergiNo == model.VergiNo)
+                {
+                    ModelState.AddModelError("VergiNo", "Bu vergi numarası ile kayıtlı bir şirket zaten mevcut. Lütfen farklı bir numara deneyiniz.");
+                }
+
+                if (existingCompany.SirketAdi == model.SirketAdi)
+                {
+                    ModelState.AddModelError("SirketAdi", "Bu şirket adı ile kayıtlı bir şirket zaten mevcut. Lütfen farklı bir isim deneyiniz.");
+                }
+
+                if (existingCompany.SirketEmail == model.SirketEmail)
+                {
+                    ModelState.AddModelError("SirketEmail", "Bu şirket emaili ile kayıtlı bir şirket zaten mevcut. Lütfen farklı bir email adresi deneyiniz.");
+                }
+
+                return BadRequest(ModelState);
             }
 
             // Şirket oluşturma
@@ -68,9 +81,9 @@ namespace IKProjectAPI.Controllers
                 Sehir = model.Sehir,
                 Address = model.Address,
                 PostaKodu = model.PostaKodu,
-                Telefon=model.Telefon,
-                SirketUnvani= model.SirketUnvani,
-                LogoUrl=model.LogoUrl,
+                Telefon = model.Telefon,
+                SirketUnvani = model.SirketUnvani,
+                LogoUrl = model.LogoUrl,
                 CreatedTime = DateTime.Now
             };
 
@@ -78,13 +91,11 @@ namespace IKProjectAPI.Controllers
             _context.sirketler.Add(company);
             await _context.SaveChangesAsync();
 
-            //// Şirketin yöneticisini ekleme
-            //company.SirketYoneticileri.Add(yonetici);            
-            //await _context.SaveChangesAsync();
-
             // Başarılı mesaj döndür
             return Ok(new { Message = "Şirket başarıyla oluşturuldu.", CompanyId = company.Id });
         }
+
+
 
 
         [HttpGet("SirketYoneticileri/{companyId}")]

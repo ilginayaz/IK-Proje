@@ -59,7 +59,13 @@ namespace IKProject.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CompanyRegister(SirketRegisterModel sirketRegisterModel)
         {
-           
+            if (!ModelState.IsValid)
+            {
+                
+                ViewBag.ErrorMessage = "Lütfen tekrar deneyiniz!";
+                return View(sirketRegisterModel);
+            }
+
             var jsonContent = JsonConvert.SerializeObject(sirketRegisterModel);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
@@ -71,9 +77,11 @@ namespace IKProject.Areas.Admin.Controllers
             }
             else
             {
-                return View("Tekrar deneyin!");
+                ViewBag.ErrorMessage = "Lütfen tekrar deneyiniz!";
+                return View(sirketRegisterModel);
             }
         }
+
         [HttpGet]
         public async  Task<IActionResult> CompanyList() 
         {

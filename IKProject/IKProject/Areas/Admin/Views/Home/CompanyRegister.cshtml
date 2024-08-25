@@ -9,18 +9,14 @@
 <div class="form-container">
     <h2>Şirket Ekle</h2>
 
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
     <form asp-action="CompanyRegister" method="post">
-       @*  <div class="form-group">
-            <label asp-for="YoneticiId" class="control-label">Yönetici Seç</label>
-            <select asp-for="YoneticiId" class="form-control">
-                <option value="">Yönetici Seçiniz</option>
-                @foreach (var yonetici in ViewBag.Yoneticiler as List<SelectListItem>)
-                {
-                    <option value="@yonetici.Value">@yonetici.Text</option>
-                }
-            </select>
-            <span asp-validation-for="YoneticiId" class="text-danger"></span>
-        </div> *@
         <div class="form-group">
             <label asp-for="SirketAdi"></label>
             <input asp-for="SirketAdi" class="form-control" />
@@ -45,7 +41,6 @@
             <span asp-validation-for="VergiOfisi" class="text-danger"></span>
         </div>
 
-
         <div class="form-group">
             <label asp-for="SirketEmail"></label>
             <input asp-for="SirketEmail" class="form-control" />
@@ -63,7 +58,7 @@
             <input asp-for="PostaKodu" class="form-control" />
             <span asp-validation-for="PostaKodu" class="text-danger"></span>
         </div>
-        <!-- Yeni Alanlar -->
+
         <div class="form-group">
             <label asp-for="LogoUrl"></label>
             <input asp-for="LogoUrl" class="form-control" />
