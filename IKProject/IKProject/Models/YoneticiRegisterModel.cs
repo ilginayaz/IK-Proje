@@ -11,7 +11,8 @@ namespace IKProject.Models
         [DataType(DataType.EmailAddress)]
         [EmailAddress]
         public string Email { get; set; }
-        public string Password { get; set; }
+       
+        public string? Password { get; set; }
         [Display(Name = " Profil Fotoğrafı")]
         [Required(ErrorMessage = "Girilmesi Zorunlu Alan.")]
         public string ProfilePhoto { get; set; }

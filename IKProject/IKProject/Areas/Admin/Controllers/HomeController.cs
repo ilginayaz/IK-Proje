@@ -125,7 +125,7 @@ namespace IKProject.Areas.Admin.Controllers
 
 
 
-
+        [HttpGet]
         // Yönetici onaylama sayfası
         public async Task<IActionResult> YoneticiOnay()
         {
@@ -313,17 +313,19 @@ namespace IKProject.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> AddManager(YoneticiRegisterModel model)
         {
+            //ModelState.Remove("Password");
             if (ModelState.IsValid)
             {
                 var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
                 var response = await _httpClient.PostAsync("https://localhost:7149/api/admin/register", content);
+                
 
                 if (response.IsSuccessStatusCode)
                 {
 
                     TempData["SuccessMessage"] = "Kayıt başarılı.";
-                    return RedirectToAction("YoneticiListe");
+                    return RedirectToAction("YoneticiOnay");
                 }
                 else
                 {

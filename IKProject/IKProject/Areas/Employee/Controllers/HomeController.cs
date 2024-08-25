@@ -305,7 +305,7 @@ namespace IKProject.Areas.Employee.Controllers
             }
             
             // Maaşın avans talebinin 3 katından fazla olup olmadığını kontrol et
-            if (user.Maas > model.Tutar * 3)
+            if (user.Maas < model.Tutar * 3)
             {
                 ModelState.AddModelError(string.Empty, "Avans talebi maaşın 3 katından fazla olamaz.");
                 return View(model);
