@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using IKProjectAPI.NewFolder;
 using IKProjectAPI.Data.Models;
+using IKProjectAPI.Data.Enums;
 
 namespace IKProjectAPI.Controllers
 {
@@ -100,7 +101,7 @@ namespace IKProjectAPI.Controllers
         public async Task<IActionResult> OnayBekleyenYoneticiler()
         {
             var yoneticiler = await _userManager.GetUsersInRoleAsync("Yonetici");
-           var onayBekleyenler = yoneticiler.Where(x => x.Status == Data.Enums.Status.AwatingApproval);
+            var onayBekleyenler = yoneticiler.Where(x => x.Status == Status.AwatingApproval);
             if (onayBekleyenler != null && onayBekleyenler.Any())
             {
                 return Ok(onayBekleyenler);

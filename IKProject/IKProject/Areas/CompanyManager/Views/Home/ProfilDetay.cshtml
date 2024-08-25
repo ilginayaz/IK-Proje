@@ -35,7 +35,7 @@
                     <th scope="col">Adı Soyadı</th>
                     <th scope="col">E-Posta</th>
                     <th scope="col">Departman</th>
-                    <th scope="col">Görev</th>
+                    <th scope="col">Meslek</th>
                     <th scope="col">Doğum Tarihi</th>
                     <th scope="col">İşe Giriş Tarihi</th>
                     <th scope="col">Telefon</th>
@@ -48,7 +48,8 @@
                 {
                     <tr data-name="@employee.Adi @employee.Soyadi"
                         data-email="@employee.Email"
-                        data-role="@employee.Departman"
+                        data-departman="@employee.Departman"
+                        data-meslek="@employee.Meslek"
                         data-dob="@employee.DogumTarihi.ToString("yyyy-MM-dd")"
                         data-start="@employee.CreatedTime.ToString("yyyy-MM-dd")"
                         data-phone="@employee.TC"
@@ -143,6 +144,7 @@
                 $('#employeePhone').text($(this).data('phone'));
                 $('#employeeAddress').text($(this).data('address'));
                 $('#employeeIzin').text($(this).data('Izin'));
+                $('#employeeMeslek').text($(this).data('Meslek'));
 
                 // $('#employeeImg').attr('src', $(this).data('~/dashboardcss/images/faces/face5.jpg'));
 

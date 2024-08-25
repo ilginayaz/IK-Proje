@@ -202,10 +202,10 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
 
         // izin onaylama
         [HttpGet]
-        public async Task<IActionResult> OnaylaIzin(int izinId)
+        public async Task<IActionResult> OnaylaIzin(int Id)
         {
-            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/izinOnayla?id={izinId}", null);
-            if (izinId == 0)
+            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/izinOnayla?id={Id}", null);
+            if (Id == 0)
             {
                 return BadRequest("Geçersiz izin ID'si.");
             }
@@ -222,9 +222,9 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
 
         // izin reddetme
         [HttpGet]
-        public async Task<IActionResult> ReddetIzin(string izinId)
+        public async Task<IActionResult> ReddetIzin(int Id)
         {
-            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/izinReddet?id={izinId}", null);
+            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/izinReddet?id={Id}", null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -237,10 +237,10 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         }
 
         // avans onaylama
-        [HttpPatch]
-        public async Task<IActionResult> OnaylaAvans(string izinId)
+        [HttpGet("OnaylaAvans/{id}")]
+        public async Task<IActionResult> OnaylaAvans(int Id)
         {
-            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/avansOnayla?id={izinId}", null);
+            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/avansOnayla?id={Id}", null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -253,10 +253,10 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         }
 
         // avans reddetme
-        [HttpPatch]
-        public async Task<IActionResult> ReddetAvans(string izinId)
+        [HttpGet]
+        public async Task<IActionResult> ReddetAvans(int Id)
         {
-            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/avansReddet?id={izinId}", null);
+            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/avansReddet?id={Id}", null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -269,10 +269,10 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         }
 
         // harcama onaylama
-        [HttpPatch]
-        public async Task<IActionResult> OnaylaHarcama(string izinId)
+        [HttpGet]
+        public async Task<IActionResult> OnaylaHarcama(int Id)
         {
-            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/harcamaOnayla?id={izinId}", null);
+            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/harcamaOnayla?id={Id}", null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -285,10 +285,10 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         }
 
         // harcama reddetme
-        [HttpPatch]
-        public async Task<IActionResult> ReddetHarcama(string izinId)
+        [HttpGet]
+        public async Task<IActionResult> ReddetHarcama(int Id)
         {
-            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/harcamaReddet?id={izinId}", null);
+            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/harcamaReddet?id={Id}", null);
 
             if (response.IsSuccessStatusCode)
             {

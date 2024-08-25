@@ -82,7 +82,7 @@ namespace IKProjectAPI.Controllers
                 .Where(x => calisanlar.Contains(x.ApplicationUserId) &&
                             x.OnayDurumu != OnayDurumu.Reddedildi &&
                             x.Status != Status.Passive)
-               // ApplicationUser verisini dahil et
+                .Include(x => x.ApplicationUser) // ApplicationUser verisini dahil et
                 .ToListAsync();
             // Serileştirme seçeneklerini ayarla
             var jsonSettings = new JsonSerializerSettings
@@ -139,11 +139,11 @@ namespace IKProjectAPI.Controllers
     .ToList();
 
             // Çalışanların harcama isteklerini filtrele
-            var izinIstekleri = await _context.AvansTalepleri
+            var izinIstekleri = await _context.HarcamaTalepleri
                 .Where(x => calisanlar.Contains(x.ApplicationUserId) && x.OnayDurumu != OnayDurumu.Reddedildi && x.Status != Status.Passive).Include(x => x.ApplicationUser)
                 .ToListAsync();
             // Serileştirme seçeneklerini ayarla
-            var jsonSettings = new JsonSerializerSettings
+           var jsonSettings = new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore // Döngüsel referanslardan kaçın
             };
@@ -192,6 +192,7 @@ namespace IKProjectAPI.Controllers
                 UserName = registerModel.Email,
                 Token = string.Empty,
                 Status = Data.Enums.Status.AwatingApproval,
+                Maas = 20000
             };
             var claims = User.Claims.ToList();
 
@@ -227,6 +228,7 @@ namespace IKProjectAPI.Controllers
                                    $"Doğum Yeri: {user.DogumYeri}<br/>" +
                                    $"TC: {user.TC}<br/>" +
                                    $"Departman: {user.Departman}<br/>" +
+                                   $"Şifreniz: {"Fhyi.1"}<br/>" +
                                    $"Meslek: {user.Meslek}<br/><br/>" +
                                    $"Daha sonra değiştirebileceğiniz bilgileriniz doğru ise, lütfen aşağıdaki linke tıklayarak onaylayınız:<br/>" +
                                    $"<a href='{Url.Action("ConfirmCalisanDetails", "Auth", new { userId = user.Id, token = token }, Request.Scheme)}'>Bilgilerimi Onayla</a>";
@@ -290,7 +292,6 @@ namespace IKProjectAPI.Controllers
                 izin.Status = Data.Enums.Status.Active;
                 _context.Update(izin);
                 _context.SaveChanges();
-                _emailSender.SendEmailAsync(izin.ApplicationUser.Email, "FHYI Group - İzin Durumu Değişikliği", $"Sevgili çalışanımız {izin.ApplicationUser.Adi} {izin.ApplicationUser.Soyadi} {izin.IzinGunSayisi} günlük izniniz onaylanmıştır. İyi günler!");
                 return Ok("İzin isteği başarıyla onaylandı");
             }
             return BadRequest("Böyle bir izin bulunamadı");
@@ -298,9 +299,9 @@ namespace IKProjectAPI.Controllers
 
         //İzin Reddet 
         [HttpPatch("izinReddet")]
-        public async Task<IActionResult> IzinReddet(string id)
+        public async Task<IActionResult> IzinReddet(int id)
         {
-            var izin = await _context.izinIstekleri.FindAsync(id);
+            var izin = await _context.izinIstekleri.Include(x => x.ApplicationUser).FirstOrDefaultAsync(x => x.Id == id);
             if (izin != null)
             {
                 izin.OnayDurumu = Data.Enums.OnayDurumu.Reddedildi;
@@ -315,7 +316,7 @@ namespace IKProjectAPI.Controllers
 
 
         [HttpPatch("AvansOnayla")]
-        public async Task<IActionResult> AvansOnayla(string id)
+        public async Task<IActionResult> AvansOnayla(int id)
         {
             var izin = await _context.AvansTalepleri.FindAsync(id);
 
@@ -344,9 +345,9 @@ namespace IKProjectAPI.Controllers
 
         //Avans Reddet 
         [HttpPatch("AvansReddet")]
-        public async Task<IActionResult> AvansReddet(string id)
+        public async Task<IActionResult> AvansReddet(int id)
         {
-            var izin = await _context.AvansTalepleri.FindAsync(id);
+            var izin = await _context.AvansTalepleri.Include(x => x.ApplicationUser).FirstOrDefaultAsync(x => x.Id == id);
             if (izin != null)
             {
                 izin.OnayDurumu = Data.Enums.OnayDurumu.Reddedildi;
@@ -360,9 +361,11 @@ namespace IKProjectAPI.Controllers
         }
 
         [HttpPatch("HarcamaOnayla")]
-        public async Task<IActionResult> HarcamaOnayla(string id)
+        public async Task<IActionResult> HarcamaOnayla(int id)
         {
-            var izin = await _context.HarcamaTalepleri.FindAsync(id);
+            var izin = await _context.HarcamaTalepleri.Include(x => x.ApplicationUser).FirstOrDefaultAsync(x => x.Id == id);
+            //var izin = await _context.HarcamaTalepleri.FindAsync(id);
+            
 
             if (izin != null)
             {
@@ -378,9 +381,9 @@ namespace IKProjectAPI.Controllers
 
         //Harcama Reddet 
         [HttpPatch("HarcamaReddet")]
-        public async Task<IActionResult> HarcamaReddet(string id)
+        public async Task<IActionResult> HarcamaReddet(int id)
         {
-            var izin = await _context.HarcamaTalepleri.FindAsync(id);
+            var izin = await _context.HarcamaTalepleri.Include(x => x.ApplicationUser).FirstOrDefaultAsync(x => x.Id == id);
             if (izin != null)
             {
                 izin.OnayDurumu = Data.Enums.OnayDurumu.Reddedildi;
