@@ -41,8 +41,12 @@ namespace IKProjectAPI.Controllers
         [HttpGet("getEmployees")]
         public async Task<IActionResult> GetEmployees(string yoneticiId)
         {
-           
 
+            if (string.IsNullOrEmpty(yoneticiId))
+            {
+                ModelState.AddModelError("YoneticiId", "Yönetici ID'si boş olamaz.");
+                return BadRequest(ModelState);
+            }
             var yonetici = await _userManager.FindByIdAsync(yoneticiId);
             if (yonetici == null)
             {
@@ -64,6 +68,12 @@ namespace IKProjectAPI.Controllers
         [HttpGet("izinListesi")]
         public async Task<IActionResult> IzinListesi(string managerId)
         {
+
+            if (string.IsNullOrEmpty(managerId))
+            {
+                ModelState.AddModelError("ManagerId", "Yönetici ID'si boş olamaz.");
+                return BadRequest(ModelState);
+            }
             // Yöneticiyi kontrol et
             var yonetici = await _userManager.FindByIdAsync(managerId);
             if (yonetici == null)
@@ -98,6 +108,11 @@ namespace IKProjectAPI.Controllers
         [HttpGet("avansListesi")]
         public async Task<IActionResult> AvansListesi(string managerId)
         {
+            if (string.IsNullOrEmpty(managerId))
+            {
+                ModelState.AddModelError("ManagerId", "Yönetici ID'si boş olamaz.");
+                return BadRequest(ModelState);
+            }
 
             var yonetici = await _userManager.FindByIdAsync(managerId);
             if (yonetici == null)
@@ -127,6 +142,11 @@ namespace IKProjectAPI.Controllers
         [HttpGet("harcamaListesi")]
         public async Task<IActionResult> harcamaListesi(string managerId)
         {
+            if (string.IsNullOrEmpty(managerId))
+            {
+                ModelState.AddModelError("ManagerId", "Yönetici ID'si boş olamaz.");
+                return BadRequest(ModelState);
+            }
 
             var yonetici = await _userManager.FindByIdAsync(managerId);
             if (yonetici == null)
@@ -164,12 +184,14 @@ namespace IKProjectAPI.Controllers
             var existingUser = await _userManager.FindByEmailAsync(registerModel.Email);
             if (existingUser != null)
             {
-                return BadRequest("Bu e-posta adresi zaten kullanılıyor.");
+                ModelState.AddModelError("Email", "Bu e-posta adresi zaten kullanılıyor.");
+                return BadRequest(ModelState);
             }
 
             if (_context.Users.Any(u => u.TC == registerModel.TC))
             {
-                return BadRequest("Bu TC kimlik numarası ile zaten bir kullanıcı kayıtlı.");
+                ModelState.AddModelError("TC", "Bu TC kimlik numarası ile zaten bir kullanıcı kayıtlı.");
+                return BadRequest(ModelState);
             }
 
             var user = new ApplicationUser

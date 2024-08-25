@@ -8,41 +8,54 @@
 <h2>@ViewData["Title"]</h2>
 
 
-<div class="table-container">
-    <h2>Avanslar</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Adı Soyadı</th>
-                <th>Talep Tarihi</th>
-                <th>Para Birimi</th>
-                <th>Açıklama</th>
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success">
+        @ViewBag.SuccessMessage
+    </div>
+}
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
 
-                <th>Onay Durumu</th>
-                <th>İşlem</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var izin in Model)
-            {
+    <div class="table-container">
+        <h2>Avanslar</h2>
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@izin.ApplicationUser.Adi @izin.ApplicationUser.Soyadi</td>
-                    <td>@izin.TalepTarihi.ToShortDateString()</td>
-                    <td>@izin.ParaBirimi</td>
-                    <td>@izin.Aciklama</td>
-                    <td>@izin.OnayDurumu</td>
-                    <td>
-                        <a asp-action="OnaylaAvans" asp-route-id="@izin.Id" class="btn btn-primary">Onayla</a>
-                        <a asp-action="ReddetAvans" asp-route-id="@izin.Id" class="btn btn-danger" onclick="return confirm('Bu avansı silmek istediğinizden emin misiniz?');">Reddet</a>
-                    </td>
+                    <th>Adı Soyadı</th>
+                    <th>Talep Tarihi</th>
+                    <th>Para Birimi</th>
+                    <th>Açıklama</th>
 
-
+                    <th>Onay Durumu</th>
+                    <th>İşlem</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var izin in Model)
+                {
+                    <tr>
+                        <td>@izin.ApplicationUser.Adi @izin.ApplicationUser.Soyadi</td>
+                        <td>@izin.TalepTarihi.ToShortDateString()</td>
+                        <td>@izin.ParaBirimi</td>
+                        <td>@izin.Aciklama</td>
+                        <td>@izin.OnayDurumu</td>
+                        <td>
+                            <a asp-action="OnaylaAvans" asp-route-id="@izin.Id" class="btn btn-primary">Onayla</a>
+                            <a asp-action="ReddetAvans" asp-route-id="@izin.Id" class="btn btn-danger" onclick="return confirm('Bu avansı silmek istediğinizden emin misiniz?');">Reddet</a>
+                        </td>
 
-</div>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
 
 
 

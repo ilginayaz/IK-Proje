@@ -36,7 +36,8 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
                 return View(user);
             }
 
-            return NotFound("Kullanıcı bulunamadı.");
+            ViewBag.ErrorMessage = "Kullanıcı bulunamadı.";
+            return View();
         }
         public async Task<IActionResult> ProfilDetay()
         {
@@ -51,7 +52,8 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return BadRequest("Personel Bulunamadı!");
+                ViewBag.ErrorMessage = "Kullanıcı bulunamadı.";
+                return View();
             }
         }
 
@@ -87,7 +89,8 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return BadRequest("Personel Bulunamadı!");
+                ViewBag.ErrorMessage = "Kullanıcı bulunamadı.";
+                return View();
             }
         }
         // izinler listesi 
@@ -111,7 +114,8 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return BadRequest("Tekrar deneyin!");
+                ViewBag.ErrorMessage = "Tekrar deneyin!";
+                return View();
             }
         }
 
@@ -130,7 +134,8 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return BadRequest("Tekrar deneyin!");
+                ViewBag.ErrorMessage = "Tekrar deneyin!";
+                return View();
             }
         }
 
@@ -149,7 +154,8 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return BadRequest("Tekrar deneyin!");
+                ViewBag.ErrorMessage = "Tekrar deneyin!";
+                return View();
             }
         }
 
@@ -169,7 +175,8 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                return BadRequest("Tekrar deneyin!");
+                ViewBag.ErrorMessage = "Tekrar deneyin!";
+                return View();
             }
         }
 
@@ -192,11 +199,13 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
 
             if (response.IsSuccessStatusCode)
             {
+                ViewBag.SuccessMessage = "Personel başarıyla kaydedildi.";
                 return RedirectToAction("RegisterEmployee");
             }
             else
             {
-                return BadRequest("Tekrar deneyin!");
+                ViewBag.ErrorMessage = "Tekrar deneyin!";
+                return View(registerModel);
             }
         }
 
@@ -207,16 +216,19 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/izinOnayla?id={Id}", null);
             if (Id == 0)
             {
-                return BadRequest("Geçersiz izin ID'si.");
+                ViewBag.ErrorMessage = "Geçersiz izin ID'si.";
+                return RedirectToAction("Izinler");
             }
 
             if (response.IsSuccessStatusCode)
             {
+                ViewBag.SuccessMessage = "İzin başarıyla onaylandı.";
                 return RedirectToAction("Izinler");
             }
             else
             {
-                return BadRequest("Tekrar deneyin!");
+                ViewBag.ErrorMessage = "Tekrar deneyin!";
+                return RedirectToAction("Izinler");
             }
         }
 
@@ -228,11 +240,13 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
 
             if (response.IsSuccessStatusCode)
             {
+                ViewBag.SuccessMessage = "İzin başarıyla reddedildi.";
                 return RedirectToAction("Izinler");
             }
             else
             {
-                return BadRequest("Tekrar deneyin!");
+                ViewBag.ErrorMessage = "Tekrar deneyin!";
+                return RedirectToAction("Izinler");
             }
         }
 
@@ -244,11 +258,13 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
 
             if (response.IsSuccessStatusCode)
             {
+                ViewBag.SuccessMessage = "Avans başarıyla onaylandı.";
                 return RedirectToAction("Avanslar");
             }
             else
             {
-                return BadRequest("Tekrar deneyin!");
+                ViewBag.ErrorMessage = "Tekrar deneyin!";
+                return RedirectToAction("Avanslar");
             }
         }
 
@@ -260,11 +276,13 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
 
             if (response.IsSuccessStatusCode)
             {
+                ViewBag.SuccessMessage = "Avans başarıyla reddedildi.";
                 return RedirectToAction("Avanslar");
             }
             else
             {
-                return BadRequest("Tekrar deneyin!");
+                ViewBag.ErrorMessage = "Tekrar deneyin!";
+                return RedirectToAction("Avanslar");
             }
         }
 
@@ -276,11 +294,13 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
 
             if (response.IsSuccessStatusCode)
             {
+                ViewBag.SuccessMessage = "Harcama başarıyla onaylandı.";
                 return RedirectToAction("Harcamalar");
             }
             else
             {
-                return BadRequest("Tekrar deneyin!");
+                ViewBag.ErrorMessage = "Tekrar deneyin!";
+                return RedirectToAction("Harcamalar");
             }
         }
 
@@ -292,11 +312,13 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
 
             if (response.IsSuccessStatusCode)
             {
+                ViewBag.SuccessMessage = "Harcama başarıyla reddedildi.";
                 return RedirectToAction("Harcamalar");
             }
             else
             {
-                return BadRequest("Tekrar deneyin!");
+                ViewBag.ErrorMessage = "Tekrar deneyin!";
+                return RedirectToAction("Harcamalar");
             }
         }
 
@@ -315,8 +337,10 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Profil bilgileri alınamadı.");
+                
+                ViewBag.ErrorMessage = "Profil bilgileri alınamadı.";
                 return View(new UpdateProfileViewModel());
+               
             }
         }
 
@@ -337,13 +361,13 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    TempData["SuccessMessage"] = "Profiliniz başarıyla güncellendi.";
+                    ViewBag.SuccessMessage = "Profiliniz başarıyla güncellendi.";
                     return RedirectToAction("Index", "CompanyManager");
                 }
                 else
                 {
                     var errorMessage = await response.Content.ReadAsStringAsync();
-                    ModelState.AddModelError(string.Empty, $"Profil güncellenemedi: {errorMessage}");
+                    ViewBag.ErrorMessage = $"Profil güncellenemedi: {errorMessage}";
                 }
             }
             catch (Exception ex)
@@ -381,13 +405,13 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                TempData["SuccessMessage"] = "Şifreniz başarıyla değiştirildi.";
+                ViewBag.SuccessMessage = "Şifreniz başarıyla değiştirildi.";
                 return RedirectToAction("Index", "Home");
             }
             else
             {
                 var errorMessage = await response.Content.ReadAsStringAsync();
-                ModelState.AddModelError(string.Empty, $"Şifre değişikliği başarısız oldu: {errorMessage}");
+                ViewBag.ErrorMessage = $"Şifre değişikliği başarısız oldu: {errorMessage}";
                 return View(model);
             }
         }
