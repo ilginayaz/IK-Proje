@@ -1,0 +1,137 @@
+﻿@using IKProject.Data.Concrete
+@model List<HarcamaTalep>
+
+@{
+    ViewData["Title"] = "Reddedilen Harcamalar";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success">
+        @ViewBag.SuccessMessage
+    </div>
+}
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+<div class="table-container">
+    <h2>Reddedilen Harcamalar</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Adı Soyadı</th>
+                <th>Açıklama</th>
+                <th>Masraf Tarihi</th>
+                <th>Gider Tutarı</th>
+                <th>Para Birimi</th>
+                <th>Onay Durumu</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var izin in Model)
+            {
+                <tr>
+                    <td>@izin.ApplicationUser.Adi @izin.ApplicationUser.Soyadi</td>
+                    <td>@izin.Aciklama</td>
+                    <td>@izin.MasrafTarihi.ToShortDateString()</td>
+                    <td>@izin.GiderTutari</td>
+                    <td>@izin.ParaBirimi</td>
+                    <td>@izin.OnayDurumu</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+
+
+
+
+
+
+<style>
+    .table-container {
+        width: 100%;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #2c3e50;
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+        .table-container h2 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+    .table {
+        width: 1200px;
+        border-collapse: collapse;
+    }
+
+        .table thead th {
+            background-color: #1abc9c;
+            color: #ffffff;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .table tbody td {
+            background-color: #34495e;
+            color: #ffffff;
+            padding: 10px;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #2c3e50;
+        }
+
+        .table tbody tr:hover {
+            background-color: #1abc9c;
+            color: #ffffff;
+        }
+
+    .btn-primary {
+        background-color: #ff9900;
+        border-color: #ff9900;
+        padding: 5px 10px;
+        border-radius: 5px;
+        color: #ffffff;
+        text-decoration: none;
+        margin-right: 5px;
+        display: inline-block;
+    }
+
+        .btn-primary:hover {
+            background-color: #cc7a00;
+            border-color: #cc7a00;
+        }
+
+    .btn-danger {
+        background-color: #e74c3c;
+        border-color: #e74c3c;
+        padding: 5px 10px;
+        border-radius: 5px;
+        color: #ffffff;
+        text-decoration: none;
+    }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+            border-color: #c0392b;
+        }
+</style>
+
+

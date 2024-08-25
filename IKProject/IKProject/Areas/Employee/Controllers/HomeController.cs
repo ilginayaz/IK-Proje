@@ -30,7 +30,7 @@ namespace IKProject.Areas.Employee.Controllers
             if (userResult is OkObjectResult okResult && okResult.Value is ApplicationUser user)
             {
 
-                ViewBag.ErrorMessage = "Kullanıcı bulunamadı.";
+
                 return View(user);
             }
 
@@ -40,23 +40,21 @@ namespace IKProject.Areas.Employee.Controllers
         {
 
 
-            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/getUser?userId={userId}");
+            var response = await _httpClient.GetAsync($"http://localhost:5240/api/Auth/getUser?userId={userId}");
             if (response.IsSuccessStatusCode)
             {
 
                 var content = await response.Content.ReadAsStringAsync();
-                var user = JsonConvert.DeserializeObject<ApplicationUser>(content); 
+                var user = JsonConvert.DeserializeObject<ApplicationUser>(content); //
                 return Ok(user);
             }
-
-            ViewBag.ErrorMessage = "Kullanıcı bulunamadı.";
-            return NotFound();
+            return NotFound("Personel bulunamadı.");
         }
         public async Task<ApplicationUser> GetApplicationUser(string userId)
         {
 
 
-            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/getUser?userId={userId}");
+            var response = await _httpClient.GetAsync($"http://localhost:5240/api/Auth/getUser?userId={userId}");
             if (response.IsSuccessStatusCode)
             {
 
@@ -70,12 +68,12 @@ namespace IKProject.Areas.Employee.Controllers
         public async Task<IActionResult> Izinler()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var izinler = await _httpClient.GetFromJsonAsync<List<IzinIstegi>>($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/izinGetById?userId={userId}");
+            var izinler = await _httpClient.GetFromJsonAsync<List<IzinIstegi>>($"https://localhost:7149/api/Calisan/izinGetById?userId={userId}");
 
             if (izinler == null)
             {
-                ViewBag.ErrorMessage = "İzinler alınamadı.";
-                return RedirectToAction("Index");
+                TempData["ErrorMessage"] = "İzinler alınamadı.";
+                return RedirectToAction("Index"); // Hata durumunda ana sayfaya yönlendir
             }
 
             return View(izinler);
@@ -84,12 +82,12 @@ namespace IKProject.Areas.Employee.Controllers
         public async Task<IActionResult> Harcamalar()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var harcamalar = await _httpClient.GetFromJsonAsync<List<HarcamaTalepViewModel>>($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/HarcamaGetById?userId={userId}");
+            var harcamalar = await _httpClient.GetFromJsonAsync<List<HarcamaTalepViewModel>>($"https://localhost:7149/api/Calisan/HarcamaGetById?userId={userId}");
 
             if (harcamalar == null)
             {
-                ViewBag.ErrorMessage = "Harcamalar alınamadı.";
-                return RedirectToAction("Index");
+                TempData["ErrorMessage"] = "Harcamalar alınamadı.";
+                return RedirectToAction("Index"); // Hata durumunda ana sayfaya yönlendir
             }
 
             return View(harcamalar);
@@ -98,12 +96,12 @@ namespace IKProject.Areas.Employee.Controllers
         public async Task<IActionResult> Avanslar()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var avanslar = await _httpClient.GetFromJsonAsync<List<AvansTalepViewModel>>($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/AvansGetById?userId={userId}");
+            var avanslar = await _httpClient.GetFromJsonAsync<List<AvansTalepViewModel>>($"https://localhost:7149/api/Calisan/AvansGetById?userId={userId}");
 
             if (avanslar == null)
             {
-                ViewBag.ErrorMessage = "Avanslar alınamadı.";
-                return RedirectToAction("Index"); 
+                TempData["ErrorMessage"] = "Avanslar alınamadı.";
+                return RedirectToAction("Index"); // Hata durumunda ana sayfaya yönlendir
             }
 
             return View(avanslar);
@@ -123,7 +121,7 @@ namespace IKProject.Areas.Employee.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
-                ViewBag.Message = "Kullanıcı bulunamadı";
+                TempData["Message"] = "Kullanıcı bulunamadı";
                 return View(model);
             }
             model.ApplicationUserId = userId;
@@ -135,16 +133,16 @@ namespace IKProject.Areas.Employee.Controllers
             }
 
             var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/IzinOlustur?userId={userId}", content);
+            var response = await _httpClient.PostAsync($"https://localhost:7149/api/Calisan/IzinOlustur?userId={userId}", content);
 
             if (response.IsSuccessStatusCode)
             {
-                ViewBag.Message = "İzin başarıyla oluşturulmuştur."; 
+                TempData["Message"] = "İzin başarıyla oluşturulmuştur.";
                 return RedirectToAction("Izinler");
             }
             else
             {
-                ViewBag.ErrorMessage = "Bir hata oluştu."; 
+                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
                 return View(model);
             }
         }
@@ -158,39 +156,38 @@ namespace IKProject.Areas.Employee.Controllers
         [HttpPost]
         public async Task<IActionResult> IzinGuncelle(IzinIstegiViewModel model)
         {
-
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-
-                var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-                var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/izinGuncelle?userId={userId}", content);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            model.ApplicationUserId = userId;
+            var jsonContent = JsonConvert.SerializeObject(model);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/izinGuncelle",content);
 
             if (response.IsSuccessStatusCode)
             {
-                ViewBag.Message = "İzin isteği başarıyla güncellenmiştir.";
+                TempData["Message"] = "İzin isteği başarıyla güncellenmiştir.";
                 return RedirectToAction("Izinler");
             }
             else
             {
-                ViewBag.ErrorMessage = "Bir hata oluştu.";
+                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
                 return View(model);
             }
         }
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> IzinSil(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var content = new StringContent(JsonConvert.SerializeObject(new { Id = id }), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/izinSil?userId={userId}", content);
+            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/izinSil?id={id}", content);
 
             if (response.IsSuccessStatusCode)
             {
-                ViewBag.Message = "İzin başarıyla silinmiştir.";
+                TempData["Message"] = "İzin başarıyla silinmiştir.";
                 return RedirectToAction("Izinler");
             }
             else
             {
-                ViewBag.ErrorMessage = "Bir hata oluştu.";
+                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
                 return RedirectToAction("Izinler");
             }
         }
@@ -215,16 +212,16 @@ namespace IKProject.Areas.Employee.Controllers
             }
 
             var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/HarcamaOlustur?userId={userId}", content);
+            var response = await _httpClient.PostAsync($"https://localhost:7149/api/Calisan/HarcamaOlustur?userId={userId}", content);
 
             if (response.IsSuccessStatusCode)
             {
-                ViewBag.Message = "Harcama başarıyla oluşturulmuştur.";
+                TempData["Message"] = "Harcama başarıyla oluşturulmuştur.";
                 return RedirectToAction("Harcamalar");
             }
             else
             {
-                ViewBag.ErrorMessage = "Bir hata oluştu.";
+                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
                 return View(model);
             }
         }
@@ -240,43 +237,40 @@ namespace IKProject.Areas.Employee.Controllers
         public async Task<IActionResult> HarcamaGuncelle(HarcamaTalepViewModel model)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            model.ApplicationUserId = userId;
             var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/HarcamaGuncelle?userId={userId}", content);
+            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/HarcamaGuncelle", content);
 
             if (response.IsSuccessStatusCode)
             {
-                ViewBag.Message = "Harcama isteği başarıyla güncellenmiştir.";
+                TempData["Message"] = "Harcama isteği başarıyla güncellenmiştir.";
                 return RedirectToAction("Harcamalar");
             }
             else
             {
-                ViewBag.ErrorMessage = "Bir hata oluştu.";
+                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
                 return View(model);
             }
         }
 
-        [HttpGet]
-        public IActionResult HarcamaSil(int id)
-        {
-            return View();
-        }
+       
 
-        [HttpPost]
-        public async Task<IActionResult> HarcamaSil(HarcamaTalepViewModel model)
+        [HttpGet]
+        public async Task<IActionResult> HarcamaSil(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/HarcamaSil?userId={userId}", content);
+            var content = new StringContent(JsonConvert.SerializeObject(new { Id = id }), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/HarcamaSil?id={id}", content);
 
             if (response.IsSuccessStatusCode)
             {
-                ViewBag.Message = "Harcama isteği başarıyla silinmiştir.";
+                TempData["Message"] = "Harcama isteği başarıyla silinmiştir.";
                 return RedirectToAction("Harcamalar");
             }
             else
             {
-                ViewBag.ErrorMessage = "Bir hata oluştu.";
-                return View();
+                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
+                return RedirectToAction("Harcamalar");
             }
         }
 
@@ -314,16 +308,16 @@ namespace IKProject.Areas.Employee.Controllers
             }
 
             var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/AvansOlustur?userId={userId}", content);
+            var response = await _httpClient.PostAsync($"https://localhost:7149/api/Calisan/AvansOlustur?userId={userId}", content);
 
             if (response.IsSuccessStatusCode)
             {
-                ViewBag.Message = "Avans talebi başarıyla oluşturulmuştur.";
+                TempData["Message"] = "Avans talebi başarıyla oluşturulmuştur.";
                 return RedirectToAction("Avanslar");
             }
             else
             {
-                ViewBag.ErrorMessage = "Bir hata oluştu.";
+                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
                 return View(model);
             }
         }
@@ -339,37 +333,38 @@ namespace IKProject.Areas.Employee.Controllers
         public async Task<IActionResult> AvansGuncelle(AvansTalepViewModel model)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            model.ApplicationUserId = userId;
             var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/AvansGuncelle?userId={userId}", content);
+            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/AvansGuncelle", content);
 
             if (response.IsSuccessStatusCode)
             {
-                ViewBag.Message = "Avans talebi başarıyla güncellenmiştir.";
+                TempData["Message"] = "Avans isteği başarıyla güncellenmiştir.";
                 return RedirectToAction("Avanslar");
             }
             else
             {
-                ViewBag.ErrorMessage = "Bir hata oluştu.";
+                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
                 return View(model);
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> AvansSil(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var content = new StringContent(JsonConvert.SerializeObject(new { Id = id }), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/AvansSil?userId={userId}", content);
+            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/AvansSil?id={id}", content);
 
             if (response.IsSuccessStatusCode)
             {
-                ViewBag.Message = "Avans talebi başarıyla silinmiştir.";
+                TempData["Message"] = "İzin başarıyla silinmiştir.";
                 return RedirectToAction("Avanslar");
             }
             else
             {
-                ViewBag.ErrorMessage = "Bir hata oluştu.";
-                return View();
+                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
+                return RedirectToAction("Avanslar");
             }
         }
 
@@ -378,7 +373,7 @@ namespace IKProject.Areas.Employee.Controllers
         public async Task<IActionResult> BilgiGuncelle()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/GetUser?userId={userId}");
+            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Auth/GetUser?userId={userId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -406,14 +401,13 @@ namespace IKProject.Areas.Employee.Controllers
 
             try
             {
-                var response = await _httpClient.PatchAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/UpdateUser", content);
+                var response = await _httpClient.PatchAsync("https://localhost:7149/api/Calisan/UpdateUser", content);
 
                 if (response.IsSuccessStatusCode)
                 {
+                    TempData["SuccessMessage"] = "Profiliniz başarıyla güncellendi.";
 
-                    ViewBag.Message = "Bilgileriniz başarıyla güncellenmiştir.";
-
-
+                   
                     return View(model);
                 }
                 else
@@ -452,11 +446,11 @@ namespace IKProject.Areas.Employee.Controllers
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(changePasswordModel), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/ChangePassword", content);
+            var response = await _httpClient.PostAsync("https://localhost:7149/api/Auth/ChangePassword", content);
 
             if (response.IsSuccessStatusCode)
             {
-                ViewBag.Message = "Şifreniz başarıyla güncellenmiştir.";
+                TempData["SuccessMessage"] = "Şifreniz başarıyla değiştirildi.";
                 return RedirectToAction("Index", "Home");
             }
             else

@@ -39,6 +39,18 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             ViewBag.ErrorMessage = "Kullanıcı bulunamadı.";
             return View();
         }
+        [HttpPost]
+        public async Task<IActionResult> CalisanSil(string email)
+        {
+            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Yonetici/CalisanSil?Email={email}", null);
+            if (response.IsSuccessStatusCode)
+            {
+                return Json(new { success = true, message = "Personel başarıyla silindi." });
+            }
+
+            return Json(new { success = false, message = "Silme işlemi başarısız oldu." });
+        }
+
         public async Task<IActionResult> ProfilDetay()
         {
             var userId = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameIdentifier")?.Value;
@@ -118,6 +130,92 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
                 return View();
             }
         }
+        public async Task<IActionResult> OnaylananIzinler()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/OnaylananIzinler?managerId={userId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var izinListesi = JsonConvert.DeserializeObject<List<IzinIstegi>>(content);
+
+                foreach (var item in izinListesi)
+                {
+                    item.IzinGunSayisi = (item.BitisTarihi - item.BaslangicTarihi).Days;
+
+                }
+
+                return View(izinListesi);
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Tekrar deneyin!";
+                return View();
+            }
+        }
+        public async Task<IActionResult> ReddedilenIzinler()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/ReddedilenIzinler?managerId={userId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var izinListesi = JsonConvert.DeserializeObject<List<IzinIstegi>>(content);
+
+                foreach (var item in izinListesi)
+                {
+                    item.IzinGunSayisi = (item.BitisTarihi - item.BaslangicTarihi).Days;
+
+                }
+
+                return View(izinListesi);
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Tekrar deneyin!";
+                return View();
+            }
+        }
+        public async Task<IActionResult> OnaylananAvanslar()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/OnaylananIzinler?managerId={userId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var izinListesi = JsonConvert.DeserializeObject<List<AvansTalep>>(content);
+
+               
+                return View(izinListesi);
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Tekrar deneyin!";
+                return View();
+            }
+        }
+        public async Task<IActionResult> ReddedilenAvanslar()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/ReddedilenIzinler?managerId={userId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var izinListesi = JsonConvert.DeserializeObject<List<AvansTalep>>(content);
+
+               
+                return View(izinListesi);
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Tekrar deneyin!";
+                return View();
+            }
+        }
 
         // avanslar listesi 
         public async Task<IActionResult> Avanslar()
@@ -139,11 +237,52 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             }
         }
 
+
+
+
+
+
         // Harcama listesi 
         public async Task<IActionResult> Harcamalar()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/harcamaListesi?managerId={userId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var izinListesi = JsonConvert.DeserializeObject<List<HarcamaTalep>>(content);
+
+                return View(izinListesi);
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Tekrar deneyin!";
+                return View();
+            }
+        }
+        public async Task<IActionResult> OnaylananHarcamalar()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/OnaylananHarcamalar?managerId={userId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var izinListesi = JsonConvert.DeserializeObject<List<HarcamaTalep>>(content);
+
+                return View(izinListesi);
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Tekrar deneyin!";
+                return View();
+            }
+        }
+        public async Task<IActionResult> ReddedilenHarcamalar()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/ReddedilenHarcamalar?managerId={userId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -362,7 +501,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     ViewBag.SuccessMessage = "Profiliniz başarıyla güncellendi.";
-                    return RedirectToAction("Index", "CompanyManager");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {

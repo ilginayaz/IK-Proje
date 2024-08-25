@@ -1,5 +1,6 @@
 ﻿using IKProjectAPI.Data;
 using IKProjectAPI.Data.Concrete;
+using IKProjectAPI.Data.Enums;
 using IKProjectAPI.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -71,7 +72,7 @@ namespace IKProjectAPI.Controllers
             // Şirket oluşturma
             var company = new Sirket
             {
-                Status = model.Status,
+                Status = Status.Active,
                 SirketAdi = model.SirketAdi,
                 SirketNumarasi = model.SirketNumarasi,
                 VergiNo = model.VergiNo,
@@ -95,7 +96,25 @@ namespace IKProjectAPI.Controllers
             return Ok(new { Message = "Şirket başarıyla oluşturuldu.", CompanyId = company.Id });
         }
 
-
+        [HttpPatch("SirketSil")]
+        public async Task<IActionResult> sirketSil(Guid id)
+        {
+            var sirket = await _context.sirketler.FirstOrDefaultAsync(x=> x.Id==id);
+           
+            
+                if (sirket != null)
+                {
+                    sirket.UpdatedTime = DateTime.Now;
+                    sirket.DeletedTime = DateTime.Now;
+                    sirket.Status = Data.Enums.Status.Passive;
+                    _context.Update(sirket);
+                    _context.SaveChanges();                   
+                    return Ok("Şirket başarıyla silinmiştir..");
+                }
+                return BadRequest("Böyle bir Şirket bulunamadı");
+            
+          
+        }
 
 
         [HttpGet("SirketYoneticileri/{companyId}")]
@@ -168,7 +187,8 @@ namespace IKProjectAPI.Controllers
         [HttpGet("sirketListele")]
         public async Task<IActionResult> SirketListele()
         {
-            var sirketler = _context.sirketler;
+            var sirketler = _context.sirketler.Where(x=>x.Status==Status.Active);
+            
             if (sirketler == null)
             {
                 return BadRequest("Herhangi bir şirket bulunamadı.");

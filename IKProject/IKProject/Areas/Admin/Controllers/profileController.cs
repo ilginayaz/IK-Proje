@@ -57,7 +57,7 @@ namespace IKProject.Areas.Admin.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     TempData["SuccessMessage"] = "Profiliniz başarıyla güncellendi.";
-                    return RedirectToAction("Details", "Home");
+                    return RedirectToAction("Details", "Profile");
                 }
                 else
                 {

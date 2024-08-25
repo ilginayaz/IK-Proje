@@ -40,7 +40,7 @@ namespace IKProject.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> CompanyRegister()
         {
-            var response = await _httpClient.GetAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/admin/YoneticileriListele");
+            var response = await _httpClient.GetAsync("https://localhost:7149/api/admin/YoneticileriListele");
 
             if (response.IsSuccessStatusCode)
             {
@@ -69,7 +69,7 @@ namespace IKProject.Areas.Admin.Controllers
             var jsonContent = JsonConvert.SerializeObject(sirketRegisterModel);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Company/SirketOlustur", content);
+            var response = await _httpClient.PostAsync("https://localhost:7149/api/Company/SirketOlustur", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -81,11 +81,29 @@ namespace IKProject.Areas.Admin.Controllers
                 return View(sirketRegisterModel);
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> CompanyDelete(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var content = new StringContent(JsonConvert.SerializeObject(new { Id = id }), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/izinSil?userId={userId}", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Message"] = "İzin başarıyla silinmiştir.";
+                return RedirectToAction("Izinler");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
+                return RedirectToAction("Izinler");
+            }
+        }
 
         [HttpGet]
         public async  Task<IActionResult> CompanyList() 
         {
-            var response = await _httpClient.GetAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Company/sirketListele");
+            var response = await _httpClient.GetAsync("https://localhost:7149/api/Company/sirketListele");
 
             if (response.IsSuccessStatusCode)
             {
@@ -97,7 +115,7 @@ namespace IKProject.Areas.Admin.Controllers
         }
         public async Task<List<SelectListItem>> ManagerList()
         {
-            var response = await _httpClient.GetAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/admin/YoneticileriListele");
+            var response = await _httpClient.GetAsync("https://localhost:7149/api/admin/YoneticileriListele");
 
             if (response.IsSuccessStatusCode)
             {
@@ -119,7 +137,7 @@ namespace IKProject.Areas.Admin.Controllers
         {
 
 
-            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/getUser?userId={userId}");
+            var response = await _httpClient.GetAsync($"http://localhost:5240/api/Auth/getUser?userId={userId}");
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
@@ -137,7 +155,7 @@ namespace IKProject.Areas.Admin.Controllers
         // Yönetici onaylama sayfası
         public async Task<IActionResult> YoneticiOnay()
         {
-            var response = await _httpClient.GetAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Admin/OnayBekleyenYoneticiler");
+            var response = await _httpClient.GetAsync("https://localhost:7149/api/Admin/OnayBekleyenYoneticiler");
 
             if (response.IsSuccessStatusCode)
             {
@@ -157,7 +175,7 @@ namespace IKProject.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> YoneticiOnay(string id)
         {
-            var requestUri = $"https://ikprojectapi20240825211059.azurewebsites.net/api/Admin/YoneticiyiOnayla?id={id}";
+            var requestUri = $"https://localhost:7149/api/Admin/YoneticiyiOnayla?id={id}";
             var response = await _httpClient.PatchAsync(requestUri, null);
 
             if (response.IsSuccessStatusCode)
@@ -174,7 +192,7 @@ namespace IKProject.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Reddet(string id)
         {
-            var requestUri = $"https://ikprojectapi20240825211059.azurewebsites.net/api/Admin/YoneticiyiReddet?id={id}";
+            var requestUri = $"https://localhost:7149/api/Admin/YoneticiyiReddet?id={id}";
             var response = await _httpClient.PatchAsync(requestUri, null);
 
             if (response.IsSuccessStatusCode)
@@ -190,7 +208,7 @@ namespace IKProject.Areas.Admin.Controllers
         // Onaylı yöneticiler listesi
         public async Task<IActionResult> YoneticiListe()
         {
-            var response = await _httpClient.GetAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Admin/YoneticileriListele");
+            var response = await _httpClient.GetAsync("https://localhost:7149/api/Admin/YoneticileriListele");
 
             if (response.IsSuccessStatusCode)
             {
@@ -211,7 +229,7 @@ namespace IKProject.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Sil(string id)
         {
-            var requestUri = $"https://ikprojectapi20240825211059.azurewebsites.net/api/Admin/YoneticiyiSil?id={id}";
+            var requestUri = $"https://localhost:7149/api/Admin/YoneticiyiSil?id={id}";
             var response = await _httpClient.PatchAsync(requestUri, null);
 
             if (response.IsSuccessStatusCode)
@@ -228,7 +246,7 @@ namespace IKProject.Areas.Admin.Controllers
             try
             {
                 // Yönetici listesini al
-                var yoneticilerResponse = await _httpClient.GetAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/admin/BosYoneticileriListele");
+                var yoneticilerResponse = await _httpClient.GetAsync("https://localhost:7149/api/admin/BosYoneticileriListele");
                 if (!yoneticilerResponse.IsSuccessStatusCode)
                 {
                     throw new Exception("Boşta Yönetici bulunamadı.");
@@ -244,7 +262,7 @@ namespace IKProject.Areas.Admin.Controllers
                 ViewBag.Yoneticiler = managerList;
 
                 // Şirket listesini al
-                var sirketlerResponse = await _httpClient.GetAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Company/sirketListele");
+                var sirketlerResponse = await _httpClient.GetAsync("https://localhost:7149/api/Company/sirketListele");
                 if (!sirketlerResponse.IsSuccessStatusCode)
                 {
                     throw new Exception("Şirket listesi yüklenirken hata oluştu.");
@@ -282,7 +300,7 @@ namespace IKProject.Areas.Admin.Controllers
             }
 
             // API'ye istek gönderme
-            var requestUrl = "https://ikprojectapi20240825211059.azurewebsites.net/api/Admin/assignCompanyManager"; 
+            var requestUrl = "https://localhost:7149/api/Admin/assignCompanyManager"; 
 
             var requestData = new
             {
@@ -292,7 +310,7 @@ namespace IKProject.Areas.Admin.Controllers
 
             var jsonContent = new StringContent(JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Admin/assignCompanyManager", jsonContent);
+            var response = await _httpClient.PostAsync("https://localhost:7149/api/Admin/assignCompanyManager", jsonContent);
 
             if (response.IsSuccessStatusCode)
             {
@@ -325,32 +343,15 @@ namespace IKProject.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                
-                var existingManagerResponse = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/admin/check-tc?tc={model.TC}");
-
-                if (existingManagerResponse.IsSuccessStatusCode)
-                {
-                    var exists = await existingManagerResponse.Content.ReadAsStringAsync();
-                    if (bool.Parse(exists))
-                    {
-                        ModelState.AddModelError("TC", "Bu TC kimlik numarası zaten kayıtlı.");
-                        return View("AddManager", model);
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "TC kontrolü sırasında bir hata oluştu.");
-                    return View("AddManager", model);
-                }
-
-                
                 var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-                var response = await _httpClient.PostAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/admin/register", content);
+
+                var response = await _httpClient.PostAsync("https://localhost:7149/api/admin/register", content);
 
                 if (response.IsSuccessStatusCode)
                 {
+
                     TempData["SuccessMessage"] = "Kayıt başarılı.";
-                    return RedirectToAction("YoneticiOnay");
+                    return RedirectToAction("YoneticiListe");
                 }
                 else
                 {
@@ -358,6 +359,7 @@ namespace IKProject.Areas.Admin.Controllers
                     ModelState.AddModelError(string.Empty, $"Kayıt başarısız. Hata: {response.StatusCode}, Mesaj: {errorMessage}");
                 }
             }
+
 
             return View("AddManager", model);
         }

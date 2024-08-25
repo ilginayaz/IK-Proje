@@ -1,66 +1,62 @@
 ﻿@using IKProject.Data.Concrete
-@model List<AvansTalep>
+@model List<IzinIstegi>
 
 @{
-    ViewData["Title"] = "Bekleyen Avanslar";
+    ViewData["Title"] = "Reddedilen İzinler";
 }
 
 <h2>@ViewData["Title"]</h2>
 
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success">
+        @ViewBag.SuccessMessage
+    </div>
+}
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
 
-<div class="alert-container">
-    @if (ViewBag.SuccessMessage != null)
-    {
-        <div class="alert alert-success">
-            @ViewBag.SuccessMessage
-        </div>
-    }
-    @if (ViewBag.ErrorMessage != null)
-    {
-        <div class="alert alert-danger">
-            @ViewBag.ErrorMessage
-        </div>
-    }
-</div>
+<div class="table-container">
+    <h2>Reddedilen İzinler</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Adı Soyadı</th>
+                <th>Başlangıç Tarihi</th>
+                <th>Bitiş Tarihi</th>
+                <th>İzin Gün Sayısı</th>
+                <th>İstek Yorumu</th>
+                <th>İzin Türü</th>
+                <th>Onay Durumu</th>
 
+            </tr>
+        </thead>
+        @if (Model != null)
+        {
 
-    <div class="table-container">
-        <h2>Bekleyen Avanslar</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Adı Soyadı</th>
-                    <th>Talep Tarihi</th>
-                    <th>Para Birimi</th>
-                    <th>Açıklama</th>
-
-                    <th>Onay Durumu</th>
-                    <th>İşlem</th>
-                </tr>
-            </thead>
             <tbody>
                 @foreach (var izin in Model)
                 {
                     <tr>
                         <td>@izin.ApplicationUser.Adi @izin.ApplicationUser.Soyadi</td>
-                        <td>@izin.TalepTarihi.ToShortDateString()</td>
-                        <td>@izin.ParaBirimi</td>
-                        <td>@izin.Aciklama</td>
+                        <td>@izin.BaslangicTarihi.ToShortDateString()</td>
+                        <td>@izin.BitisTarihi.ToShortDateString()</td>
+                        <td>@izin.IzinGunSayisi</td>
+                        <td>@izin.IstekYorumu</td>
+                        <td>@izin.IzinTuru</td>
                         <td>@izin.OnayDurumu</td>
-                        <td>
-                            <a asp-action="OnaylaAvans" asp-route-id="@izin.Id" class="btn btn-primary">Onayla</a>
-                            <a asp-action="ReddetAvans" asp-route-id="@izin.Id" class="btn btn-danger" onclick="return confirm('Bu avansı silmek istediğinizden emin misiniz?');">Reddet</a>
-                        </td>
 
 
                     </tr>
                 }
             </tbody>
-        </table>
-
-    </div>
-
-
+        }
+    </table>
+</div>
 
 <style>
     .table-container {
@@ -134,37 +130,4 @@
             background-color: #c0392b;
             border-color: #c0392b;
         }
-
-
-
-
-
-    .alert-container {
-        position: fixed;
-        top: 120px;
-        right: 20px;
-        width: 400px;
-        z-index: 1000;
-        margin-right: auto;
-        margin-left: auto;
-    }
-
-    .alert {
-        margin-bottom: 10px;
-        padding: 15px;
-        border-radius: 5px;
-        text-align: center;
-    }
-
-    .alert-success {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-    }
-
-    .alert-danger {
-        background-color: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-    }
 </style>

@@ -4,46 +4,38 @@
     ViewData["Title"] = "Onaylı Yöneticiler";
 }
 
-<div class="container">
-    <h1>@ViewData["Title"]</h1>
-    <h3>Sisteme Kayıtlı Şirket Yöneticileri</h3>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh; margin-left: 300px;">
+    <div class="w-75">
+        <!-- Genişliği isteğinize göre ayarlayabilirsiniz -->
+        <h1 class="text-center">@ViewData["Title"]</h1>
+        <h3 class="text-center">Sisteme Kayıtlı Şirket Yöneticileri</h3>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Adı</th>
-                <th>Soyadı</th>
-                <th>Email</th>
-                <th>Telefon</th>
-               @*  <th>Şirket</th> *@
-                <th>Sil</th>
-            </tr>
-        </thead>
-        <tbody id="yoneticiTableBody">
-            @foreach (var yonetici in Model)
-            {
-                <tr data-id="@yonetici.Id">
-                    <td>@yonetici.Adi</td>
-                    <td>@yonetici.Soyadi</td>
-                    <td>@yonetici.Email</td>
-                    <td>@yonetici.TelefonNumarasi</td>
-                    @* <td>
-                        @if (yonetici.Sirket != null)
-                        {
-                            @yonetici.Sirket.SirketAdi
-                        }
-                        else
-                        {
-                            <span>Şirket bilgisi mevcut değil</span>
-                        }
-                    </td> *@
-                    <td>
-                        <button class="btn btn-danger silButton">Sil</button>
-                    </td>
+        <table class="table table-bordered table-striped text-center">
+            <thead>
+                <tr>
+                    <th>Adı</th>
+                    <th>Soyadı</th>
+                    <th>Email</th>
+                    <th>Telefon</th>
+                    <th>Sil</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody id="yoneticiTableBody">
+                @foreach (var yonetici in Model)
+                {
+                    <tr data-id="@yonetici.Id">
+                        <td>@yonetici.Adi</td>
+                        <td>@yonetici.Soyadi</td>
+                        <td>@yonetici.Email</td>
+                        <td>@yonetici.TelefonNumarasi</td>
+                        <td>
+                            <button class="btn btn-danger silButton">Sil</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 
 @section Scripts {

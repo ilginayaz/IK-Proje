@@ -1,0 +1,156 @@
+﻿@model HarcamaTalepViewModel
+
+@{
+    ViewData["Title"] = "Harcama Oluştur";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="form-container">
+    <h2>Harcama Güncelle</h2>
+
+    <form asp-action="HarcamaGuncelle" method="post" class="custom-form">
+        <div class="form-group">
+            <label asp-for="MasrafTarihi" class="control-label">Harcama Tarihi</label>
+            <input asp-for="MasrafTarihi" class="form-control" type="date" id="MasrafTarihi" />
+            <span asp-validation-for="MasrafTarihi" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Aciklama" class="control-label">Açıklama</label>
+            <textarea asp-for="Aciklama" class="form-control"></textarea>
+            <span asp-validation-for="Aciklama" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ParaBirimi" class="control-label">Para Birimi</label>
+            <select asp-for="ParaBirimi" class="form-control">
+                <option value="">-- Seçiniz --</option>
+                @foreach (var paraBirimi in Enum.GetValues(typeof(IKProject.Data.Enums.ParaBirimi)).Cast<IKProject.Data.Enums.ParaBirimi>())
+                {
+                    <option value="@paraBirimi">@paraBirimi</option>
+                }
+            </select>
+            <span asp-validation-for="ParaBirimi" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="GiderTutari" class="control-label">Gider Tutarı</label>
+            <input asp-for="GiderTutari" class="form-control" type="number" />
+            <span asp-validation-for="GiderTutari" class="text-danger"></span>
+        </div>
+
+        <input type="hidden" asp-for="ApplicationUserId" />
+
+        <div class="form-group text-center">
+            <input type="submit" value="Güncelle" class="btn btn-primary submit-btn" />
+        </div>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #e0e7ea;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .form-container {
+        width: 500px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #2c3e50;
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        position: relative;
+        top: 30px;
+        left: 79%;
+    }
+
+        .form-container h2 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+    .form-group label {
+        color: #bfc9d2;
+    }
+
+    .form-control {
+        background-color: #34495e;
+        color: #ffffff;
+        border: 1px solid #1abc9c;
+        border-radius: 5px;
+    }
+
+        .form-control:focus {
+            background-color: #3b5998;
+            border-color: #ff9900;
+            box-shadow: 0 0 8px rgba(255, 153, 0, 0.5);
+        }
+
+    select.form-control {
+        background-color: #ffffff;
+        color: #000000;
+        border: 1px solid #1abc9c;
+    }
+
+        select.form-control option {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+    textarea.form-control {
+        color: #ffffff !important;
+    }
+
+    .btn-primary {
+        background-color: #ff9900;
+        border-color: #ff9900;
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        color: #ffffff;
+    }
+
+        .btn-primary:hover {
+            background-color: #cc7a00;
+            border-color: #cc7a00;
+        }
+
+    .text-danger {
+        color: #ff4d4d;
+    }
+
+    input[type="number"].form-control {
+        color: #ffffff;
+    }
+
+</style>
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var today = new Date();
+        var threeMonthsAgo = new Date();
+        threeMonthsAgo.setMonth(today.getMonth() - 3);
+
+        // Tarih formatını yyyy-MM-dd şeklinde ayarlıyoruz
+        var minDate = threeMonthsAgo.toISOString().split('T')[0];
+        var maxDate = today.toISOString().split('T')[0];
+
+        // Input elementini seçiyoruz
+        var input = document.getElementById("MasrafTarihi");
+        if (input) {
+            input.setAttribute("min", minDate);
+            input.setAttribute("max", maxDate);
+        }
+    });
+
+</script>
