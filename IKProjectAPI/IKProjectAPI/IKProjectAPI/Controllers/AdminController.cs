@@ -87,6 +87,7 @@ namespace IKProjectAPI.Controllers
             // Hata mesajlarını döndür
             return BadRequest(result.Errors);
         }
+        
         [HttpGet("YoneticileriListele")]
         public async Task<IActionResult> YoneticileriListele()
         {

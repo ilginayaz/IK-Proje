@@ -379,18 +379,18 @@ namespace IKProject.Areas.Employee.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var model = JsonConvert.DeserializeObject<EmployeeUpdateViewModel>(content);
+                var model = JsonConvert.DeserializeObject<UpdateProfileViewModel>(content);
                 return View(model);
             }
             else
             {
                 ModelState.AddModelError(string.Empty, "Profil bilgileri alınamadı.");
-                return View(new EmployeeUpdateViewModel());
+                return View(new UpdateProfileViewModel());
             }
         }
 
         [HttpPost]
-        public async Task<IActionResult> BilgiGuncelle(EmployeeUpdateViewModel model)
+        public async Task<IActionResult> BilgiGuncelle(UpdateProfileViewModel model)
         {
             if (!ModelState.IsValid)
             {
