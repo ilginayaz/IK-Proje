@@ -42,7 +42,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         [HttpPost]
         public async Task<IActionResult> CalisanSil(string email)
         {
-            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Yonetici/CalisanSil?Email={email}", null);
+            var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/CalisanSil?Email={email}", null);
             if (response.IsSuccessStatusCode)
             {
                 return Json(new { success = true, message = "Personel başarıyla silindi." });
@@ -133,7 +133,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         public async Task<IActionResult> OnaylananIzinler()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/OnaylananIzinler?managerId={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/OnaylananIzinler?managerId={userId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -157,7 +157,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         public async Task<IActionResult> ReddedilenIzinler()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/ReddedilenIzinler?managerId={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/ReddedilenIzinler?managerId={userId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -181,7 +181,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         public async Task<IActionResult> OnaylananAvanslar()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/OnaylananIzinler?managerId={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/OnaylananAvanslar?managerId={userId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -200,7 +200,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         public async Task<IActionResult> ReddedilenAvanslar()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/ReddedilenIzinler?managerId={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/ReddedilenAvanslar?managerId={userId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -264,7 +264,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         public async Task<IActionResult> OnaylananHarcamalar()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/OnaylananHarcamalar?managerId={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/OnaylananHarcamalar?managerId={userId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -282,7 +282,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         public async Task<IActionResult> ReddedilenHarcamalar()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/ReddedilenHarcamalar?managerId={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/ReddedilenHarcamalar?managerId={userId}");
 
             if (response.IsSuccessStatusCode)
             {

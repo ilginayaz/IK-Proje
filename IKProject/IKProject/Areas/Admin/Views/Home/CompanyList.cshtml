@@ -81,7 +81,7 @@
 
     async function deleteCompany(companyId) {
         if (confirm("Bu şirketi silmek istediğinize emin misiniz?")) {
-            const response = await fetch(`https://localhost:7149/api/Company/SirketSil?id=${companyId}`, {
+            const response = await fetch(`https://ikprojectapi20240825211059.azurewebsites.net/api/Company/SirketSil?id=${companyId}`, {
                 method: 'Patch'
             });
             if (response.ok) {
