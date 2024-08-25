@@ -34,7 +34,7 @@ namespace IKProject.Controllers
             {
                 var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
-                var response = await _httpClient.PostAsync("http://localhost:5240/api/Auth/login", content);
+                var response = await _httpClient.PostAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/login", content);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -54,7 +54,7 @@ namespace IKProject.Controllers
 
                     _httpClient.DefaultRequestHeaders.Authorization = _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenObj.Token);
 
-                    var roleResponse = await _httpClient.GetAsync("http://localhost:5240/api/Auth/getroles?email=" + model.Email);
+                    var roleResponse = await _httpClient.GetAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/getroles?email=" + model.Email);
                     if (roleResponse.IsSuccessStatusCode)
                     {
                         var rolesJson = await roleResponse.Content.ReadAsStringAsync();
@@ -121,7 +121,7 @@ namespace IKProject.Controllers
         //    {
         //        var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
-        //        var response = await _httpClient.PostAsync("https://localhost:7149/api/Auth/register", content);
+        //        var response = await _httpClient.PostAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/register", content);
 
         //        if (response.IsSuccessStatusCode)
         //        {
@@ -146,7 +146,7 @@ namespace IKProject.Controllers
             {
                 var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
-                var response = await _httpClient.PostAsync("https://localhost:7149/api/Auth/register", content);
+                var response = await _httpClient.PostAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/register", content);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -195,10 +195,10 @@ namespace IKProject.Controllers
         public async Task ForgotPasswordPost(string email)
         {
 
-                var requestUri = "https://localhost:7149/api/Auth/ForgotPassword";
+                var requestUri = "https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/ForgotPassword";
                 var content = new StringContent(JsonConvert.SerializeObject(new { email }), Encoding.UTF8, "application/json");
 
-                var response = await _httpClient.PostAsync($"https://localhost:7149/api/Auth/ForgotPassword?email={email}", content);
+                var response = await _httpClient.PostAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/ForgotPassword?email={email}", content);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -220,7 +220,7 @@ namespace IKProject.Controllers
         public async Task<IActionResult> Logout()
         {
             // Logout isteğini API'ye gönderir
-            var response = await _httpClient.PostAsync("https://localhost:7149/api/Auth/logout", null);
+            var response = await _httpClient.PostAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/logout", null);
 
             if (response.IsSuccessStatusCode)
             {

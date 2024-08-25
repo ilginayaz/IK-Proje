@@ -42,7 +42,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         public async Task<IActionResult> ProfilDetay()
         {
             var userId = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameIdentifier")?.Value;
-            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/getEmployees?yoneticiId={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/getEmployees?yoneticiId={userId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -63,7 +63,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         {
 
 
-            var response = await _httpClient.GetAsync($"http://localhost:5240/api/Auth/getUser?userId={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/getUser?userId={userId}");
             if (response.IsSuccessStatusCode)
             {
 
@@ -79,7 +79,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         {
             
             var userId = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameIdentifier")?.Value;
-            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/getEmployees?yoneticiId={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/getEmployees?yoneticiId={userId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -97,7 +97,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         public async Task<IActionResult> Izinler()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/izinListesi?managerId={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/izinListesi?managerId={userId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -123,7 +123,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         public async Task<IActionResult> Avanslar()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/avansListesi?managerId={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/avansListesi?managerId={userId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -143,7 +143,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         public async Task<IActionResult> Harcamalar()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/harcamaListesi?managerId={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/harcamaListesi?managerId={userId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -163,7 +163,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         public async Task<IActionResult> IzinListesi()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Yonetici/izinListesi?managerId={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/izinListesi?managerId={userId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -195,7 +195,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             var jsonContent = JsonConvert.SerializeObject(registerModel);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("http://localhost:5240/api/Yonetici/register", content);
+            var response = await _httpClient.PostAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/register", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -213,7 +213,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         [HttpGet]
         public async Task<IActionResult> OnaylaIzin(int Id)
         {
-            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/izinOnayla?id={Id}", null);
+            var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/izinOnayla?id={Id}", null);
             if (Id == 0)
             {
                 ViewBag.ErrorMessage = "Geçersiz izin ID'si.";
@@ -236,7 +236,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         [HttpGet]
         public async Task<IActionResult> ReddetIzin(int Id)
         {
-            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/izinReddet?id={Id}", null);
+            var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/izinReddet?id={Id}", null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -254,7 +254,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         [HttpGet("OnaylaAvans/{id}")]
         public async Task<IActionResult> OnaylaAvans(int Id)
         {
-            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/avansOnayla?id={Id}", null);
+            var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/avansOnayla?id={Id}", null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -272,7 +272,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         [HttpGet]
         public async Task<IActionResult> ReddetAvans(int Id)
         {
-            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/avansReddet?id={Id}", null);
+            var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/avansReddet?id={Id}", null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -290,7 +290,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         [HttpGet]
         public async Task<IActionResult> OnaylaHarcama(int Id)
         {
-            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/harcamaOnayla?id={Id}", null);
+            var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/harcamaOnayla?id={Id}", null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -308,7 +308,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         [HttpGet]
         public async Task<IActionResult> ReddetHarcama(int Id)
         {
-            var response = await _httpClient.PatchAsync($"http://localhost:5240/api/Yonetici/harcamaReddet?id={Id}", null);
+            var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Yonetici/harcamaReddet?id={Id}", null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -327,7 +327,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
         public async Task<IActionResult> EditProfile()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Auth/GetUser?userId={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/GetUser?userId={userId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -357,7 +357,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
 
             try
             {
-                var response = await _httpClient.PatchAsync("https://localhost:7149/api/Calisan/UpdateUser", content);
+                var response = await _httpClient.PatchAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/UpdateUser", content);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -401,7 +401,7 @@ namespace IKProjectMVC.Areas.CompanyManager.Controllers
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(changePasswordModel), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync("https://localhost:7149/api/Auth/ChangePassword", content);
+            var response = await _httpClient.PostAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/ChangePassword", content);
 
             if (response.IsSuccessStatusCode)
             {

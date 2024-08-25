@@ -96,13 +96,14 @@ var info = new OpenApiInfo()
     Description = "FHYI Grubu için JWT uygulamasý",
 };
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(opt =>
-{
-    opt.SwaggerDoc("v1", info);
-    opt.AddSecurityDefinition("Bearer", securityScheme);
-    opt.AddSecurityRequirement(securityReq);
+builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen(opt =>
+//{
+//    opt.SwaggerDoc("v1", info);
+//    opt.AddSecurityDefinition("Bearer", securityScheme);
+//    opt.AddSecurityRequirement(securityReq);
 
-});
+//});
 
 builder.Services.AddCors(options =>
 {

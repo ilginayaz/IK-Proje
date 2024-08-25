@@ -40,7 +40,7 @@ namespace IKProject.Areas.Employee.Controllers
         {
 
 
-            var response = await _httpClient.GetAsync($"http://localhost:5240/api/Auth/getUser?userId={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/getUser?userId={userId}");
             if (response.IsSuccessStatusCode)
             {
 
@@ -56,7 +56,7 @@ namespace IKProject.Areas.Employee.Controllers
         {
 
 
-            var response = await _httpClient.GetAsync($"http://localhost:5240/api/Auth/getUser?userId={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/getUser?userId={userId}");
             if (response.IsSuccessStatusCode)
             {
 
@@ -70,7 +70,7 @@ namespace IKProject.Areas.Employee.Controllers
         public async Task<IActionResult> Izinler()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var izinler = await _httpClient.GetFromJsonAsync<List<IzinIstegi>>($"https://localhost:7149/api/Calisan/izinGetById?userId={userId}");
+            var izinler = await _httpClient.GetFromJsonAsync<List<IzinIstegi>>($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/izinGetById?userId={userId}");
 
             if (izinler == null)
             {
@@ -84,7 +84,7 @@ namespace IKProject.Areas.Employee.Controllers
         public async Task<IActionResult> Harcamalar()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var harcamalar = await _httpClient.GetFromJsonAsync<List<HarcamaTalepViewModel>>($"https://localhost:7149/api/Calisan/HarcamaGetById?userId={userId}");
+            var harcamalar = await _httpClient.GetFromJsonAsync<List<HarcamaTalepViewModel>>($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/HarcamaGetById?userId={userId}");
 
             if (harcamalar == null)
             {
@@ -98,7 +98,7 @@ namespace IKProject.Areas.Employee.Controllers
         public async Task<IActionResult> Avanslar()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var avanslar = await _httpClient.GetFromJsonAsync<List<AvansTalepViewModel>>($"https://localhost:7149/api/Calisan/AvansGetById?userId={userId}");
+            var avanslar = await _httpClient.GetFromJsonAsync<List<AvansTalepViewModel>>($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/AvansGetById?userId={userId}");
 
             if (avanslar == null)
             {
@@ -135,7 +135,7 @@ namespace IKProject.Areas.Employee.Controllers
             }
 
             var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"https://localhost:7149/api/Calisan/IzinOlustur?userId={userId}", content);
+            var response = await _httpClient.PostAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/IzinOlustur?userId={userId}", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -163,7 +163,7 @@ namespace IKProject.Areas.Employee.Controllers
 
 
                 var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-                var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/izinGuncelle?userId={userId}", content);
+                var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/izinGuncelle?userId={userId}", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -181,7 +181,7 @@ namespace IKProject.Areas.Employee.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var content = new StringContent(JsonConvert.SerializeObject(new { Id = id }), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/izinSil?userId={userId}", content);
+            var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/izinSil?userId={userId}", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -215,7 +215,7 @@ namespace IKProject.Areas.Employee.Controllers
             }
 
             var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"https://localhost:7149/api/Calisan/HarcamaOlustur?userId={userId}", content);
+            var response = await _httpClient.PostAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/HarcamaOlustur?userId={userId}", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -241,7 +241,7 @@ namespace IKProject.Areas.Employee.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/HarcamaGuncelle?userId={userId}", content);
+            var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/HarcamaGuncelle?userId={userId}", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -266,7 +266,7 @@ namespace IKProject.Areas.Employee.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/HarcamaSil?userId={userId}", content);
+            var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/HarcamaSil?userId={userId}", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -314,7 +314,7 @@ namespace IKProject.Areas.Employee.Controllers
             }
 
             var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"https://localhost:7149/api/Calisan/AvansOlustur?userId={userId}", content);
+            var response = await _httpClient.PostAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/AvansOlustur?userId={userId}", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -340,7 +340,7 @@ namespace IKProject.Areas.Employee.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/AvansGuncelle?userId={userId}", content);
+            var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/AvansGuncelle?userId={userId}", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -359,7 +359,7 @@ namespace IKProject.Areas.Employee.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var content = new StringContent(JsonConvert.SerializeObject(new { Id = id }), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/AvansSil?userId={userId}", content);
+            var response = await _httpClient.PatchAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/AvansSil?userId={userId}", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -378,7 +378,7 @@ namespace IKProject.Areas.Employee.Controllers
         public async Task<IActionResult> BilgiGuncelle()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Auth/GetUser?userId={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/GetUser?userId={userId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -406,7 +406,7 @@ namespace IKProject.Areas.Employee.Controllers
 
             try
             {
-                var response = await _httpClient.PatchAsync("https://localhost:7149/api/Calisan/UpdateUser", content);
+                var response = await _httpClient.PatchAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/UpdateUser", content);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -452,7 +452,7 @@ namespace IKProject.Areas.Employee.Controllers
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(changePasswordModel), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync("https://localhost:7149/api/Auth/ChangePassword", content);
+            var response = await _httpClient.PostAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/ChangePassword", content);
 
             if (response.IsSuccessStatusCode)
             {

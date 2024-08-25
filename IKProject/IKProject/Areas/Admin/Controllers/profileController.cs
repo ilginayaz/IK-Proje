@@ -25,7 +25,7 @@ namespace IKProject.Areas.Admin.Controllers
         public async Task<IActionResult> Edit()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Auth/GetUser?userId={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Auth/GetUser?userId={userId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -52,7 +52,7 @@ namespace IKProject.Areas.Admin.Controllers
 
             try
             {
-                var response = await _httpClient.PatchAsync("https://localhost:7149/api/Calisan/UpdateUser", content);
+                var response = await _httpClient.PatchAsync("https://ikprojectapi20240825211059.azurewebsites.net/api/Calisan/UpdateUser", content);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -78,7 +78,7 @@ namespace IKProject.Areas.Admin.Controllers
         public async Task<IActionResult> Details()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var response = await _httpClient.GetAsync($"https://localhost:7149/api/Admin/GetAdminDetails?id={userId}");
+            var response = await _httpClient.GetAsync($"https://ikprojectapi20240825211059.azurewebsites.net/api/Admin/GetAdminDetails?id={userId}");
 
             if (response.IsSuccessStatusCode)
             {
