@@ -81,6 +81,24 @@ namespace IKProject.Areas.Admin.Controllers
                 return View(sirketRegisterModel);
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> CompanyDelete(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var content = new StringContent(JsonConvert.SerializeObject(new { Id = id }), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/izinSil?userId={userId}", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Message"] = "İzin başarıyla silinmiştir.";
+                return RedirectToAction("Izinler");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
+                return RedirectToAction("Izinler");
+            }
+        }
 
         [HttpGet]
         public async  Task<IActionResult> CompanyList() 
@@ -325,32 +343,15 @@ namespace IKProject.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                
-                var existingManagerResponse = await _httpClient.GetAsync($"https://localhost:7149/api/admin/check-tc?tc={model.TC}");
-
-                if (existingManagerResponse.IsSuccessStatusCode)
-                {
-                    var exists = await existingManagerResponse.Content.ReadAsStringAsync();
-                    if (bool.Parse(exists))
-                    {
-                        ModelState.AddModelError("TC", "Bu TC kimlik numarası zaten kayıtlı.");
-                        return View("AddManager", model);
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "TC kontrolü sırasında bir hata oluştu.");
-                    return View("AddManager", model);
-                }
-
-                
                 var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+
                 var response = await _httpClient.PostAsync("https://localhost:7149/api/admin/register", content);
 
                 if (response.IsSuccessStatusCode)
                 {
+
                     TempData["SuccessMessage"] = "Kayıt başarılı.";
-                    return RedirectToAction("YoneticiOnay");
+                    return RedirectToAction("YoneticiListe");
                 }
                 else
                 {
@@ -358,6 +359,7 @@ namespace IKProject.Areas.Admin.Controllers
                     ModelState.AddModelError(string.Empty, $"Kayıt başarısız. Hata: {response.StatusCode}, Mesaj: {errorMessage}");
                 }
             }
+
 
             return View("AddManager", model);
         }

@@ -26,27 +26,27 @@
     <style>
         .cardd {
             border-radius: 15px;
-            background: linear-gradient(to right, darkblue , #FFA27F);
+            background: linear-gradient(to right, #1a1a2e, #16213e); /* Koyu renkli bir tema */
             padding: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Daha belirgin gölge */
             width: 1000px;
             margin: 30px;
-            color: #ffffff;
+            color: #ffffff; /* Beyaz metin rengi */
         }
 
         .cardd-body {
             padding: 20px;
-            background: #ffffff;
+            background: #0f3460; /* Koyu mavi arka plan */
             border-radius: 10px;
-            color: #333333;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            color: #e94560; /* Koyu temaya uygun metin rengi */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* İç gölge */
             height: 100%;
         }
 
         .card-title {
             font-size: 24px;
             margin-bottom: 20px;
-            color: #FF0000;
+            color: #e94560; /* Koyu temaya uygun başlık rengi */
             text-align: center;
         }
 
@@ -57,25 +57,18 @@
             height: 100%;
         }
 
-        .info-column {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        .info-column p {
+            margin: 8px 0;
+            font-size: 16px;
+            font-weight: 500;
         }
-
-            .info-column p {
-                margin: 8px 0;
-                font-size: 16px;
-                font-weight: 500;
-            }
 
         .btn-edit {
             display: block;
             width: 100%;
             padding: 10px;
-            background-color: #FF0000;
-            color: #FFA27F;
+            background-color: #e94560; /* Koyu tema ile uyumlu kırmızı buton rengi */
+            color: #ffffff; /* Beyaz metin rengi */
             font-weight: bold;
             border: none;
             border-radius: 5px;
@@ -86,8 +79,8 @@
         }
 
             .btn-edit:hover {
-                background-color: #FFA27F;
-                color: #FF0000;
+                background-color: #0f3460; /* Hover durumda koyu mavi arka plan */
+                color: #e94560; /* Koyu tema ile uyumlu metin rengi */
             }
 
         .profile-img {
@@ -97,8 +90,10 @@
             border-radius: 50%;
             margin: 0 auto 20px auto;
             display: block;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }</style>
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Daha belirgin gölge */
+        }
+    </style>
+
 </head>
 <body>
 

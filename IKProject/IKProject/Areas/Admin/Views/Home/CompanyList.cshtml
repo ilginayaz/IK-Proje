@@ -21,6 +21,7 @@
                     <th>Unvan</th>
                     <th>Email</th>
                     <th>Telefon</th>
+                    <th>İşlemler</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,6 +42,9 @@
                         <td>@sirket.SirketUnvani</td>
                         <td>@sirket.SirketEmail</td>
                         <td>@sirket.Telefon</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="deleteCompany('@sirket.Id')">Sil</button>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -75,43 +79,57 @@
         }
     }
 
+    async function deleteCompany(companyId) {
+        if (confirm("Bu şirketi silmek istediğinize emin misiniz?")) {
+            const response = await fetch(`https://localhost:7149/api/Company/SirketSil?id=${companyId}`, {
+                method: 'Patch'
+            });
+            if (response.ok) {
+                alert("Şirket başarıyla silindi.");
+                location.reload(); // Sayfayı yeniden yükleyerek listeyi günceller
+            } else {
+                alert("Şirket silinirken bir hata oluştu.");
+            }
+        }
+    }
+
     function displayCompanyDetails(company) {
         const yoneticiler = company.sirketYoneticileri || [];
 
         let detailsHtml = `
-                <h3>${company.sirketAdi}</h3>
-                <div>
-                    ${company.logoUrl ? `<img src="${company.logoUrl}" alt="Şirket Logosu" style="max-width: 200px; max-height: 200px;" />` : '<span>Logo Yok</span>'}
-                    <p><strong>Unvan:</strong> ${company.sirketUnvani || 'Bilgi Yok'}</p>
-                    <p><strong>Email:</strong> ${company.sirketEmail || 'Bilgi Yok'}</p>
-                    <p><strong>Telefon:</strong> ${company.telefon || 'Bilgi Yok'}</p>
-                    <p><strong>Vergi Numarası:</strong> ${company.vergiNo || 'Bilgi Yok'}</p>
-                    <p><strong>Vergi Ofisi:</strong> ${company.vergiOfisi || 'Bilgi Yok'}</p>
-                    <p><strong>Adres:</strong> ${company.address || 'Bilgi Yok'}</p>
-                    <p><strong>Posta Kodu:</strong> ${company.postaKodu || 'Bilgi Yok'}</p>
-                    <p><strong>Şehir:</strong> ${company.sehir || 'Bilgi Yok'}</p>
-                    <p><strong>Durum:</strong> ${company.status || 'Bilgi Yok'}</p>
-                </div>
-                <h3>Yöneticiler</h3>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Adı</th>
-                            <th>Soyadı</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${yoneticiler.length > 0 ? yoneticiler.map(yonetici => `
+                    <h3>${company.sirketAdi}</h3>
+                    <div>
+                        ${company.logoUrl ? `<img src="${company.logoUrl}" alt="Şirket Logosu" style="max-width: 200px; max-height: 200px;" />` : '<span>Logo Yok</span>'}
+                        <p><strong>Unvan:</strong> ${company.sirketUnvani || 'Bilgi Yok'}</p>
+                        <p><strong>Email:</strong> ${company.sirketEmail || 'Bilgi Yok'}</p>
+                        <p><strong>Telefon:</strong> ${company.telefon || 'Bilgi Yok'}</p>
+                        <p><strong>Vergi Numarası:</strong> ${company.vergiNo || 'Bilgi Yok'}</p>
+                        <p><strong>Vergi Ofisi:</strong> ${company.vergiOfisi || 'Bilgi Yok'}</p>
+                        <p><strong>Adres:</strong> ${company.address || 'Bilgi Yok'}</p>
+                        <p><strong>Posta Kodu:</strong> ${company.postaKodu || 'Bilgi Yok'}</p>
+                        <p><strong>Şehir:</strong> ${company.sehir || 'Bilgi Yok'}</p>
+                        <p><strong>Durum:</strong> ${company.status || 'Bilgi Yok'}</p>
+                    </div>
+                    <h3>Yöneticiler</h3>
+                    <table class="table table-bordered">
+                        <thead>
                             <tr>
-                                <td><a href="javascript:void(0);" onclick="showUserProfile('${yonetici.id}')">${yonetici.adi || 'Bilgi Yok'}</a></td>
-                                <td>${yonetici.soyadi || 'Bilgi Yok'}</td>
-                                <td>${yonetici.email || 'Bilgi Yok'}</td>
+                                <th>Adı</th>
+                                <th>Soyadı</th>
+                                <th>Email</th>
                             </tr>
-                        `).join('') : '<tr><td colspan="3">Yönetici Bilgisi Yok</td></tr>'}
-                    </tbody>
-                </table>
-            `;
+                        </thead>
+                        <tbody>
+                            ${yoneticiler.length > 0 ? yoneticiler.map(yonetici => `
+                                <tr>
+                                    <td><a href="javascript:void(0);" onclick="showUserProfile('${yonetici.id}')">${yonetici.adi || 'Bilgi Yok'}</a></td>
+                                    <td>${yonetici.soyadi || 'Bilgi Yok'}</td>
+                                    <td>${yonetici.email || 'Bilgi Yok'}</td>
+                                </tr>
+                            `).join('') : '<tr><td colspan="3">Yönetici Bilgisi Yok</td></tr>'}
+                        </tbody>
+                    </table>
+                `;
         document.getElementById('companyDetails').innerHTML = detailsHtml;
         document.getElementById('companyDetailsModal').style.display = 'block';
     }
@@ -128,20 +146,20 @@
 
     function displayUserProfile(user) {
         let profileHtml = `
-                    <h3>${user.adi || 'Bilgi Yok'} ${user.soyadi || 'Bilgi Yok'}</h3>
-                    <div>
-                        ${user.profilePhoto ? `<img src="${user.profilePhoto}" alt="Profil Fotoğrafı" style="max-width: 200px; max-height: 200px;" />` : '<span>Profil Fotoğrafı Yok</span>'}
-                        <p><strong>Adı:</strong> ${user.adi || 'Bilgi Yok'}</p>
-                        <p><strong>Soyadı:</strong> ${user.soyadi || 'Bilgi Yok'}</p>
-                        <p><strong>Email:</strong> ${user.email || 'Bilgi Yok'}</p>
-                        <p><strong>Telefon:</strong> ${user.phoneNumber || 'Bilgi Yok'}</p>
-                        <p><strong>Doğum Tarihi:</strong> ${user.dogumTarihi || 'Bilgi Yok'}</p>
-                        <p><strong>Doğum Yeri:</strong> ${user.dogumYeri || 'Bilgi Yok'}</p>
-                        <p><strong>TC:</strong> ${user.tc || 'Bilgi Yok'}</p>
-                        <p><strong>Adres:</strong> ${user.adres || 'Bilgi Yok'}</p>
-                        <p><strong>Cinsiyet:</strong> ${user.cinsiyet || 'Bilgi Yok'}</p>
-                    </div>
-                `;
+                        <h3>${user.adi || 'Bilgi Yok'} ${user.soyadi || 'Bilgi Yok'}</h3>
+                        <div>
+                            ${user.profilePhoto ? `<img src="${user.profilePhoto}" alt="Profil Fotoğrafı" style="max-width: 200px; max-height: 200px;" />` : '<span>Profil Fotoğrafı Yok</span>'}
+                            <p><strong>Adı:</strong> ${user.adi || 'Bilgi Yok'}</p>
+                            <p><strong>Soyadı:</strong> ${user.soyadi || 'Bilgi Yok'}</p>
+                            <p><strong>Email:</strong> ${user.email || 'Bilgi Yok'}</p>
+                            <p><strong>Telefon:</strong> ${user.phoneNumber || 'Bilgi Yok'}</p>
+                            <p><strong>Doğum Tarihi:</strong> ${user.dogumTarihi || 'Bilgi Yok'}</p>
+                            <p><strong>Doğum Yeri:</strong> ${user.dogumYeri || 'Bilgi Yok'}</p>
+                            <p><strong>TC:</strong> ${user.tc || 'Bilgi Yok'}</p>
+                            <p><strong>Adres:</strong> ${user.adres || 'Bilgi Yok'}</p>
+                            <p><strong>Cinsiyet:</strong> ${user.cinsiyet || 'Bilgi Yok'}</p>
+                        </div>
+                    `;
         document.getElementById('userProfileDetails').innerHTML = profileHtml;
         document.getElementById('userProfileModal').style.display = 'block';
     }
@@ -174,20 +192,4 @@
         margin: 15% auto; /* 15% from the top and centered */
         padding: 20px;
         border: 1px solid #888;
-        width: 80%; /* Could be more or less, depending on screen size */
-    }
-
-    .close {
-        color: white;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-
-        .close:hover,
-        .close:focus {
-            color: red;
-            text-decoration: none;
-            cursor: pointer;
-        }
-</style>
+        width: 80%; /* Could be more

@@ -147,7 +147,10 @@ namespace IKProjectAPI.Controllers
                await _emailSender.SendEmailAsync(user.Email, "FHYI GROUP - Hesabınız Onaylandı", "Hesabınız onaylanmıştır");
             return Ok("Kullanıcı ve Şirket başarıyla onaylandı");
             }
-            return BadRequest("Kullanıcıya ait Sirket Bulunamadı");
+            user.Status = Data.Enums.Status.Active;            
+            await _context.SaveChangesAsync();
+            await _emailSender.SendEmailAsync(user.Email, "FHYI GROUP - Hesabınız Onaylandı", "Hesabınız onaylanmıştır");
+            return Ok("Kullanıcı ve Şirket başarıyla onaylandı");
         }
 
         [HttpPatch("YoneticiyiReddet")]
@@ -159,11 +162,21 @@ namespace IKProjectAPI.Controllers
             {
                 return BadRequest("Kullanıcı Bulunamadı");
             }
+
+            if (sirket!=null)
+            {
+                user.Status = Data.Enums.Status.Passive;
+                sirket.Status = Data.Enums.Status.Passive;
+                await _context.SaveChangesAsync();
+                await _emailSender.SendEmailAsync(user.Email, "FHYI GROUP - Hesabınız Reddedildi", "Hesabınız reddedildi üzgünüz :(");
+                return Ok("Kullanıcı başarıyla reddedildi");
+            }
             user.Status = Data.Enums.Status.Passive;
-            sirket.Status = Data.Enums.Status.Passive;
+            
             await _context.SaveChangesAsync();
-           await _emailSender.SendEmailAsync(user.Email, "FHYI GROUP - Hesabınız Reddedildi", "Hesabınız reddedildi üzgünüz :(");
+            await _emailSender.SendEmailAsync(user.Email, "FHYI GROUP - Hesabınız Reddedildi", "Hesabınız reddedildi üzgünüz :(");
             return Ok("Kullanıcı başarıyla reddedildi");
+
         }
 
         [HttpPatch("YoneticiyiSil")]

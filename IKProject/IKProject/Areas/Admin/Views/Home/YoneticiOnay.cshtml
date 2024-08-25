@@ -23,31 +23,35 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var yonetici in Model)
+            @if (Model!=null)
             {
-                <tr id="row-@yonetici.Id">
-                    <td>@yonetici.Adi</td>
-                    <td>@yonetici.Soyadi</td>
-                    <td>@yonetici.Email</td>
-                    <td>@yonetici.TelefonNumarasi</td>
-                   @*  <td>
-                        @if (yonetici.Sirket != null)
-                        {
-                            @yonetici.Sirket.SirketAdi
-                        }
-                        else
-                        {
-                            <span>Şirket bilgisi mevcut değil</span>
-                        }
-                    </td> *@
-                    <td>
-                        <button class="btn btn-success onayla-btn" data-id="@yonetici.Id">Onayla</button>
-                    </td>
-                    <td>
-                        <button class="btn btn-danger reddet-btn" data-id="@yonetici.Id">Reddet</button>
-                    </td>
-                </tr>
+                @foreach (var yonetici in Model)
+                {
+                    <tr id="row-@yonetici.Id">
+                        <td>@yonetici.Adi</td>
+                        <td>@yonetici.Soyadi</td>
+                        <td>@yonetici.Email</td>
+                        <td>@yonetici.TelefonNumarasi</td>
+                        @*  <td>
+                @if (yonetici.Sirket != null)
+                {
+                @yonetici.Sirket.SirketAdi
+                }
+                else
+                {
+                <span>Şirket bilgisi mevcut değil</span>
+                }
+                </td> *@
+                        <td>
+                            <button class="btn btn-success onayla-btn" data-id="@yonetici.Id">Onayla</button>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger reddet-btn" data-id="@yonetici.Id">Reddet</button>
+                        </td>
+                    </tr>
+                }
             }
+           
         </tbody>
     </table>
 </div>
@@ -60,7 +64,7 @@
                 var id = $(this).data('id');
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("Onayla", "Home", new { area = "Admin" })',
+                    url: '@Url.Action("YoneticiOnay", "Home", new { area = "Admin" })',
                     data: { id: id },
                     success: function (response) {
                         if (response.success) {
