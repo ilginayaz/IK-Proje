@@ -30,7 +30,7 @@ namespace IKProject.Areas.Employee.Controllers
             if (userResult is OkObjectResult okResult && okResult.Value is ApplicationUser user)
             {
 
-
+                ViewBag.ErrorMessage = "Kullanıcı bulunamadı.";
                 return View(user);
             }
 
@@ -45,10 +45,12 @@ namespace IKProject.Areas.Employee.Controllers
             {
 
                 var content = await response.Content.ReadAsStringAsync();
-                var user = JsonConvert.DeserializeObject<ApplicationUser>(content); //
+                var user = JsonConvert.DeserializeObject<ApplicationUser>(content); 
                 return Ok(user);
             }
-            return NotFound("Personel bulunamadı.");
+
+            ViewBag.ErrorMessage = "Kullanıcı bulunamadı.";
+            return NotFound();
         }
         public async Task<ApplicationUser> GetApplicationUser(string userId)
         {
@@ -72,8 +74,8 @@ namespace IKProject.Areas.Employee.Controllers
 
             if (izinler == null)
             {
-                TempData["ErrorMessage"] = "İzinler alınamadı.";
-                return RedirectToAction("Index"); // Hata durumunda ana sayfaya yönlendir
+                ViewBag.ErrorMessage = "İzinler alınamadı.";
+                return RedirectToAction("Index");
             }
 
             return View(izinler);
@@ -86,8 +88,8 @@ namespace IKProject.Areas.Employee.Controllers
 
             if (harcamalar == null)
             {
-                TempData["ErrorMessage"] = "Harcamalar alınamadı.";
-                return RedirectToAction("Index"); // Hata durumunda ana sayfaya yönlendir
+                ViewBag.ErrorMessage = "Harcamalar alınamadı.";
+                return RedirectToAction("Index");
             }
 
             return View(harcamalar);
@@ -100,8 +102,8 @@ namespace IKProject.Areas.Employee.Controllers
 
             if (avanslar == null)
             {
-                TempData["ErrorMessage"] = "Avanslar alınamadı.";
-                return RedirectToAction("Index"); // Hata durumunda ana sayfaya yönlendir
+                ViewBag.ErrorMessage = "Avanslar alınamadı.";
+                return RedirectToAction("Index"); 
             }
 
             return View(avanslar);
@@ -121,7 +123,7 @@ namespace IKProject.Areas.Employee.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
-                TempData["Message"] = "Kullanıcı bulunamadı";
+                ViewBag.Message = "Kullanıcı bulunamadı";
                 return View(model);
             }
             model.ApplicationUserId = userId;
@@ -137,12 +139,12 @@ namespace IKProject.Areas.Employee.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                TempData["Message"] = "İzin başarıyla oluşturulmuştur.";
+                ViewBag.Message = "İzin başarıyla oluşturulmuştur."; 
                 return RedirectToAction("Izinler");
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
+                ViewBag.ErrorMessage = "Bir hata oluştu."; 
                 return View(model);
             }
         }
@@ -163,16 +165,16 @@ namespace IKProject.Areas.Employee.Controllers
                 var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
                 var response = await _httpClient.PatchAsync($"https://localhost:7149/api/Calisan/izinGuncelle?userId={userId}", content);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    TempData["Message"] = "İzin isteği başarıyla güncellenmiştir.";
-                    return RedirectToAction("Izinler");  // İzinler listesi sayfasına yönlendir
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
-                    return View(model);
-                }
+            if (response.IsSuccessStatusCode)
+            {
+                ViewBag.Message = "İzin isteği başarıyla güncellenmiştir.";
+                return RedirectToAction("Izinler");
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Bir hata oluştu.";
+                return View(model);
+            }
         }
         [HttpPost]
         public async Task<IActionResult> IzinSil(int id)
@@ -183,12 +185,12 @@ namespace IKProject.Areas.Employee.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                TempData["Message"] = "İzin başarıyla silinmiştir.";
+                ViewBag.Message = "İzin başarıyla silinmiştir.";
                 return RedirectToAction("Izinler");
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
+                ViewBag.ErrorMessage = "Bir hata oluştu.";
                 return RedirectToAction("Izinler");
             }
         }
@@ -217,12 +219,12 @@ namespace IKProject.Areas.Employee.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                TempData["Message"] = "Harcama başarıyla oluşturulmuştur.";
+                ViewBag.Message = "Harcama başarıyla oluşturulmuştur.";
                 return RedirectToAction("Harcamalar");
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
+                ViewBag.ErrorMessage = "Bir hata oluştu.";
                 return View(model);
             }
         }
@@ -243,12 +245,12 @@ namespace IKProject.Areas.Employee.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                TempData["Message"] = "Harcama isteği başarıyla güncellenmiştir.";
+                ViewBag.Message = "Harcama isteği başarıyla güncellenmiştir.";
                 return RedirectToAction("Harcamalar");
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
+                ViewBag.ErrorMessage = "Bir hata oluştu.";
                 return View(model);
             }
         }
@@ -268,13 +270,13 @@ namespace IKProject.Areas.Employee.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                TempData["Message"] = "Harcama isteği başarıyla silinmiştir.";
+                ViewBag.Message = "Harcama isteği başarıyla silinmiştir.";
                 return RedirectToAction("Harcamalar");
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
-                return View(model);
+                ViewBag.ErrorMessage = "Bir hata oluştu.";
+                return View();
             }
         }
 
@@ -316,12 +318,12 @@ namespace IKProject.Areas.Employee.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                TempData["Message"] = "Avans talebi başarıyla oluşturulmuştur.";
+                ViewBag.Message = "Avans talebi başarıyla oluşturulmuştur.";
                 return RedirectToAction("Avanslar");
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
+                ViewBag.ErrorMessage = "Bir hata oluştu.";
                 return View(model);
             }
         }
@@ -342,12 +344,12 @@ namespace IKProject.Areas.Employee.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                TempData["Message"] = "Avans isteği başarıyla güncellenmiştir.";
+                ViewBag.Message = "Avans talebi başarıyla güncellenmiştir.";
                 return RedirectToAction("Avanslar");
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Bir hata oluştu.");
+                ViewBag.ErrorMessage = "Bir hata oluştu.";
                 return View(model);
             }
         }
@@ -361,11 +363,13 @@ namespace IKProject.Areas.Employee.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                return Json(new { success = true, message = "Avans başarıyla silinmiştir." });
+                ViewBag.Message = "Avans talebi başarıyla silinmiştir.";
+                return RedirectToAction("Avanslar");
             }
             else
             {
-                return Json(new { success = false, message = "Bir hata oluştu." });
+                ViewBag.ErrorMessage = "Bir hata oluştu.";
+                return View();
             }
         }
 
@@ -406,9 +410,10 @@ namespace IKProject.Areas.Employee.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    TempData["SuccessMessage"] = "Profiliniz başarıyla güncellendi.";
 
-                   
+                    ViewBag.Message = "Bilgileriniz başarıyla güncellenmiştir.";
+
+
                     return View(model);
                 }
                 else
@@ -451,7 +456,7 @@ namespace IKProject.Areas.Employee.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                TempData["SuccessMessage"] = "Şifreniz başarıyla değiştirildi.";
+                ViewBag.Message = "Şifreniz başarıyla güncellenmiştir.";
                 return RedirectToAction("Index", "Home");
             }
             else
