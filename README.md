@@ -11,7 +11,7 @@ değiştirme ve profil güncelleme gibi özellikler sunulur.
 
 ## 📬 İletişim
 
-- [@yasinbagcuvan]((https://github.com/yasinbagcuvan)
+- [@yasinbagcuvan](https://github.com/yasinbagcuvan)
 - [@karahanhivda](https://github.com/karahanhivda)
 - [@furkanbaybura](https://github.com/furkanbaybura)
 - [@ilginayaz](https://github.com/ilginayaz)
