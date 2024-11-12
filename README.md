@@ -1,5 +1,14 @@
 # 🧑‍💻  İnsan Kaynakları Yönetim Sistemi
 
+## 🛠️ Teknolojiler
+- **ASP.NET Core MVC**
+- **ASP.NET Core Web API**
+- **MSSQL**
+- **Entity Framework Core**
+- **Identity**
+- **HttpClient**
+- **JWT**
+
 ## 🎯 Konu
 ASP.NET Core MVC ve Web API kullanılarak çalışanlar, yöneticiler 
 ve admin arasında iş süreçlerini yönetmek için bir sistem geliştirilmiştir.  
